@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Calendar";
+}
+
+@section AddToHead {
+    <style type="text/css">
+        .panel-primary > .panel-heading {
+            background-color: #0073EA;
+            border-color: #0073EA;
+        }
+
+        .panel-primary {
+            border-color: #0073EA;
+        }
+
+        #calendar {
+            width: 100%;
+            height: 400px;
+            border: 1px solid;
+            table-layout: fixed;
+        }
+
+            #calendar td {
+                border: 1px solid;
+                vertical-align: top;
+                height: 70px;
+            }
+
+            #calendar th {
+                background-color: #0073EA;
+                color: white;
+            }
+
+        .blue {
+            background-color: #0073EA;
+            color: white;
+        }
+    </style>
+}
+
+<div class="row-fluid">
+    <div class="span12 text-center">
+        <h1>Naval Reactors Interview Tracker (NRIT)</h1>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <ul id="navbar">
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fa fa-group"></i> Candidates</a></li>
+            <li><a href="#"><i class="fa fa-calendar"></i> Calendar</a></li>
+            <li>
+                <a href="#"><i class="fa fa-bar-chart-o"></i> Reports <i class="fa fa-chevron-down"></i></a>
+                <ul>
+                    <li><a href="#">FY Report</a></li>
+                    <li><a href="#">CY Report</a></li>
+                </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-search"></i> Search</a></li>
+        </ul>
+    </div>
+</div>
+<div class="push"></div>
+<div class="row-fluid">
+    <div class="span8">
+        <h2 class="text-center"><i class="fa fa-chevron-left"></i> Calendar - July 2014 <i class="fa fa-chevron-right"></i></h2>
+        <table id="calendar">
+            <thead>
+                <tr>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>
+                        8
+                        <p><span class="label label-success"><i class="fa fa-clipboard"></i></span></p>
+                    </td>
+                    <td>9</td>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>
+                        17
+                        <p><span class="label label-default"><i class="fa fa-clipboard"></i></span></p>
+                    </td>
+                    <td>18</td>
+                    <td>19</td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>
+                        25
+                        <p><span class="label label-default"><i class="fa fa-clipboard"></i></span></p>
+                    </td></td>
+                    <td>26</td>
+                </tr>
+                <tr>
+                    <td>29</td>
+                    <td>30</td>
+                    <td>31</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="span4" id="toolbar">
+        <p class="text-center"><button><i class="fa fa-plus"></i> Create Interview</button></p>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Interview Info</h4>
+            </div>
+            <div class="panel-body">
+                <b>Date:</b> July 8th, 2014<br />
+                <b>Time:</b> 15:00<br />
+                <b>Location:</b> Room 256<br />
+                <p class="text-center">
+                    <button><i class="fa fa-edit"></i> Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("button").button();
+            $("#navbar").menubar({
+                icons: false
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - NRIT</title>
+    @Styles.Render("~/Content/css")
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+
+</head>
+<body>
+    <!--<div class="container body-content">-->
+    <div class="container ui-widget">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/js")
+    @if (IsSectionDefined("AddToScripts"))
+    {
+        @RenderSection("AddToScripts", required: false)
+    }
+
+</body>
+</html>
