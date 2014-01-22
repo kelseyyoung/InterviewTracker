@@ -12,16 +12,50 @@
 
 </head>
 <body>
-    <!--<div class="container body-content">-->
     <div class="container ui-widget">
+        <div class="row-fluid">
+            <div class="span12 text-center">
+                <h1>Naval Reactors Interview Tracker (NRIT)</h1>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <ul id="navbar">
+                    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="@Url.Action("Index", "Candidates")"><i class="fa fa-group"></i> Candidates</a></li>
+                    <li><a href="@Url.Action("Index", "Calendar")"><i class="fa fa-calendar"></i> Calendar</a></li>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o"></i> Reports <i class="fa fa-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="@Url.Action("Index", "Reports")">All</a></li>
+                            <li><a href="#">FY Report</a></li>
+                            <li><a href="#">CY Report</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("Index", "Search")"><i class="fa fa-search"></i> Search</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="push"></div>
         @RenderBody()
     </div>
 
     @Scripts.Render("~/bundles/js")
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("button").button();
+            $("#navbar").menubar({
+                icons: false
+            });
+
+        });
+    </script>
     @if (IsSectionDefined("AddToScripts"))
     {
         @RenderSection("AddToScripts", required: false)
     }
+    
 
 </body>
 </html>
