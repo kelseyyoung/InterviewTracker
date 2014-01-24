@@ -170,6 +170,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\css\bootstrap-rip.css" />
     <Content Include="Content\css\jquery.ui.menubar.css" />
     <Content Include="Content\css\main.css" />
@@ -781,7 +782,6 @@
     <Content Include="Content\jquery-blue\development-bundle\ui\minified\jquery.ui.tabs.min.js" />
     <Content Include="Content\jquery-blue\development-bundle\ui\minified\jquery.ui.tooltip.min.js" />
     <Content Include="Content\jquery-blue\development-bundle\ui\minified\jquery.ui.widget.min.js" />
-    <Content Include="Content\jquery-blue\index.html" />
     <Content Include="Content\jquery-blue\js\jquery-1.9.1.js" />
     <Content Include="Content\jquery-blue\js\jquery-ui-1.10.3.custom.js" />
     <Content Include="Content\jquery-blue\js\jquery-ui-1.10.3.custom.min.js" />
@@ -789,7 +789,6 @@
     <Content Include="fonts\font-awesome-4.0.3\css\font-awesome.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\font-awesome-4.0.3\fonts\fontawesome-webfont.eot" />
@@ -893,7 +892,7 @@
     <Content Include="Views\Calendar\Index.cshtml" />
     <Content Include="Views\Candidates\Index.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
-    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Candidates\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

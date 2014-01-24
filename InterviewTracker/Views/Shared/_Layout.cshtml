@@ -5,10 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - NRIT</title>
     @Styles.Render("~/Content/css")
-    @if (IsSectionDefined("AddToHead"))
+    @if (IsSectionDefined("AddToLinks"))
     {
-        @RenderSection("AddToHead", required: false)
+        @RenderSection("AddToLinks", required: false)
     }
+    <style type="text/css">
+        .panel-primary > .panel-heading {
+            background-color: #0073EA;
+            border-color: #0073EA;
+        }
+
+        .panel-primary {
+            border-color: #0073EA;
+        }
+    @if (IsSectionDefined("AddToTextCss"))
+    {
+        @RenderSection("AddToTextCss", required: false)
+    }
+    </style>
 
 </head>
 <body>
@@ -32,7 +46,6 @@
                             <li><a href="#">CY Report</a></li>
                         </ul>
                     </li>
-                    <li><a href="@Url.Action("Index", "Search")"><i class="fa fa-search"></i> Search</a></li>
                 </ul>
             </div>
         </div>
@@ -48,6 +61,7 @@
             $("#navbar").menubar({
                 icons: false
             });
+            $("input").addClass("ui-corner-all");
 
         });
     </script>
