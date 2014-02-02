@@ -1,3 +1,202 @@
 ﻿@{
     ViewBag.Title = "Candidates";
 }
+
+@section AddToTextCss {
+     .odd.table-override {
+        color: black !important;
+        background-color: rgba(0, 115, 234, 0.5) !important;
+    }
+
+    .even.table-override {
+        color: black !important;
+        background-color: white !important;
+    }
+
+    .odd.table-override > td[class*="sorting"] {
+        color: black !important;
+        background-color: rgba(0, 115, 234, 0.5) !important;
+    }
+
+    .even.table-override > td[class*="sorting"] {
+        color: black !important;
+        background-color: white !important;
+    }
+}
+<div class="row-fluid">
+    <!--Searching-->
+    <div class="span12 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Candidate Search Parameters</h2>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" id="search-form">
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="first-name" class="control-label span3">First Name</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="first-name" id="first-name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="last-name" class="control-label span3">Last Name</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="last-name" id="last-name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="ssn" class="control-label span3">SSN</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="ssn" id="ssn" />
+                                <button type="button" id="toggle-params"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid" id="more-params" style="display: none;">
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="middle-name" class="control-label span3">Middle Name</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="middle-name" id="middle-name" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex" class="control-label span3">Sex</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="sex" id="sex" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="rank" class="control-label span3">Rank</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="rank" id="rank" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="dob" class="control-label span3">DOB</label>
+                            <div class="span9">
+                                <input type="date" class="form-control" name="dob" id="dob" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ethnicity" class="control-label span3">Ethnicity</label>
+                            <div class="span9">
+                                <select class="form-control" name="ethnicity" id="ethinicty">
+                                    <option value="CAUC">CAUC</option>
+                                    <option value="BLACK">BLACK</option>
+                                    <option value="HISP">HISP</option>
+                                    <option value="API">API</option>
+                                    <option value="OTHER">OTHER</option> <!--Should this be here?-->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="source" class="control-label span3">Source</label>
+                            <div class="span9">
+                                <select class="form-control" name="source" id="source">
+                                    <option value="USNA">USNA</option>
+                                    <option value="NROTC">NROTC</option>
+                                    <option value="NUPOC">NUPOC</option>
+                                    <option value="STA21N">STA21N</option>
+                                    <option value="FLEET">FLEET</option>
+                                    <option value="LDO">LDO</option>
+                                    <option value="CWO">CWO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="suffix" class="control-label span3">Suffix</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="suffix" id="suffix" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fyg" class="control-label span3">FYG</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="fyg" id="fyg" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="program" class="control-label span3">Program</label>
+                            <div class="span9">
+                                <select class="form-control" name="program" id="program">
+                                    <option value="NR">NR</option>
+                                    <option value="INST">INST</option>
+                                    <option value="NPS">NPS</option>
+                                    <option value="PXO">PXO</option>
+                                    <option value="EDO">EDO</option>
+                                    <option value="NR1">NR1</option>
+                                    <option value="ENLTECH">ENLTECH</option>
+                                    <option value="SUPPLY">SUPPLY</option>
+                                    <option value="DOE">DOE</option>
+                                    <option value="EOOW">EOOW</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <!--Results table-->
+    <div class="span12">
+        <table id="example">
+            <thead>
+                <tr>
+                    <th>Test</th>
+                    <th>Another</th>
+                    <th>Third</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Thing 1</td>
+                    <td>Thing 2</td>
+                    <td>Thing 3</td>
+                </tr>
+                <tr>
+                    <td>Thing 1</td>
+                    <td>Thing 2</td>
+                    <td>Thing 3</td>
+                </tr>
+                <tr>
+                    <td>Thing 1</td>
+                    <td>Thing 2</td>
+                    <td>Thing 3</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#toggle-params").click(function () {
+                $("#more-params").slideToggle();
+            });
+
+            $("#example").dataTable({
+                "bJQueryUI": true,
+                "bFilter": false,
+                "fnDrawCallback": function (oSettings) {
+                    for (var i = 0; i < oSettings.aoData.length; i++) {
+                        oSettings.aoData[i].nTr.className += " " + "table-override";
+                    }
+                }
+            });
+        });
+    </script>
+}
