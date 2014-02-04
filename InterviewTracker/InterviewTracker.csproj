@@ -172,9 +172,23 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\css\bootstrap-rip.css" />
+    <Content Include="Content\css\jquery.dataTables.css" />
+    <Content Include="Content\css\jquery.dataTables_themeroller.css" />
     <Content Include="Content\css\jquery.ui.menubar.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\scaffolding.css" />
+    <Content Include="Content\images\back_disabled.png" />
+    <Content Include="Content\images\back_enabled.png" />
+    <Content Include="Content\images\back_enabled_hover.png" />
+    <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\images\forward_disabled.png" />
+    <Content Include="Content\images\forward_enabled.png" />
+    <Content Include="Content\images\forward_enabled_hover.png" />
+    <Content Include="Content\images\sort_asc.png" />
+    <Content Include="Content\images\sort_asc_disabled.png" />
+    <Content Include="Content\images\sort_both.png" />
+    <Content Include="Content\images\sort_desc.png" />
+    <Content Include="Content\images\sort_desc_disabled.png" />
     <Content Include="Content\jquery-blue\css\custom-theme\images\animated-overlay.gif" />
     <Content Include="Content\jquery-blue\css\custom-theme\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\jquery-blue\css\custom-theme\images\ui-bg_flat_0_eeeeee_40x100.png" />
@@ -861,6 +875,7 @@
     <Content Include="Content\jquery-blue\development-bundle\ui.tabs.jquery.json" />
     <Content Include="Content\jquery-blue\development-bundle\ui.tooltip.jquery.json" />
     <Content Include="Content\jquery-blue\development-bundle\ui.widget.jquery.json" />
+    <Content Include="Content\images\Sorting icons.psd" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -870,6 +885,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\js\jquery-1.9.1.js" />
+    <Content Include="Scripts\js\jquery.dataTables.js" />
     <Content Include="Scripts\js\jquery.ui.menubar.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
