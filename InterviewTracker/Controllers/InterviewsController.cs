@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace InterviewTracker.Controllers
 {
-    public class SearchController : Controller
+    public class InterviewsController : Controller
     {
         //
-        // GET: /Search/
+        // GET: /Interviews/
         public ActionResult Index()
         {
             return View();

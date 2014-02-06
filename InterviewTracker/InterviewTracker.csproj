@@ -161,8 +161,8 @@
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CandidatesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InterviewsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -172,6 +172,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\css\bootstrap-rip.css" />
+    <Content Include="Content\css\fullcalendar.css" />
     <Content Include="Content\css\jquery.dataTables.css" />
     <Content Include="Content\css\jquery.dataTables_themeroller.css" />
     <Content Include="Content\css\jquery.ui.menubar.css" />
@@ -884,6 +885,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js\fullcalendar.js" />
     <Content Include="Scripts\js\jquery-1.9.1.js" />
     <Content Include="Scripts\js\jquery.dataTables.js" />
     <Content Include="Scripts\js\jquery.ui.menubar.js" />
@@ -909,6 +911,7 @@
     <Content Include="Views\Candidates\Index.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Candidates\Create.cshtml" />
+    <Content Include="Views\Interviews\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
