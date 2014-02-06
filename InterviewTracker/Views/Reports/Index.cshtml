@@ -2,3 +2,181 @@
     ViewBag.Title = "Reports";
 }
 
+<div class="row-fluid">
+    <div class="span10 offset1">
+        <div class="row-fluid">
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Fiscal Year Reports</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span2" for="fy-date">Date</label>
+                            <div class="span10">
+                                <input type="date" name="fy-date" id="fy-date" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label span2" for="fy-year">Year</label>
+                            <div class="span10">
+                                <select name="fy-year" id="fy-year">
+                                    <option value="2010">2010</option>
+                                    <option value="2010">2011</option>
+                                    <option value="2010">2012</option>
+                                    <option value="2010">2013</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right" id="generate-fy-year">Generate</button>
+                    </form>
+                </div>
+            </div>
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Calendar Year Reports</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span2" for="cy-date">Date</label>
+                            <div class="span10">
+                                <input type="date" name="cy-date" id="cy-date" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label span2" for="cy-year">Year</label>
+                            <div class="span10">
+                                <select name="cy-year" id="fc-year">
+                                    <option value="2010">2010</option>
+                                    <option value="2010">2011</option>
+                                    <option value="2010">2012</option>
+                                    <option value="2010">2013</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right" id="generate-cy-year">Generate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Class Letter Reports</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span2" for="class-letter-class">Class</label>
+                            <div class="span10">
+                                <input type="text" name="class-letter-class" id="class-letter-class" />
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right" id="generate-class-letter">Generate</button>
+                    </form>
+                </div>
+            </div>
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Candidate Reports</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span3" for="candidate-candidate">Candidate</label>
+                            <div class="span9">
+                                <select id="candidate-candidate">
+                                    <option value="John Doe">John Doe</option>
+                                    <option value="Jane Doe">Jane Doe</option>
+                                    <option value="Greg Doe">Greg Doe</option>
+                                    <option value="Hank Doe">Hank Doe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right" id="generate-candidate">Generate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Interview Reports</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span2" for="interview-date">Date</label>
+                            <div class="span10">
+                                <input type="date" name="interview-date" id="interview-date" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="span10 offset1">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-labels" name="interview-labels" /> Labels
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-alpha" name="interview-alpha" /> ALPHA
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-chron" name="interview-chron" /> CHRON
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-packet" name="interview-packet" /> Packet
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-cards" name="interview-cards" /> Cards
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-eod-letter" name="interview-eod-letter" /> EoD Letter
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="interview-usna-letter" name="interview-usna-letter" /> USNA Letter
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right">Generate</button>
+                    </form>
+                </div>
+            </div>
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">SAT/ACT by Fiscal Year Reports</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span2" for="sat-begin">Begin</label>
+                            <div class="span10">
+                                <input type="text" name="sat-begin" id="sat-begin" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label span2" for="sat-end">End</label>
+                            <div class="span10">
+                                <input type="text" name="sat-end" id="sat-end" />
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right">Generate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
