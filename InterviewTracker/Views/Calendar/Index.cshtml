@@ -82,14 +82,45 @@
     </div>
 </div>
 
-@section AddToScripts{
+@section AddToScripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#calendar").fullCalendar({
+                header: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: "month,agendaWeek,agendaDay"
+                },
+                weekMode: "liquid",
+                buttonText: {
+                    today: "Today",
+                    month: "Month",
+                    week: "Week",
+                    day: "Day"
+                },
+                selectable: true,
+                eventColor: "#0073EA"
+            });
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#createInterview").click(function () {
-            $("#showCreate").slideToggle();
+            var sampleEvent = {
+                title: "Interview 1",
+                start: "2014-02-10T13:15:30Z"
+            };
+
+            var sampleEvent2 = {
+                title: "Interview 2",
+                start: "2014-02-07T13:15:30Z",
+                backgroundColor: "#F2F21B",
+                textColor: "#000000"
+            };
+
+            $("#calendar").fullCalendar("renderEvent", sampleEvent);
+            $("#calendar").fullCalendar("renderEvent", sampleEvent2);
+
+
+            $("#createInterview").click(function () {
+                $("#showCreate").slideToggle();
+            });
         });
-    });
-</script>
-
+    </script>
 }
