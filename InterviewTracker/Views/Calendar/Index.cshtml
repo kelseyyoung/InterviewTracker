@@ -4,28 +4,28 @@
 
 @section AddToTextCss {
 
-        #calendar {
-            width: 100%;
-            height: 400px;
-            border: 1px solid;
-            table-layout: fixed;
-        }
+    #calendar {
+    width: 100%;
+    height: 400px;
+    border: 1px solid;
+    table-layout: fixed;
+    }
 
-            #calendar td {
-                border: 1px solid;
-                vertical-align: top;
-                height: 70px;
-            }
+    #calendar td {
+    border: 1px solid;
+    vertical-align: top;
+    height: 70px;
+    }
 
-            #calendar th {
-                background-color: #0073EA;
-                color: white;
-            }
+    #calendar th {
+    background-color: #0073EA;
+    color: white;
+    }
 
-        .blue {
-            background-color: #0073EA;
-            color: white;
-        }
+    .blue {
+    background-color: #0073EA;
+    color: white;
+    }
 }
 
 <div class="row-fluid">
@@ -88,7 +88,55 @@
         </table>
     </div>
     <div class="span4" id="toolbar">
-        <p class="text-center"><button><i class="fa fa-plus"></i> Create Interview</button></p>
+        <p class="text-center"><button id="createInterview"><i class="fa fa-plus"></i> Create Interview</button></p>
+        <!-- Create new interview collapsable panel-->
+        <div class="panel panel-primary" style="display:none" id="showCreate">
+            <div class="panel-heading">
+                <h4 class="panel-title">Create New Interview</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="scheduledDate" class="control-label span3">Date</label>
+                        <div class="span7">
+                            <input type="date" class="form-control span11" name="scheduledDate" id="scheduledDate" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime" class="control-label span3">Start Time</label>
+                        <div class="span3">
+                            <input type="time" class="form-control span11" name="startTime" id="startTime" />
+                        </div>
+                        <label for="endTime" class="control-label span3">End Time</label>
+                        <div class="span3">
+                            <input type="time" class="form-control span11" name="endTime" id="endTime" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidate" class="control-label span3">Candidate</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="candidate" id="candidate" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="interviewer" class="control-label span3">Interviewer</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="interviewer" id="interviewer" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="room" class="control-label span3">Room</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="room" id="room" />
+                        </div>
+                    </div>
+                </form>
+                <p class="text-center">
+                    <button><i class="fa fa-check"></i> Schedule</button>
+                    <button><i class="fa fa-times-circle"></i> Cancel</button>
+            </div>
+        </div>
+        <!-- Interview information panel -->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title">Interview Info</h4>
@@ -99,7 +147,20 @@
                 <b>Location:</b> Room 256<br />
                 <p class="text-center">
                     <button><i class="fa fa-edit"></i> Edit</button>
+                    <button><i class="fa fa-times"></i> Delete</button>
             </div>
         </div>
     </div>
 </div>
+
+@section AddToScripts{
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#createInterview").click(function () {
+            $("#showCreate").slideToggle();
+        });
+    });
+</script>
+
+}
