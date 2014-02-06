@@ -2,18 +2,8 @@
     ViewBag.Title = "Candidates";
 }
 
-@{
-    ViewBag.Title = "Candidates";
-}
 
-<script src="//code.jquery.com/jquery-1.9.1.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
-<script>
-    $(function () {
-        $("#tabs").tabs();
-    });
-</script>
 
 <div class="row-fluid">
     <div class="span10 offset1 panel panel-primary">
@@ -156,17 +146,27 @@
             </div>
             <div class="row-fluid">
                 <div class="row-fluid span4 panel-body">
-                    <div class="span8">
-                        <select name="schoolsAttended" multiple class="span12">
-                            <option value="UofW">University of Wisconsin</option>
-                            <option value="CalTech">California Technical Institute</option>
-                        </select>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <select name="schoolsAttended" multiple class="span12">
+                                <option value="UofW">University of Wisconsin</option>
+                                <option value="CalTech">California Technical Institute</option>
+                            </select>
+                        </div>
                     </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <button type="button" class="span4 offset1"><i class="fa fa-plus"></i> Add</button>
+                            <button type="button" class="span5"><i class="fa fa-ban"></i> Remove</button>
+                        </div>
+                    </div>
+                    <!--
                     <div class="row-fluid span4">
-                        <button class="span12">&ltAdd</button>
-                        <button class="span12">Update</button>
-                        <button class="span12">Remove&gt</button>
+                        <button type="button" class="span12">&lt; Add</button>
+                        <button type="button" class="span12">Update</button>
+                        <button type="button" class="span12">Remove &gt;</button>
                     </div>
+                     -->
                 </div>
                 <!--Second column of school info block-->
                 <div class="row-fluid span8 panel-body">
@@ -541,3 +541,11 @@
         </form>
     </div>
 </div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#tabs").tabs();
+        });
+    </script>
+}

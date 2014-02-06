@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.title = "Interview Comments";
+}
+
+@section AddToTextCSS {
+    .red {
+        background-color: rgba(217, 83, 79, 0.2);
+    }
+
+    .blue {
+        background-color: rgba(0, 115, 234, 0.2);
+    }
+
+    .yellow {
+        background-color: rgba(252, 248, 227, 0.4);
+    }
+
+    .green {
+        background-color: rgba(92, 184, 92, 0.3);
+    }
+}
+
+<div class="row-fluid">
+    <div class="span10 offset1 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Add Interview Comments</h2>
+        </div>
+        <div class="panel-body">
+            <h3>Interview Details</h3>
+            <p><b>Interview Date:</b>  2/11/2014</p>
+            <p><b>Interview Time:</b> 15:00</p>
+            <p><b>Candidate:</b> John Doe</p>
+            <p><b>Interviewers:</b> Jane Doe, Cathy Smith, Mark Smith</p>
+            <hr />
+            <h3>Your Comments</h3>
+            <textarea class="span12 red" rows="5" id="your-comments">This comment has yet to be written</textarea>
+            <hr />
+            <h3>Other Comments</h3>
+            <p>Cathy Smith</p>
+            <textarea class="span12 blue" rows="5" id="comments-2">This comment has gone through its initial edit</textarea>
+            <p>Mark Smith</p>
+            <textarea class="span12 yellow" rows="5" id="comments-3">This comment is ready for editing</textarea>
+            <hr />
+            <button class="pull-right">Submit Changes</button>
+        </div>
+    </div>
+</div>

@@ -38,14 +38,7 @@
                     <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
                     <li><a href="@Url.Action("Index", "Candidates")"><i class="fa fa-group"></i> Candidates</a></li>
                     <li><a href="@Url.Action("Index", "Calendar")"><i class="fa fa-calendar"></i> Calendar</a></li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o"></i> Reports <i class="fa fa-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="@Url.Action("Index", "Reports")">All</a></li>
-                            <li><a href="#">FY Report</a></li>
-                            <li><a href="#">CY Report</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="@Url.Action("Index", "Reports")"><i class="fa fa-bar-chart-o"></i> Reports</a></li>
                 </ul>
             </div>
         </div>
@@ -58,10 +51,12 @@
         $(document).ready(function () {
 
             $("button").button();
+            $("a.button").button();
             $("#navbar").menubar({
                 icons: false
             });
             $("input").addClass("ui-corner-all");
+            $("textarea").addClass("ui-corner-all");
 
         });
     </script>
@@ -69,7 +64,7 @@
     {
         @RenderSection("AddToScripts", required: false)
     }
-    
+
 
 </body>
 </html>

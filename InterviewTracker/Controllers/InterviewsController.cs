@@ -14,8 +14,8 @@ namespace InterviewTracker.Controllers
         {
             return View();
         }
-        
-        public ActionResult Create()
+
+        public ActionResult Comments()
         {
             return View();
         }
