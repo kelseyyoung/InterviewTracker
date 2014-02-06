@@ -106,8 +106,24 @@
                     week: "Week",
                     day: "Day"
                 },
-                selectable: true
+                selectable: true,
+                eventColor: "#0073EA"
             });
+
+            var sampleEvent = {
+                title: "Interview 1",
+                start: "2014-02-10T13:15:30Z"
+            };
+
+            var sampleEvent2 = {
+                title: "Interview 2",
+                start: "2014-02-07T13:15:30Z",
+                backgroundColor: "#F2F21B",
+                textColor: "#000000"
+            };
+
+            $("#calendar").fullCalendar("renderEvent", sampleEvent);
+            $("#calendar").fullCalendar("renderEvent", sampleEvent2);
         });
     </script>
 }
