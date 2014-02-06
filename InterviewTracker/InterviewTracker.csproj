@@ -912,6 +912,7 @@
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Candidates\Create.cshtml" />
     <Content Include="Views\Interviews\Index.cshtml" />
+    <Content Include="Views\Interviews\Comments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
