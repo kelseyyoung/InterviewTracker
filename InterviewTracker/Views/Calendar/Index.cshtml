@@ -12,69 +12,11 @@
 <div class="row-fluid">
     <div class="span8">
         <div id="calendar">
-
+            <!--Full Calendar gets entered here-->
         </div>
-        <!--
-        <h2 class="text-center"><i class="fa fa-chevron-left"></i> Calendar - July 2014 <i class="fa fa-chevron-right"></i></h2>
-        <table id="calendar">
-            <thead>
-                <tr>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>
-                        8
-                        <p><span class="label label-success"><i class="fa fa-clipboard"></i></span></p>
-                    </td>
-                    <td>9</td>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>16</td>
-                    <td>
-                        17
-                        <p><span class="label label-default"><i class="fa fa-clipboard"></i></span></p>
-                    </td>
-                    <td>18</td>
-                    <td>19</td>
-                </tr>
-                <tr>
-                    <td>22</td>
-                    <td>23</td>
-                    <td>24</td>
-                    <td>
-                        25
-                        <p><span class="label label-default"><i class="fa fa-clipboard"></i></span></p>
-                    </td></td>
-                    <td>26</td>
-                </tr>
-                <tr>
-                    <td>29</td>
-                    <td>30</td>
-                    <td>31</td>
-                </tr>
-            </tbody>
-        </table>
-        -->
     </div>
     <div class="span4" id="toolbar">
-        <p class="text-center"><button><i class="fa fa-plus"></i> Create Interview</button></p>
+        <p class="text-center"><a class="button" href="@Url.Action("Create", "Interviews")"><i class="fa fa-plus"></i> Create Interview</a></p>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title">Interview Info</h4>
@@ -84,8 +26,8 @@
                 <b>Time:</b> 15:00<br />
                 <b>Location:</b> Room 256<br />
                 <p class="text-center">
-                    <button><i class="fa fa-edit"></i> Edit</button>
-                    <button><i class="fa fa-comment"></i> Add/Edit Comments</button>
+                    <a class="button" href="@Url.Action("Edit", "Interviews")"><i class="fa fa-edit"></i> Edit</a>
+                    <a class="button" href="@Url.Action("Comments", "Interviews")"><i class="fa fa-comment"></i> Add/Edit Comments</a>
                 </p>
             </div>
         </div>
