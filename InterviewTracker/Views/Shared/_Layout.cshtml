@@ -11,12 +11,17 @@
     }
     <style type="text/css">
         .panel-primary > .panel-heading {
-            background-color: #0073EA;
-            border-color: #0073EA;
+            /*background-color: #0073EA;*/
+            /*border-color: #0073EA;*/
+
+            background-color: #17599D;
+            border-color: #17599D;
         }
 
         .panel-primary {
-            border-color: #0073EA;
+            /*border-color: #0073EA;*/
+
+            border-color: #17599D;
         }
     @if (IsSectionDefined("AddToTextCss"))
     {
@@ -50,7 +55,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("button").button();
+            $("button:not(.btn-ignore)").button();
             $("a.button").button();
             $("#navbar").menubar({
                 icons: false

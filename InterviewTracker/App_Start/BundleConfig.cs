@@ -28,7 +28,7 @@ namespace InterviewTracker
                       "~/Content/site.css"));*/
             bundles.Add(new StyleBundle("~/Content/css").Include(
                     "~/Content/css/*.css",
-                    "~/Content/jquery-blue/css/custom-theme/*.css",
+                    "~/Content/jquery-dark-blue/css/custom-theme/*.css",
                     "~/fonts/font-awesome-4.0.3/css/font-awesome.css"
                 ));
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
