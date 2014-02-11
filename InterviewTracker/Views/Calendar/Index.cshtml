@@ -107,7 +107,7 @@
                     //alert("The current date of the calendar is " + myDate);
                     $("#scheduledDate").datepicker("setDate", date);
                 }
-            
+
             });
 
             var sampleEvent = {
@@ -136,8 +136,51 @@
                 $("#endTime").val('');
             });
 
-            $(function() {
+            $(function () {
                 $("#scheduledDate").datepicker();
+            });
+
+            $(function () {
+                $("#candidate").select2(
+                    {
+                        minimumInputLength: 3,
+                        placeholder: 'Enter name',
+                        ajax: {
+                            url: "http://www.weighttraining.com/sm/search",
+                            dataType: 'jsonp',
+                            quietMillis: 100,
+                            data: function(term, page) {
+                                return {
+                                    types: ["exercise"],
+                                    limit: -1,
+                                    term: term
+                                };
+                            },
+                            results: function(data, page ) {
+                                return { results: data.results.exercise }
+                            }
+                        },
+                        formatResult: function(exercise) { 
+                            return "<div class='select2-user-result'>" + exercise.term + "</div>"; 
+                        },
+                        formatSelection: function(exercise) { 
+                            return exercise.term; 
+                        },
+                        initSelection : function (element, callback) {
+                            var elementText = $(element).attr('data-init-text');
+                            callback({"term":elementText});
+                        }
+                    });
+            });
+
+            $(function () {
+                $("#interviewer").select2(
+                    {
+                        placeholder: 'Enter name',
+                        minimumInputLength: 1,
+                        allowClear: true,
+                        quietMillis: 100
+                    });
             });
 
         });

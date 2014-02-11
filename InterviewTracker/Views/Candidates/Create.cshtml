@@ -712,15 +712,27 @@
             });
 
             $(function () {
-                $("#reportDate").datepicker();
+                $("#reportDate").datepicker(
+                    {
+                        changeYear: true,
+                        yearRange: "-90:+0"
+                    });
             });
 
             $(function () {
-                $("#date-of-birth").datepicker();
+                $("#date-of-birth").datepicker(
+                    {
+                        changeYear: true,
+                        yearRange: "-90:+0"
+                    });
             });
 
             $(function () {
-                $("#departDate").datepicker();
+                $("#departDate").datepicker(
+                    {
+                        changeYear: true,
+                        yearRange: "-90:+0"
+                    });
             });
 
         });
