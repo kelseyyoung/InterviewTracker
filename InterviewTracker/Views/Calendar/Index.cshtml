@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label for="scheduledDate" class="control-label span3">Date</label>
                         <div class="span7">
-                            <input type="date" class="form-control span11" name="scheduledDate" id="scheduledDate" />
+                            <input type="text" class="form-control span11" name="scheduledDate" id="scheduledDate" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -62,8 +62,8 @@
                     </div>
                 </form>
                 <p class="text-center">
-                    <button><i class="fa fa-check"></i> Schedule</button>
-                    <button><i class="fa fa-times-circle"></i> Cancel</button>
+                    <button id="scheduleInterview"><i class="fa fa-check"></i> Schedule</button>
+                    <button id="cancelInterview"><i class="fa fa-times-circle"></i> Cancel</button>
             </div>
         </div>
         <!-- Interview information panel -->
@@ -100,7 +100,14 @@
                     day: "Day"
                 },
                 selectable: true,
-                eventColor: "#17599D"
+                eventColor: "#17599D",
+
+                dayClick: function (date, allDay, jsEvent, view) {
+                    var myDate = $("#calendar").fullCalendar('getDate');
+                    //alert("The current date of the calendar is " + myDate);
+                    $("#scheduledDate").datepicker("setDate", date);
+                }
+            
             });
 
             var sampleEvent = {
@@ -118,10 +125,21 @@
             $("#calendar").fullCalendar("renderEvent", sampleEvent);
             $("#calendar").fullCalendar("renderEvent", sampleEvent2);
 
-
             $("#createInterview").click(function () {
                 $("#showCreate").slideToggle();
             });
+
+            $("#cancelInterview").click(function () {
+                $("#showCreate").slideToggle();
+                $("#room").val('');
+                $("#startTime").val('');
+                $("#endTime").val('');
+            });
+
+            $(function() {
+                $("#scheduledDate").datepicker();
+            });
+
         });
     </script>
 }
