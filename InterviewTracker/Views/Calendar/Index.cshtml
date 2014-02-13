@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label for="scheduledDate" class="control-label span3">Date</label>
                         <div class="span7">
-                            <input type="date" class="form-control span11" name="scheduledDate" id="scheduledDate" />
+                            <input type="text" class="form-control span11" name="scheduledDate" id="scheduledDate" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -53,8 +53,8 @@
                     </div>
                 </form>
                 <p class="text-center">
-                    <button type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
-                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i> Cancel</button>
+                    <button id="scheduleInterview" type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
+                    <button id="cancelInterview" type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i> Cancel</button>
                 </p>
             </div>
         </div>
@@ -93,7 +93,14 @@
                     day: "Day"
                 },
                 selectable: true,
-                eventColor: "#17599D"
+                eventColor: "#17599D",
+
+                dayClick: function (date, allDay, jsEvent, view) {
+                    var myDate = $("#calendar").fullCalendar('getDate');
+                    //alert("The current date of the calendar is " + myDate);
+                    $("#scheduledDate").datepicker("setDate", date);
+                }
+
             });
 
             var sampleEvent = {
@@ -112,10 +119,64 @@
             $("#calendar").fullCalendar("renderEvent", sampleEvent, true);
             $("#calendar").fullCalendar("renderEvent", sampleEvent2, true);
 
-
             $("#createInterview").click(function () {
                 $("#showCreate").slideToggle();
             });
+
+            $("#cancelInterview").click(function () {
+                $("#showCreate").slideToggle();
+                $("#room").val('');
+                $("#startTime").val('');
+                $("#endTime").val('');
+            });
+
+            $(function () {
+                $("#scheduledDate").datepicker();
+            });
+
+            $(function () {
+                $("#candidate").select2(
+                    {
+                        minimumInputLength: 3,
+                        placeholder: 'Enter name',
+                        ajax: {
+                            url: "http://www.weighttraining.com/sm/search",
+                            dataType: 'jsonp',
+                            quietMillis: 100,
+                            data: function(term, page) {
+                                return {
+                                    types: ["exercise"],
+                                    limit: -1,
+                                    term: term
+                                };
+                            },
+                            results: function(data, page ) {
+                                return { results: data.results.exercise }
+                            }
+                        },
+                        formatResult: function(exercise) { 
+                            return "<div class='select2-user-result'>" + exercise.term + "</div>"; 
+                        },
+                        formatSelection: function(exercise) { 
+                            return exercise.term; 
+                        },
+                        initSelection : function (element, callback) {
+                            var elementText = $(element).attr('data-init-text');
+                            callback({"term":elementText});
+                        }
+                    });
+            });
+
+            $(function () {
+                $("#interviewer").select2(
+                    {
+                        placeholder: 'Enter name',
+                        minimumInputLength: 1,
+                        allowClear: true,
+                        quietMillis: 100
+                    });
+            });
+
         });
     </script>
 }
