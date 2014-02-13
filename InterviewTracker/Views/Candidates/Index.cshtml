@@ -3,26 +3,26 @@
 }
 
 @section AddToTextCss {
-     .odd.table-override {
-        color: black !important;
-        /*background-color: rgba(0, 115, 234, 0.5) !important;*/
-        background-color: rgba(23, 89, 157, 0.5) !important;
+    .odd.table-override {
+    color: black !important;
+    /*background-color: rgba(0, 115, 234, 0.5) !important;*/
+    background-color: rgba(23, 89, 157, 0.5) !important;
     }
 
     .even.table-override {
-        color: black !important;
-        background-color: white !important;
+    color: black !important;
+    background-color: white !important;
     }
 
     .odd.table-override > td[class*="sorting"] {
-        color: white !important;
-        /*background-color: rgba(0, 115, 234, 0.5) !important;*/
-        background-color: rgba(23, 89, 157, 0.5) !important;
+    color: white !important;
+    /*background-color: rgba(0, 115, 234, 0.5) !important;*/
+    background-color: rgba(23, 89, 157, 0.5) !important;
     }
 
     .even.table-override > td[class*="sorting"] {
-        color: black !important;
-        background-color: white !important;
+    color: black !important;
+    background-color: white !important;
     }
 }
 <div class="row-fluid">
@@ -188,7 +188,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#toggle-params").click(function () {
-                $("#more-params").slideToggle(function() {
+                $("#more-params").slideToggle(function () {
                     if ($("#toggle-params").text().trim() == "More") {
                         $("#toggle-params").button("option", "label", "<i class='fa fa-minus'></i> Less").button("refresh");
                     } else {

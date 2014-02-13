@@ -53,8 +53,8 @@
                     </div>
                 </form>
                 <p class="text-center">
-                    <button id="scheduleInterview" type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
-                    <button id="cancelInterview" type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i> Cancel</button>
+                    <button type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
+                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i> Cancel</button>
                 </p>
             </div>
         </div>
@@ -68,7 +68,8 @@
                 <b>Time:</b> 15:00<br />
                 <b>Location:</b> Room 256<br />
                 <p class="text-center">
-                    <button><i class="fa fa-edit"></i> Edit</button>
+                    <button type="button"><i class="fa fa-edit"></i> Edit</button>
+                    <a type="button" class="button" href="@Url.Action("Comments", "Interviews")"><i class="fa fa-comment"></i> Comments</a>
                     <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times"></i> Delete</button>
                 </p>
             </div>
@@ -143,26 +144,26 @@
                             url: "http://www.weighttraining.com/sm/search",
                             dataType: 'jsonp',
                             quietMillis: 100,
-                            data: function(term, page) {
+                            data: function (term, page) {
                                 return {
                                     types: ["exercise"],
                                     limit: -1,
                                     term: term
                                 };
                             },
-                            results: function(data, page ) {
+                            results: function (data, page) {
                                 return { results: data.results.exercise }
                             }
                         },
-                        formatResult: function(exercise) { 
-                            return "<div class='select2-user-result'>" + exercise.term + "</div>"; 
+                        formatResult: function (exercise) {
+                            return "<div class='select2-user-result'>" + exercise.term + "</div>";
                         },
-                        formatSelection: function(exercise) { 
-                            return exercise.term; 
+                        formatSelection: function (exercise) {
+                            return exercise.term;
                         },
-                        initSelection : function (element, callback) {
+                        initSelection: function (element, callback) {
                             var elementText = $(element).attr('data-init-text');
-                            callback({"term":elementText});
+                            callback({ "term": elementText });
                         }
                     });
             });
