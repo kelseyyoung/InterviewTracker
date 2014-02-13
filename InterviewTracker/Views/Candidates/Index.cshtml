@@ -5,7 +5,8 @@
 @section AddToTextCss {
      .odd.table-override {
         color: black !important;
-        background-color: rgba(0, 115, 234, 0.5) !important;
+        /*background-color: rgba(0, 115, 234, 0.5) !important;*/
+        background-color: rgba(23, 89, 157, 0.5) !important;
     }
 
     .even.table-override {
@@ -14,8 +15,9 @@
     }
 
     .odd.table-override > td[class*="sorting"] {
-        color: black !important;
-        background-color: rgba(0, 115, 234, 0.5) !important;
+        color: white !important;
+        /*background-color: rgba(0, 115, 234, 0.5) !important;*/
+        background-color: rgba(23, 89, 157, 0.5) !important;
     }
 
     .even.table-override > td[class*="sorting"] {
@@ -53,7 +55,7 @@
                             <label for="ssn" class="control-label span3">SSN</label>
                             <div class="span9">
                                 <input type="text" class="form-control" name="ssn" id="ssn" />
-                                <button type="button" id="toggle-params"><i class="fa fa-plus"></i></button>
+                                <button type="button" id="toggle-params"><i class="fa fa-plus"></i> More</button>
                             </div>
                         </div>
                     </div>
@@ -186,7 +188,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#toggle-params").click(function () {
-                $("#more-params").slideToggle();
+                $("#more-params").slideToggle(function() {
+                    if ($("#toggle-params").text().trim() == "More") {
+                        $("#toggle-params").button("option", "label", "<i class='fa fa-minus'></i> Less").button("refresh");
+                    } else {
+                        $("#toggle-params").button("option", "label", "<i class='fa fa-plus'></i> More").button("refresh");
+                    }
+                });
             });
 
             $("#example").dataTable({

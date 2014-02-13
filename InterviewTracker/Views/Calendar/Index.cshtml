@@ -2,15 +2,6 @@
     ViewBag.Title = "Calendar";
 }
 
-@section AddToTextCss {
-
-    .blue {
-    /*background-color: #0073EA;*/
-    background-color: #17599D;
-    color: white;
-    }
-}
-
 <div class="row-fluid">
     <div class="span8">
         <div id="calendar">
@@ -62,8 +53,9 @@
                     </div>
                 </form>
                 <p class="text-center">
-                    <button><i class="fa fa-check"></i> Schedule</button>
-                    <button><i class="fa fa-times-circle"></i> Cancel</button>
+                    <button type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
+                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i> Cancel</button>
+                </p>
             </div>
         </div>
         <!-- Interview information panel -->
@@ -77,7 +69,8 @@
                 <b>Location:</b> Room 256<br />
                 <p class="text-center">
                     <button><i class="fa fa-edit"></i> Edit</button>
-                    <button><i class="fa fa-times"></i> Delete</button>
+                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times"></i> Delete</button>
+                </p>
             </div>
         </div>
     </div>
@@ -112,11 +105,12 @@
                 title: "Interview 2",
                 start: "2014-02-07T13:15:30Z",
                 backgroundColor: "#F2F21B",
+                borderColor: "#F2F21B",
                 textColor: "#000000"
             };
 
-            $("#calendar").fullCalendar("renderEvent", sampleEvent);
-            $("#calendar").fullCalendar("renderEvent", sampleEvent2);
+            $("#calendar").fullCalendar("renderEvent", sampleEvent, true);
+            $("#calendar").fullCalendar("renderEvent", sampleEvent2, true);
 
 
             $("#createInterview").click(function () {

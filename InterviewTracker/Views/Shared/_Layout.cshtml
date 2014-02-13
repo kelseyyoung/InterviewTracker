@@ -23,6 +23,26 @@
 
             border-color: #17599D;
         }
+
+        .ui-state-active a:hover, .ui-state-active a:link:hover {
+            color: white;
+        }
+
+        #header {
+            /*background-color: #333333;*/
+            background-color: #17599D;
+            color: white;
+        }
+
+        .image-background {
+            border-radius: 50%;
+            background-color: white;
+            padding-left: 10px;
+            padding-top: 10px;
+            height: 130px;
+            width: 130px;
+        }
+
     @if (IsSectionDefined("AddToTextCss"))
     {
         @RenderSection("AddToTextCss", required: false)
@@ -32,16 +52,27 @@
 </head>
 <body>
     <div class="container ui-widget">
-        <div class="row-fluid">
-            <div class="span12 text-center">
-                <h1>Naval Reactors Interview Tracker (NRIT)</h1>
+        <div class="row-fluid" id="header">
+            <div class="span2">
+                <div class="text-center image-background" >
+                    <img class="pull-left" src="/Content/images/NR_LOGO.png" alt="Naval Reactors" height="120" />
+                </div>
+            </div>
+            <div class="span8 text-center">
+                <h1>NRIT - Naval Reactors Interview Tracker</h1>
             </div>
         </div>
         <div class="row-fluid">
             <div class="span12">
                 <ul id="navbar">
                     <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="@Url.Action("Index", "Candidates")"><i class="fa fa-group"></i> Candidates</a></li>
+                    <li>
+                        <a href="#"><i class="fa fa-group"></i> Candidates <i class="fa fa-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="@Url.Action("Index", "Candidates")"><i class="fa fa-search"></i> Candidate Search</a></li>
+                            <li><a href="@Url.Action("Create", "Candidates")"><i class="fa fa-user"></i> Create Candidate</a></li>
+                        </ul>
+                    </li>
                     <li><a href="@Url.Action("Index", "Calendar")"><i class="fa fa-calendar"></i> Calendar</a></li>
                     <li><a href="@Url.Action("Index", "Reports")"><i class="fa fa-bar-chart-o"></i> Reports</a></li>
                 </ul>
