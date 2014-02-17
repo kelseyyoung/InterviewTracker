@@ -10,6 +10,7 @@ namespace InterviewTracker.Controllers
     {
         //
         // GET: /Candidates/
+
         public ActionResult Index()
         {
             return View();
@@ -24,5 +25,6 @@ namespace InterviewTracker.Controllers
         {
             return View();
         }
-	}
+
+    }
 }

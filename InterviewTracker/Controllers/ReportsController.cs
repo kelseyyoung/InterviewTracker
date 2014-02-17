@@ -10,9 +10,11 @@ namespace InterviewTracker.Controllers
     {
         //
         // GET: /Reports/
+
         public ActionResult Index()
         {
             return View();
         }
-	}
+
+    }
 }
