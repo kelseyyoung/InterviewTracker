@@ -8,32 +8,34 @@ namespace InterviewTracker.Models
 {
     public class Interview
     {
-        public int InterviewID { get; set; }
-        public DateTime Date { get; set; }
-        public Status Status { get; set; }
-        public string Comments { get; set; }
-        public string EditedComments { get; set; }
-        public DateTime StartTime { get; set; } //TODO: How to make these just Time?
-        public DateTime EndTime { get; set; } //TODO: How to make these just Time?
-        public int Duration { get; set; }
-        public DateTime EditTime { get; set; }
-        public bool NR { get; set; }
-        public bool INST { get; set; }
-        public bool NPS { get; set; }
-        public bool PXO { get; set; }
-        public bool EDO { get; set; }
-        public bool ENLTECH { get; set; }
-        public bool NR1 { get; set; }
-        public bool Supply { get; set; }
-        public bool EOOW { get; set; }
-        public bool DOE { get; set; }
+        public int InterviewID { get; set; } // PK for Interview table
+        public DateTime Date { get; set; } // Date of interview
+        public Status Status { get; set; } // Status of interview
+        public string Comments { get; set; } // Comments from interviewer
+        public string EditedComments { get; set; } // Edited comments from interview coordinator
+        public DateTime StartTime { get; set; } // Start time
+        //TODO: How to make these just Time?
+        public DateTime EndTime { get; set; } // End time
+        //TODO: How to make these just Time?
+        public int Duration { get; set; } // Duration in minutes
+        public DateTime EditTime { get; set; } // Last time interviewer's comments were edited
+        public bool NR { get; set; } // Recommended for NR duty
+        public bool INST { get; set; } // Recommended for Instructor duty
+        public bool NPS { get; set; } // Recommended for Nuclear Power school duty
+        public bool PXO { get; set; } // Recommended for Prospective XO
+        public bool EDO { get; set; } // Recommended for Engineering Duty Officer
+        public bool ENLTECH { get; set; } // Recommended for Enlisted Tech
+        public bool NR1 { get; set; } // Recommended for NR-1 duty
+        public bool Supply { get; set; } // Recommended for NR duty (supply)
+        public bool EOOW { get; set; } // Recommended for Engineering Officer of the Watch
+        public bool DOE { get; set; } // Recommended for Field Office
 
         [ForeignKey("Users")]
-        public int CurrentlyEditingID { get; set; }
+        public int CurrentlyEditingID { get; set; } // FK to User who is currently editing the comments
         [ForeignKey("Users")]
-        public int InterviewerID { get; set; }
+        public int InterviewerID { get; set; } // TK to User who was the interviewer
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; }
+        public int BioDataID { get; set; } // FK to applicant
 
     }
 

@@ -8,13 +8,15 @@ namespace InterviewTracker.Models
 {
     public class SchoolsAttended
     {
-        public int AttendedID { get; set; }
-        public int YearStart { get; set; }
-        public int YearEnd { get; set; }
-        public bool Graduated { get; set; }
-        public string Comments { get; set; }
+        public int SchoolsAttendedID { get; set; } // PK For Schools Attended table
+        public int YearStart { get; set; } // Year started school
+        public int YearEnd { get; set; } // Year finished school
+        public bool Graduated { get; set; } // T/F if graduated
+        public string Comments { get; set; } // Comments about attendance
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; }
+        public int BioDataID { get; set; } // FK to BioData table
+        [ForeignKey("School")]
+        public int SchoolID { get; set; } // FK to School table
     }
 }

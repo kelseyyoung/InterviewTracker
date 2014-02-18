@@ -7,7 +7,7 @@ namespace InterviewTracker.Models
 {
     public class SubSource
     {
-        public int SubSourceID { get; set; }
-        public string SubSource { get; set; }
+        public int SubSourceID { get; set; } // PK for SubSource table
+        public string SubSource { get; set; } // SubSource
     }
 }

@@ -7,7 +7,7 @@ namespace InterviewTracker.Models
 {
     public class Program
     {
-        public int ProgramID { get; set; }
-        public string Program { get; set; }
+        public int ProgramID { get; set; } // PK for Program table
+        public string Program { get; set; } // Type of program
     }
 }

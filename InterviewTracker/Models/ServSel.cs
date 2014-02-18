@@ -7,7 +7,7 @@ namespace InterviewTracker.Models
 {
     public class ServSel
     {
-        public int ServSelID { get; set; }
-        public string ServSel { get; set; }
+        public int ServSelID { get; set; } // PK for ServSel table
+        public string ServSel { get; set; } // ServSel value
     }
 }

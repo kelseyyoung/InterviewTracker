@@ -7,9 +7,9 @@ namespace InterviewTracker.Models
 {
     public class Classes
     {
-        public int ClassID { get; set; }
-        public string Subject { get; set; }
-        public string Code { get; set; }
-        public bool Technical { get; set; }
+        public int ClassesID { get; set; } // PK for classes table
+        public string Subject { get; set; } // Class subject (MATH, HIST, etc)
+        public string Code { get; set; } // Class code (140, 250, etc)
+        public bool Technical { get; set; } // T/F if it's a technical class
     }
 }

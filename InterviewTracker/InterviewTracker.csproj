@@ -207,15 +207,15 @@
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\Program.cs" />
     <Compile Include="Models\RD.cs" />
-    <Compile Include="Models\Schools.cs" />
+    <Compile Include="Models\School.cs" />
     <Compile Include="Models\SchoolsAttended.cs" />
     <Compile Include="Models\SchoolStandings.cs" />
-    <Compile Include="Models\Screens.cs" />
+    <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\ServSel.cs" />
     <Compile Include="Models\Source.cs" />
     <Compile Include="Models\SubSource.cs" />
-    <Compile Include="Models\Users.cs" />
-    <Compile Include="Models\Waivers.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Waiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

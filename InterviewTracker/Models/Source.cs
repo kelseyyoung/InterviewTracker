@@ -7,7 +7,7 @@ namespace InterviewTracker.Models
 {
     public class Source
     {
-        public int SourceID { get; set; }
-        public string Source { get; set; }
+        public int SourceID { get; set; } // PK for Source table
+        public string Source { get; set; } // Source
     }
 }

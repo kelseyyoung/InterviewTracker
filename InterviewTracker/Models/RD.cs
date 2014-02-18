@@ -8,12 +8,13 @@ namespace InterviewTracker.Models
 {
     public class RD
     {
-        public int RDID { get; set; }
-        public string Type { get; set; } //TODO: Should this be an enum: RECLAMA, DEVOL?
-        public string Reason { get; set; }
-        public DateTime Date { get; set; }
+        public int RDID { get; set; } // PK for RD table
+        public string Type { get; set; } // Type of devolunteer, RECLAMA or DEVOL
+        //TODO: Should this be an enum: RECLAMA, DEVOL?
+        public string Reason { get; set; } // Reason for devolunteer
+        public DateTime Date { get; set; } // Date of request or DEVOL status
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; }
+        public int BioDataID { get; set; } // FK to BioData table
     }
 }

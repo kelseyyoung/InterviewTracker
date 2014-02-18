@@ -8,13 +8,13 @@ namespace InterviewTracker.Models
 {
     public class DutyHistory
     {
-        public int DutyHistoryID { get; set; }
-        public string Branch { get; set; }
-        public string Rank { get; set; }
-        public string Rating { get; set; }
-        public bool NUC { get; set; }
+        public int DutyHistoryID { get; set; } // PK for Duty History table
+        public string Branch { get; set; } // Branch (Navy, USMC, etc)
+        public string Rank { get; set; } // Rank (E1, O2, etc)
+        public string Rating { get; set; } // Rating (ET, MM, etc)
+        public bool NUC { get; set; } // T/F if applicant was prior NUC
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; }
+        public int BioDataID { get; set; } // FK to BioData table
     }
 }
