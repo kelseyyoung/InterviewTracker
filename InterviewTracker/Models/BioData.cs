@@ -7,6 +7,7 @@ using System.Web;
 
 namespace InterviewTracker.Models
 {
+
     public class BioData
     {
         [Key]
@@ -15,16 +16,16 @@ namespace InterviewTracker.Models
         public string LName { get; set; } // Last Name
         public string FName { get; set; } // First Name
         public string MName { get; set; } // Middle Name
-        public string? Suffix { get; set; } // Suffix (optional)
+        public string Suffix { get; set; } // Suffix (optional) **Don't need ?, is already nullable
         public DateTime DOB { get; set; } // Date of Birth
         public Sex Sex { get; set; } // Sex (Options: M, F)
         public List<Program> Programs { get; set; } // List of programs being applied for
         public int? UnitID { get; set; } // Unit ID (optional)
         public int FYG { get; set; } // Fiscal Year Group
-        public int? ACTM { get; set; } // ACT Math Score
-        public int? ACTV { get; set; } // ACT Verbal Score
-        public int? SATM { get; set; } // SAT Math Score
-        public int? SATV { get; set; } // SAT Verbal Score
+        public int? ACTM { get; set; } // ACT Math Score (optional)
+        public int? ACTV { get; set; } // ACT Verbal Score (optional)
+        public int? SATM { get; set; } // SAT Math Score (optional)
+        public int? SATV { get; set; } // SAT Verbal Score (optional)
 
         [ForeignKey("Ethnicity")]
         public int EthnicityID { get; set; } // FK to Ethnicity table
@@ -45,9 +46,10 @@ namespace InterviewTracker.Models
         public virtual ICollection<Waiver> Waivers { get; set; } // Collection of waivers
     }
 
-    public enum Sex
-    {
-        M = 1,
-        F = 2
-    }
+}
+
+public enum Sex
+{
+    M = 1,
+    F = 2
 }

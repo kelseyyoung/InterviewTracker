@@ -10,7 +10,7 @@ namespace InterviewTracker.Models
     {
         public int SchoolStandingsID { get; set; } // PK for School Standings table
         public int YearOfRecord { get; set; } // Year of this record
-        public float GPA { get; set; } // GPA
+        public decimal GPA { get; set; } // GPA
         public int AOMVal { get; set; } // Academic order of merit value
         public int AOMTot { get; set; } // Academic order of merit total
         public int OOMVal { get; set; } // Overall order of merit value

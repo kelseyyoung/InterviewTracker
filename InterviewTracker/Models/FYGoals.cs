@@ -16,13 +16,13 @@ namespace InterviewTracker.Models
         public int NR { get; set; } // NR Duty goal
         public int INST { get; set; } // Instructor Duty goal
     }
+}
 
-    public enum Source
-    {
-        USNA = 1,
-        NROTC = 2,
-        NUPOC = 3,
-        STA21 = 4,
-        OTHER = 5
-    }
+public enum Source
+{
+    USNA = 1,
+    NROTC = 2,
+    NUPOC = 3,
+    STA21 = 4,
+    OTHER = 5
 }

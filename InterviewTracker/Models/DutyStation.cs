@@ -12,7 +12,7 @@ namespace InterviewTracker.Models
         public DateTime ReportDate { get; set; } // Date reported
         public DateTime DepartDate { get; set; } // Date departed
         public string Duties { get; set; } // Description of duties
-        public float GPA { get; set; } // GPA or FITREP
+        public decimal GPA { get; set; } // GPA or FITREP
         public int RankOverallVal { get; set; } // Overall Rank value
         public int RankOverallTot { get; set; } // Overall Rank total number 
         public int RankInRateVal { get; set; } // Rank in NPS value

@@ -8,6 +8,6 @@ namespace InterviewTracker.Models
     public class ServSel
     {
         public int ServSelID { get; set; } // PK for ServSel table
-        public string ServSel { get; set; } // ServSel value
+        public string ServSelValue { get; set; } // ServSel value
     }
 }

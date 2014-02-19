@@ -17,9 +17,11 @@ namespace InterviewTracker.Models
         public UserGroup UserGroup { get; set; } // Type of user
     }
 
-    public enum UserGroup {
-        ADMIN = 1,
-        COORD = 2,
-        INTER = 3
-    }
+}
+
+public enum UserGroup
+{
+    ADMIN,
+    COORD,
+    INTER
 }

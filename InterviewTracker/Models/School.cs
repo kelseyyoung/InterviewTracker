@@ -8,6 +8,6 @@ namespace InterviewTracker.Models
     public class School
     {
         public int SchoolID { get; set; } // PK for School table
-        public string School { get; set; } // School name (all caps to avoid duplicates)
+        public string SchoolValue { get; set; } // School name (all caps to avoid duplicates)
     }
 }

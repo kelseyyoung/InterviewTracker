@@ -38,11 +38,12 @@ namespace InterviewTracker.Models
         public int BioDataID { get; set; } // FK to applicant
 
     }
+}
 
-    public enum Status {
-        Scheduled = 1,
-        Entered = 2,
-        Edited = 3,
-        Final = 4
-    }
+public enum Status
+{
+    Scheduled = 1,
+    Entered = 2,
+    Edited = 3,
+    Final = 4
 }
