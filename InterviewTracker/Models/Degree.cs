@@ -12,11 +12,14 @@ namespace InterviewTracker.Models
         public DateTime DegreeDate { get; set; } // DateTime degree received, also grad date if 'graduated'
 
         [ForeignKey("SchoolsAttended")]
-        public int SchoolsAttendedID { get; set; } // FK to SchoolsAttended table
+        public virtual int SchoolsAttendedID { get; set; } // FK to SchoolsAttended table
+        public virtual SchoolsAttended SchoolsAttended { get; set; }
         [ForeignKey("Major")]
-        public int MajorID { get; set; } // FK to Major table
+        public virtual int MajorID { get; set; } // FK to Major table
+        public virtual Major Major { get; set; }
         [ForeignKey("DegreeType")]
-        public int DegreeTypeID { get; set; } // FK to DegreeType table
+        public virtual int DegreeTypeID { get; set; } // FK to DegreeType table
+        public virtual DegreeType DegreeType { get; set; }
 
     }
 }

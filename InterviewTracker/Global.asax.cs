@@ -24,10 +24,6 @@ namespace InterviewTracker
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
 
-            // Will drop and recreate the DB on model change
-            // TODO: take this out for production
-            System.Data.Entity.Database.SetInitializer(
-                new InterviewTracker.Models.UserContextInitializer());
         }
     }
 }

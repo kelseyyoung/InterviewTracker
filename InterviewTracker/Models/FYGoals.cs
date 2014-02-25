@@ -10,7 +10,7 @@ namespace InterviewTracker.Models
     {
         [Key]
         public int FY { get; set; } // PK for FYGoals table
-        public Source Source { get; set; } // Commissioning source
+        public Sources Source { get; set; } // Commissioning source
         public int SUB { get; set; } // Submarine goal
         public int SWO { get; set; } // Surface goal
         public int NR { get; set; } // NR Duty goal

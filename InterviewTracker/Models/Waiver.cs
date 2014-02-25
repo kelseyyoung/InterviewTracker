@@ -15,6 +15,7 @@ namespace InterviewTracker.Models
         public string Comments { get; set; } // Comments on Waiver
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; } // FK to BioData table
+        public virtual int BioDataID { get; set; } // FK to BioData table
+        public virtual BioData BioData { get; set; }
     }
 }

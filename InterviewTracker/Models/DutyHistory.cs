@@ -15,6 +15,7 @@ namespace InterviewTracker.Models
         public bool NUC { get; set; } // T/F if applicant was prior NUC
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; } // FK to BioData table
+        public virtual int BioDataID { get; set; } // FK to BioData table
+        public virtual BioData BioData { get; set; }
     }
 }

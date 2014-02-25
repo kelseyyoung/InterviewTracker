@@ -8,6 +8,6 @@ namespace InterviewTracker.Models
     public class Ethnicity
     {
         public int EthnicityID { get; set; } // PK for Ethnicity table
-        public int EthnicityValue { get; set; } // Ethnicity
+        public String EthnicityValue { get; set; } // Ethnicity
     }
 }

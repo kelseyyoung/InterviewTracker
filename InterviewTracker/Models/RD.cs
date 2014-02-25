@@ -15,6 +15,7 @@ namespace InterviewTracker.Models
         public DateTime Date { get; set; } // Date of request or DEVOL status
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; } // FK to BioData table
+        public virtual int BioDataID { get; set; } // FK to BioData table
+        public virtual BioData BioData { get; set; }
     }
 }

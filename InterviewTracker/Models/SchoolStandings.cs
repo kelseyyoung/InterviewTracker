@@ -19,6 +19,7 @@ namespace InterviewTracker.Models
         public int InMajorTot { get; set; } // Standing in major total
 
         [ForeignKey("SchoolsAttended")]
-        public int SchoolsAttendedID { get; set; } // FK to Schools Attended table
+        public virtual int SchoolsAttendedID { get; set; } // FK to Schools Attended table
+        public virtual SchoolsAttended SchoolsAttended { get; set; }
     }
 }

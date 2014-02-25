@@ -19,7 +19,7 @@ namespace InterviewTracker.Models
         public string Suffix { get; set; } // Suffix (optional) **Don't need ?, is already nullable
         public DateTime DOB { get; set; } // Date of Birth
         public Sex Sex { get; set; } // Sex (Options: M, F)
-        public List<Program> Programs { get; set; } // List of programs being applied for
+        public virtual ICollection<Program> Programs { get; set; } // List of programs being applied for
         public int? UnitID { get; set; } // Unit ID (optional)
         public int FYG { get; set; } // Fiscal Year Group
         public int? ACTM { get; set; } // ACT Math Score (optional)
@@ -28,11 +28,14 @@ namespace InterviewTracker.Models
         public int? SATV { get; set; } // SAT Verbal Score (optional)
 
         [ForeignKey("Ethnicity")]
-        public int EthnicityID { get; set; } // FK to Ethnicity table
-        [ForeignKey("Source")]
-        public int SourceID { get; set; } // FK to Source table
-        [ForeignKey("SubSource")]
-        public int? SubSourceID { get; set; } // FK to SubSource table (optional)
+        public virtual int EthnicityID { get; set; } // FK to Ethnicity table
+        public virtual Ethnicity Ethnicity { get; set; }
+        [ForeignKey("Sources")]
+        public virtual int SourcesID { get; set; } // FK to Source table
+        public virtual Sources Sources { get; set; }
+        [ForeignKey("SubSources")]
+        public virtual int? SubSourcesID { get; set; } // FK to SubSource table (optional)
+        public virtual SubSources SubSources { get; set; }
 
         /*
          * Collections of data auto populated when a row contains this BioID FK
@@ -44,6 +47,8 @@ namespace InterviewTracker.Models
         public virtual ICollection<RD> RDs { get; set; } // Collection of RDs
         public virtual ICollection<Screen> Screens { get; set; } // Collection of screens
         public virtual ICollection<Waiver> Waivers { get; set; } // Collection of waivers
+
+
     }
 
 }

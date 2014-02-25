@@ -23,9 +23,11 @@ namespace InterviewTracker.Models
         public string SERVSEL { get; set; } // Community chosen by applicant for their contract
 
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; }
+        public virtual int BioDataID { get; set; }
+        public virtual BioData BioData { get; set; }
         [ForeignKey("Interview")]
-        public int InterviewID { get; set; }
+        public virtual int InterviewID { get; set; }
+        public virtual Interview Interview { get; set; }
 
     }
 }

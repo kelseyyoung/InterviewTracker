@@ -13,10 +13,15 @@ namespace InterviewTracker.Models
         public string Grade { get; set; } // Grade received
 
         [ForeignKey("SchoolsAttended")]
-        public int SchoolsAttendedID { get; set; } // FK to SchoolsAttended table
+        public virtual int SchoolsAttendedID { get; set; } // FK to SchoolsAttended table
+        public virtual SchoolsAttended SchoolsAttended { get; set; }
         [ForeignKey("BioData")]
-        public int BioDataID { get; set; } // FK to BioData table
+        public virtual int BioDataID { get; set; }
+        public virtual BioData BioData { get; set; }
         [ForeignKey("Classes")]
-        public int ClassesID { get; set; } // FK to Classes table
+        public virtual int ClassesID { get; set; } // FK to Classes table
+        public virtual Classes Classes { get; set; }
+
+        // TODO: I think these relations can be cleaned up
     }
 }

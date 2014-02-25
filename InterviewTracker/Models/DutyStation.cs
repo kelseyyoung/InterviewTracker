@@ -20,6 +20,7 @@ namespace InterviewTracker.Models
         public string Notes { get; set; } // Comments about performance
 
         [ForeignKey("DutyHistory")]
-        public int DutyHistoryID { get; set; } // FK to Duty History table
+        public virtual int DutyHistoryID { get; set; } // FK to Duty History table
+        public virtual DutyHistory DutyHistory { get; set; }
     }
 }
