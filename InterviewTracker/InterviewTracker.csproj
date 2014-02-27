@@ -190,9 +190,38 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterviewsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="DAL\InterviewTrackerContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201402250641427_Initial.cs" />
+    <Compile Include="Migrations\201402250641427_Initial.Designer.cs">
+      <DependentUpon>201402250641427_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Admiral.cs" />
+    <Compile Include="Models\BioData.cs" />
+    <Compile Include="Models\Classes.cs" />
+    <Compile Include="Models\ClassesAttended.cs" />
+    <Compile Include="Models\Degree.cs" />
+    <Compile Include="Models\DegreeType.cs" />
+    <Compile Include="Models\DutyHistory.cs" />
+    <Compile Include="Models\DutyStation.cs" />
+    <Compile Include="Models\Ethnicity.cs" />
+    <Compile Include="Models\FYGoals.cs" />
+    <Compile Include="Models\Interview.cs" />
+    <Compile Include="Models\Major.cs" />
+    <Compile Include="Models\Program.cs" />
+    <Compile Include="Models\RD.cs" />
+    <Compile Include="Models\School.cs" />
+    <Compile Include="Models\SchoolsAttended.cs" />
+    <Compile Include="Models\SchoolStandings.cs" />
+    <Compile Include="Models\Screen.cs" />
+    <Compile Include="Models\ServSel.cs" />
+    <Compile Include="Models\Sources.cs" />
+    <Compile Include="Models\SubSources.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Waiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -903,7 +932,9 @@
     <Content Include="Scripts\js\jquery-1.9.1.js" />
     <Content Include="Scripts\js\jquery.dataTables.js" />
     <Content Include="Scripts\js\jquery.ui.menubar.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -926,10 +957,14 @@
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
     <Folder Include="Images\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201402250641427_Initial.resx">
+      <DependentUpon>201402250641427_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
