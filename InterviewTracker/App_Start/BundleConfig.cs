@@ -9,7 +9,7 @@ namespace InterviewTracker
         public static void RegisterBundles(BundleCollection bundles)
         {
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Styles/css").Include(
                     "~/Content/css/*.css",
                     "~/Content/jquery-dark-blue/css/custom-theme/*.css",
                     "~/Content/font-awesome-4.0.3/css/font-awesome.css"

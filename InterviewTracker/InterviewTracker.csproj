@@ -185,6 +185,29 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\AdmiralController.cs" />
+    <Compile Include="Controllers\API\BioDataController.cs" />
+    <Compile Include="Controllers\API\ClassesAttendedController.cs" />
+    <Compile Include="Controllers\API\ClassesController.cs" />
+    <Compile Include="Controllers\API\DegreeController.cs" />
+    <Compile Include="Controllers\API\DegreeTypeController.cs" />
+    <Compile Include="Controllers\API\DutyHistoryController.cs" />
+    <Compile Include="Controllers\API\DutyStationController.cs" />
+    <Compile Include="Controllers\API\EthnicityController.cs" />
+    <Compile Include="Controllers\API\FYGoalsController.cs" />
+    <Compile Include="Controllers\API\InterviewController.cs" />
+    <Compile Include="Controllers\API\MajorController.cs" />
+    <Compile Include="Controllers\API\ProgramController.cs" />
+    <Compile Include="Controllers\API\RDController.cs" />
+    <Compile Include="Controllers\API\SchoolController.cs" />
+    <Compile Include="Controllers\API\SchoolsAttendedController.cs" />
+    <Compile Include="Controllers\API\SchoolStandingsController.cs" />
+    <Compile Include="Controllers\API\ScreenController.cs" />
+    <Compile Include="Controllers\API\ServSelController.cs" />
+    <Compile Include="Controllers\API\SourcesController.cs" />
+    <Compile Include="Controllers\API\SubSourcesController.cs" />
+    <Compile Include="Controllers\API\UserController.cs" />
+    <Compile Include="Controllers\API\WaiverController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CandidatesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -965,6 +988,9 @@
     <EmbeddedResource Include="Migrations\201402250641427_Initial.resx">
       <DependentUpon>201402250641427_Initial.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\interviewtracker.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
