@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using InterviewTracker.Filters;
 
 namespace InterviewTracker
 {
@@ -9,6 +10,15 @@ namespace InterviewTracker
     {
         public static void Register(HttpConfiguration config)
         {
+            //Adds the filter to report back model errors
+            config.Filters.Add(new ValidateModelAttribute());
+
+            //Custom route for testing
+            config.Routes.MapHttpRoute(
+                name: "Test",
+                routeTemplate: "api/{controller}/{action}"
+            );
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

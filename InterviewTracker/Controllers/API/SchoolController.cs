@@ -36,7 +36,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/School/5
-        public HttpResponseMessage PutSchool(int id, School school)
+        public HttpResponseMessage PutSchool(int id, [FromUri] School school)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/School
-        public HttpResponseMessage PostSchool(School school)
+        public HttpResponseMessage PostSchool([FromUri] School school)
         {
             if (ModelState.IsValid)
             {
@@ -101,6 +101,18 @@ namespace InterviewTracker.Controllers.API
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, school);
+        }
+
+        // TEST api/School/Test
+        [ActionName("Test")]
+        [HttpGet]
+        public bool TestSchool([FromUri] School school)
+        {
+            if (ModelState.IsValid)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected override void Dispose(bool disposing)

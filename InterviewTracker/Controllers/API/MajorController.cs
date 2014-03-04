@@ -36,7 +36,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Major/5
-        public HttpResponseMessage PutMajor(int id, Major major)
+        public HttpResponseMessage PutMajor(int id, [FromUri] Major major)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Major
-        public HttpResponseMessage PostMajor(Major major)
+        public HttpResponseMessage PostMajor([FromUri] Major major)
         {
             if (ModelState.IsValid)
             {
@@ -101,6 +101,18 @@ namespace InterviewTracker.Controllers.API
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, major);
+        }
+
+        // TEST api/Major/Test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestMajor([FromUri] Major major)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, major);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
         protected override void Dispose(bool disposing)

@@ -214,12 +214,13 @@
     <Compile Include="Controllers\InterviewsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="DAL\InterviewTrackerContext.cs" />
+    <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402250641427_Initial.cs" />
-    <Compile Include="Migrations\201402250641427_Initial.Designer.cs">
-      <DependentUpon>201402250641427_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201403042255202_Initial.cs" />
+    <Compile Include="Migrations\201403042255202_Initial.Designer.cs">
+      <DependentUpon>201403042255202_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admiral.cs" />
@@ -978,19 +979,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Filters\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402250641427_Initial.resx">
-      <DependentUpon>201402250641427_Initial.cs</DependentUpon>
-    </EmbeddedResource>
+    <None Include="Properties\PublishProfiles\interviewtracker.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\interviewtracker.pubxml" />
+    <EmbeddedResource Include="Migrations\201403042255202_Initial.resx">
+      <DependentUpon>201403042255202_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
