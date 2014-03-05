@@ -185,18 +185,42 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\API\AdmiralController.cs" />
+    <Compile Include="Controllers\API\BioDataController.cs" />
+    <Compile Include="Controllers\API\ClassesAttendedController.cs" />
+    <Compile Include="Controllers\API\ClassesController.cs" />
+    <Compile Include="Controllers\API\DegreeController.cs" />
+    <Compile Include="Controllers\API\DegreeTypeController.cs" />
+    <Compile Include="Controllers\API\DutyHistoryController.cs" />
+    <Compile Include="Controllers\API\DutyStationController.cs" />
+    <Compile Include="Controllers\API\EthnicityController.cs" />
+    <Compile Include="Controllers\API\FYGoalsController.cs" />
+    <Compile Include="Controllers\API\InterviewController.cs" />
+    <Compile Include="Controllers\API\MajorController.cs" />
+    <Compile Include="Controllers\API\ProgramController.cs" />
+    <Compile Include="Controllers\API\RDController.cs" />
+    <Compile Include="Controllers\API\SchoolController.cs" />
+    <Compile Include="Controllers\API\SchoolsAttendedController.cs" />
+    <Compile Include="Controllers\API\SchoolStandingsController.cs" />
+    <Compile Include="Controllers\API\ScreenController.cs" />
+    <Compile Include="Controllers\API\ServSelController.cs" />
+    <Compile Include="Controllers\API\SourcesController.cs" />
+    <Compile Include="Controllers\API\SubSourcesController.cs" />
+    <Compile Include="Controllers\API\UserController.cs" />
+    <Compile Include="Controllers\API\WaiverController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CandidatesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterviewsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="DAL\InterviewTrackerContext.cs" />
+    <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201402250641427_Initial.cs" />
-    <Compile Include="Migrations\201402250641427_Initial.Designer.cs">
-      <DependentUpon>201402250641427_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201403042255202_Initial.cs" />
+    <Compile Include="Migrations\201403042255202_Initial.Designer.cs">
+      <DependentUpon>201403042255202_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admiral.cs" />
@@ -955,15 +979,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Filters\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201402250641427_Initial.resx">
-      <DependentUpon>201402250641427_Initial.cs</DependentUpon>
+    <None Include="Properties\PublishProfiles\interviewtracker.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201403042255202_Initial.resx">
+      <DependentUpon>201403042255202_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

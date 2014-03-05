@@ -9,6 +9,7 @@ namespace InterviewTracker.Models
     public class DutyHistory
     {
         public int DutyHistoryID { get; set; } // PK for Duty History table
+        /* TODO: should branch be its own model to prevent duplicates? */
         public string Branch { get; set; } // Branch (Navy, USMC, etc)
         public string Rank { get; set; } // Rank (E1, O2, etc)
         public string Rating { get; set; } // Rating (ET, MM, etc)

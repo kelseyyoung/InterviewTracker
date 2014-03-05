@@ -33,6 +33,12 @@
                         <button>View</button>
                     </span>
                 </li>
+                @foreach ( var candidate in ViewBag.candidates )
+                {
+                    <li class="list-group-item">
+                        @candidate.FName
+                    </li>
+                }
             </ul>
         </div>
     </div>
@@ -58,3 +64,31 @@
         </div>
     </div>
 </div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            /*
+            var major = {};
+            console.log($.param(major));
+            
+            $.ajax({
+                url: "http://localhost:50741/api/Major/Test?" + $.param(major),
+                type: "Post",
+                success: function (data) {
+                    console.log("success");
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log("error");
+                    console.log(data);
+                    console.log(data.responseText);
+                }
+            });
+            */
+            
+        });
+    </script>
+
+}

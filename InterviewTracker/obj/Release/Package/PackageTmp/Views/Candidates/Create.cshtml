@@ -1,0 +1,829 @@
+﻿@{
+    ViewBag.Title = "Candidates";
+}
+
+@section AddToTextCSS {
+    .tabs a {
+    outline: 0;
+    }
+
+    .odd.table-override {
+    color: black !important;
+    /*background-color: rgba(0, 115, 234, 0.5) !important;*/
+    background-color: rgba(23, 89, 157, 0.5) !important;
+    }
+
+    .even.table-override {
+    color: black !important;
+    background-color: white !important;
+    }
+
+    .odd.table-override > td[class*="sorting"] {
+    color: white !important;
+    /*background-color: rgba(0, 115, 234, 0.5) !important;*/
+    background-color: rgba(23, 89, 157, 0.5) !important;
+
+    }
+
+    .even.table-override > td[class*="sorting"] {
+    color: black !important;
+    background-color: white !important;
+    }
+}
+
+<!--Basic Information Block-->
+<div class="row-fluid">
+    <div class="span10 offset1 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Basic Candidate Information</h2>
+        </div>
+        <div class="row-fluid">
+            <!-- First column, name etc-->
+            <div class="span4 panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="first-name" class="control-label span5">First Name</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="first-name" id="first-name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label span5">Middle Name</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="middle-name" id="middle-name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name" class="control-label span5">Last Name</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="last-name" id="last-name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ssn" class="control-label span5">SSN</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="ssn" id="ssn" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="suffix" class="control-label span5">Suffix</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="suffix" id="suffix" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fyg" class="control-label span5">Fiscal Year Group</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="fyg" id="fyg" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Second column, date of birth, gender, etc-->
+            <div class="span4 panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="date-of-birth" class="control-label span4">Date of Birth</label>
+                        <div class="span8">
+                            <input type="text" class="form-control span12" name="date-of-birth" id="date-of-birth" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender" class="control-label span4">Gender</label>
+                        <div class="span8">
+                            <select id="gender" name="gender">
+                                <option value="M">M</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ethnicity" class="control-label span4">Ethnicity</label>
+                        <div class="span8">
+                            <select id="ethnicity" name="ethnicity">
+                                <option value="caucasian">Caucasian</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="source" class="control-label span4">Source</label>
+                        <div class="span8">
+                            <select id="source" name="source">
+                                <option value="NROTC">NROTC</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subsource" class="control-label span4">SubSource</label>
+                        <div class="span8">
+                            <select id="subsource" name="subsource">
+                                <option value="NROTC">NROTC</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="programs" class="control-label span4">Programs</label>
+                        <div class="span8">
+                            <select id="programs" name="programs" multiple>
+                                <option value="NROTC">Officer</option>
+                                <option value="NROTC">Officer</option>
+                                <option value="NROTC">Officer</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Third column, ACT/SAT scores-->
+            <div class="span4 panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="ACTM" class="control-label span4">ACT Math</label>
+                        <div class="span8">
+                            <input type="text" class="form-control span10" name="ACTM" id="ACTM" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ACTV" class="control-label span4">ACT Verbal</label>
+                        <div class="span8">
+                            <input type="text" class="form-control span10" name="ACTV" id="ACTV" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SATM" class="control-label span4">SAT Math</label>
+                        <div class="span8">
+                            <input type="text" class="form-control span10" name="SATM" id="SATM" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SATV" class="control-label span4">SAT Verbal</label>
+                        <div class="span8">
+                            <input type="text" class="form-control span10" name="SATV" id="SATV" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- School information block-->
+<div class="row-fluid">
+    <div class="span10 offset1 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">School Information</h2>
+        </div>
+        <div class="tabs" id="school-tabs">
+            <ul>
+                <li><a href="#tabs-school-1">University of Arizona</a></li>
+                <li><a href="#tabs-school-2">Ohio State University</a></li>
+                <li><a href="#"><i class="fa fa-plus"></i></a></li>
+            </ul>
+            <div id="tabs-school-1">
+                <div class="row-fluid">
+                    <!--School info block-->
+                    <div class="span12 panel-body">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="year-start" class="control-label span3">Start Year</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span10" name="year-start" id="year-start" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="year-end" class="control-label span3">End Year</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span10" name="year-end" id="year-end" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="major" class="control-label span3">Major</label>
+                                        <div class="span6">
+                                            <input type="text" class="form-control span10" name="major" id="major" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="graduated" class="control-label span3">Graduated?</label>
+                                        <div class="span2">
+                                            <select id="graduated" name="graduated" class="span12">
+                                                <option value="T">Yes</option>
+                                                <option value="F">No</option>
+                                            </select>
+                                        </div>
+                                        <label for="degreeType" class="control-label span3">Degree</label>
+                                        <div class="span2">
+                                            <select id="degreeType" name="degreeType" class="span12">
+                                                <option value="na">N/A</option>
+                                                <option value="BA">B.A.</option>
+                                                <option value="BS">B.S.</option>
+                                                <option value="MS">M.S.</option>
+                                                <option value="MA">M.A.</option>
+                                                <option value="PhD">PhD</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="span6">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="GPA" class="control-label span3">GPA</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="GPA" id="GPA" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="AOM" class="control-label span3">AOM</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="AoM" id="AOM" />
+                                        </div>
+                                        <label for="of_AOM" class="control-label span1">of</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="of_AOM" id="of_AOM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="OOM" class="control-label span3">OOM</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="OOM" id="OOM" />
+                                        </div>
+                                        <label for="of_OOM" class="control-label span1">of</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="of_OOM" id="of_OOM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inMajor" class="control-label span3">Rank in Major</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="inMajor" id="inMajor" />
+                                        </div>
+                                        <label for="of_inMajor" class="control-label span1">of</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="of_inMajor" id="of_inMajor" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <form class="form-horizontal">
+                            <label for="comments" class="control-label span2">Comments:</label>
+                            <div class="span10">
+                                <textarea name="comments" id="comments" class="span12" rows="3" style="resize:vertical">Enter your comments here...</textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <button type="button" class="btn-danger pull-left btn-ignore">Remove</button>
+                    </div>
+                </div>
+            </div> <!--End of first tab-->
+            <div id="tabs-school-2">
+                <div class="row-fluid">
+                    <!--School info block-->
+                    <div class="span12 panel-body">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="year-start" class="control-label span3">Start Year</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span10" name="year-start" id="year-start" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="year-end" class="control-label span3">End Year</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span10" name="year-end" id="year-end" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="major" class="control-label span3">Major</label>
+                                        <div class="span6">
+                                            <input type="text" class="form-control span10" name="major" id="major" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="graduated" class="control-label span3">Graduated?</label>
+                                        <div class="span2">
+                                            <select id="graduated" name="graduated" class="span12">
+                                                <option value="T">Yes</option>
+                                                <option value="F">No</option>
+                                            </select>
+                                        </div>
+                                        <label for="degreeType" class="control-label span3">Degree</label>
+                                        <div class="span2">
+                                            <select id="degreeType" name="degreeType" class="span12">
+                                                <option value="na">N/A</option>
+                                                <option value="BA">B.A.</option>
+                                                <option value="BS">B.S.</option>
+                                                <option value="MS">M.S.</option>
+                                                <option value="MA">M.A.</option>
+                                                <option value="PhD">PhD</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="span6">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="GPA" class="control-label span3">GPA</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="GPA" id="GPA" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="AOM" class="control-label span3">AOM</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="AoM" id="AOM" />
+                                        </div>
+                                        <label for="of_AOM" class="control-label span1">of</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="of_AOM" id="of_AOM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="OOM" class="control-label span3">OOM</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="OOM" id="OOM" />
+                                        </div>
+                                        <label for="of_OOM" class="control-label span1">of</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="of_OOM" id="of_OOM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inMajor" class="control-label span3">Rank in Major</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="inMajor" id="inMajor" />
+                                        </div>
+                                        <label for="of_inMajor" class="control-label span1">of</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span12" name="of_inMajor" id="of_inMajor" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <form class="form-horizontal">
+                            <label for="comments" class="control-label span2">Comments:</label>
+                            <div class="span10">
+                                <textarea name="comments" id="comments" class="span12" rows="3" style="resize:vertical">Enter your comments here...</textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <button class="pull-left btn-ignore btn-danger" type="button">Remove</button>
+                    </div>
+                </div>
+            </div> <!--End of second tab-->
+        </div>
+    </div>
+</div>
+<!--Class information block-->
+<div class="row-fluid">
+    <div class="span10 offset1 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Class Information</h2>
+        </div>
+        <div class="tabs" id="class-tabs">
+            <ul>
+                <li><a href="#tabs-1">University of Arizona</a></li>
+                <li><a href="#tabs-2">Ohio State University</a></li>
+            </ul>
+            <div id="tabs-1">
+                <div class="row-fluid">
+                    <div class="span12 panel-body">
+                        <!--Classes table-->
+                        <table class="table" id="classes-table-1">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Course #</th>
+                                    <th>Technical?</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ENGL</td>
+                                    <td>109</td>
+                                    <td>N</td>
+                                    <td class="text-center"><button class="btn-ignore btn-danger" type="button">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td>MATH</td>
+                                    <td>120</td>
+                                    <td>Y</td>
+                                    <td class="text-center"><button class="btn-ignore btn-danger" type="button">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td>SCI</td>
+                                    <td>210</td>
+                                    <td>Y</td>
+                                    <td class="text-center"><button class="btn-ignore btn-danger" type="button">Remove</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <form class="form-horizontal">
+                            <div class="form-inline">
+                                <label for="subject" class="control-label span1">Subject</label>
+                                <div class="span2">
+                                    <input type="text" class="form-control span11" name="subject" id="subject" />
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <label for="courseNum" class="control-label span1">Course #</label>
+                                <div class="span2">
+                                    <input type="text" class="form-control span11" name="courseNum" id="courseNum" />
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <label for="title" class="control-label span2">Class Title (optional)</label>
+                                <div class="span2">
+                                    <input type="text" class="form-control span11" name="title" id="title" />
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <label for="technical" class="control-label span1">Tech?</label>
+                                <div class="span1">
+                                    <select id="technical" name="technical" class="span11">
+                                        <option value="T">Yes</option>
+                                        <option value="F">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <button class="pull-right btn-ignore btn-success" type="button"><i class="fa fa-plus"></i> Add Class</button>
+                </div>
+            </div> <!--End of first tab-->
+            <div id="tabs-2">
+                <div class="row-fluid">
+                    <div class="span12 panel-body">
+                        <!--Classes table-->
+                        <table class="table" id="classes-table-1">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Course #</th>
+                                    <th>Technical?</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ENGL</td>
+                                    <td>109</td>
+                                    <td>N</td>
+                                    <td class="text-center"><button class="btn-ignore btn-danger" type="button">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td>MATH</td>
+                                    <td>120</td>
+                                    <td>Y</td>
+                                    <td class="text-center"><button class="btn-ignore btn-danger" type="button">Remove</button></td>
+                                </tr>
+                                <tr>
+                                    <td>SCI</td>
+                                    <td>210</td>
+                                    <td>Y</td>
+                                    <td class="text-center"><button class="btn-ignore btn-danger" type="button">Remove</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <form class="form-horizontal">
+                            <div class="form-inline">
+                                <label for="subject" class="control-label span1">Subject</label>
+                                <div class="span2">
+                                    <input type="text" class="form-control span11" name="subject" id="subject" />
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <label for="courseNum" class="control-label span1">Course #</label>
+                                <div class="span2">
+                                    <input type="text" class="form-control span11" name="courseNum" id="courseNum" />
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <label for="title" class="control-label span2">Class Title (optional)</label>
+                                <div class="span2">
+                                    <input type="text" class="form-control span11" name="title" id="title" />
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <label for="technical" class="control-label span1">Tech?</label>
+                                <div class="span1">
+                                    <select id="technical" name="technical" class="span11">
+                                        <option value="T">Yes</option>
+                                        <option value="F">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <button class="pull-right btn-ignore btn-success" type="button"><i class="fa fa-plus"></i> Add Class</button>
+                </div>
+            </div> <!--End of second tab-->
+        </div>
+    </div>
+</div>
+<!--Duty history information block-->
+<div class="row-fluid">
+    <div class="span10 offset1 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Duty History Information</h2>
+        </div>
+        <div class="tabs" id="duty-history-tabs">
+            <ul>
+                <li><a href="#tabs-duty-history-1">Duty Station 1</a></li>
+                <li><a href="#tabs-duty-history-2">Duty Station 2</a></li>
+                <li><a href="#"><i class="fa fa-plus"></i></a></li>
+            </ul>
+            <div id="tabs-duty-history-1">
+                <div class="row-fluid">
+                    <div class="span12 panel-body">
+                        <form class="form-horizontal">
+                            <div class="span6">
+                                <div class="form-group">
+                                    <label for="branch" class="control-label span2">Branch</label>
+                                    <div class="span10">
+                                        <select id="branch" name="branch" class="span4">
+                                            <option value="AF">Air Force</option>
+                                            <option value="Army">Army</option>
+                                            <option value="Navy">Navy</option>
+                                            <option value="USMC">USMC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rank" class="control-label span2">Rank</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="rank" id="rank" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rate" class="control-label span2">Rating</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="rate" id="rate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nuc" class="control-label span2">Prior NUC</label>
+                                    <div class="span10">
+                                        <select id="nuc" name="nuc" class="span2">
+                                            <option value="T">Yes</option>
+                                            <option value="F">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fitrep" class="control-label span2">GPA/Fitrep</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="fitrep" id="fitrep" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duties" class="control-label span2">Duties:</label>
+                                    <div class="span10">
+                                        <textarea name="comments" id="comments" class="span12" rows="3" style="resize:vertical">Describe duties...</textarea><br>
+                                    </div>
+                                </div>
+                            </div> <!--End of first column-->
+                            <div class="span6">
+                                <div class="form-group">
+                                    <label for="reportDate" class="control-label span3">Report Date</label>
+                                    <div class="span9">
+                                        <input type="date" class="form-control" name="reportDate" id="reportDate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="departDate" class="control-label span3">Depart Date</label>
+                                    <div class="span9">
+                                        <input type="date" class="form-control" name="departDate" id="departDate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rankOverall" class="control-label span3">Overall Rank</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="rankOverall" id="rankOverall" />
+                                    </div>
+                                    <label for="of_rankOverall" class="control-label span1">of</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="of_rankOverall" id="of_rankOverall" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rankInRate" class="control-label span3">Rank In Rate</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="rankOverall" id="rankOverall" />
+                                    </div>
+                                    <label for="of_rankInRate" class="control-label span1">of</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="of_rankInRate" id="of_rankInRate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="training" class="control-label span3">For Training?</label>
+                                    <div class="span9">
+                                        <select id="training" name="training" class="span2">
+                                            <option value="T">Yes</option>
+                                            <option value="F">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notes" class="control-label span3">Notes:</label>
+                                    <div class="span9">
+                                        <textarea name="notes" id="notes" class="span11" rows="3" style="resize:vertical">Comments about performance...</textarea><br>
+                                    </div>
+                                </div>
+                            </div> <!--End of second column-->
+                        </form>
+                    </div>
+                </div>
+            </div> <!--End of first tab-->
+            <div id="tabs-duty-history-2">
+                <div class="row-fluid">
+                    <div class="span12 panel-body">
+                        <form class="form-horizontal">
+                            <div class="span6">
+                                <div class="form-group">
+                                    <label for="branch" class="control-label span2">Branch</label>
+                                    <div class="span10">
+                                        <select id="branch" name="branch" class="span4">
+                                            <option value="AF">Air Force</option>
+                                            <option value="Army">Army</option>
+                                            <option value="Navy">Navy</option>
+                                            <option value="USMC">USMC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rank" class="control-label span2">Rank</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="rank" id="rank" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rate" class="control-label span2">Rating</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="rate" id="rate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nuc" class="control-label span2">Prior NUC</label>
+                                    <div class="span10">
+                                        <select id="nuc" name="nuc" class="span2">
+                                            <option value="T">Yes</option>
+                                            <option value="F">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fitrep" class="control-label span2">GPA/Fitrep</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="fitrep" id="fitrep" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duties" class="control-label span2">Duties:</label>
+                                    <div class="span10">
+                                        <textarea name="comments" id="comments" class="span12" rows="3" style="resize:vertical">Describe duties...</textarea><br>
+                                    </div>
+                                </div>
+                            </div> <!--End of first column-->
+                            <div class="span6">
+                                <div class="form-group">
+                                    <label for="reportDate" class="control-label span3">Report Date</label>
+                                    <div class="span9">
+                                        <input type="date" class="form-control" name="reportDate" id="reportDate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="departDate" class="control-label span3">Depart Date</label>
+                                    <div class="span9">
+                                        <input type="date" class="form-control" name="departDate" id="departDate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rankOverall" class="control-label span3">Overall Rank</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="rankOverall" id="rankOverall" />
+                                    </div>
+                                    <label for="of_rankOverall" class="control-label span1">of</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="of_rankOverall" id="of_rankOverall" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rankInRate" class="control-label span3">Rank In Rate</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="rankOverall" id="rankOverall" />
+                                    </div>
+                                    <label for="of_rankInRate" class="control-label span1">of</label>
+                                    <div class="span3">
+                                        <input type="text" class="form-control span10" name="of_rankInRate" id="of_rankInRate" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="training" class="control-label span3">For Training?</label>
+                                    <div class="span9">
+                                        <select id="training" name="training" class="span2">
+                                            <option value="T">Yes</option>
+                                            <option value="F">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notes" class="control-label span3">Notes:</label>
+                                    <div class="span9">
+                                        <textarea name="notes" id="notes" class="span11" rows="3" style="resize:vertical">Comments about performance...</textarea><br>
+                                    </div>
+                                </div>
+                            </div> <!--End of second column-->
+                        </form>
+                    </div>
+                </div>
+            </div> <!--End of second tab-->
+        </div> <!--End of all tabs-->
+    </div>
+</div>
+
+<!-- Buttons at buttom of page -->
+<div class="row-fluid">
+    <div class="span12">
+        <button type="button" class="btn-success span4 offset2 btn-ignore">Create</button>
+        <button type="button" class="btn-danger span4 btn-ignore">Cancel</button>
+    </div>
+</div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".tabs").tabs();
+
+            $(".table").dataTable({
+                "bJQueryUI": true,
+                "bFilter": false,
+                "fnDrawCallback": function (oSettings) {
+                    for (var i = 0; i < oSettings.aoData.length; i++) {
+                        oSettings.aoData[i].nTr.className += " " + "table-override";
+                    }
+                }
+            });
+
+            $(function () {
+                $("#reportDate").datepicker(
+                    {
+                        changeYear: true,
+                        yearRange: "-90:+0"
+                    });
+            });
+
+            $(function () {
+                $("#date-of-birth").datepicker(
+                    {
+                        changeYear: true,
+                        yearRange: "-90:+0"
+                    });
+            });
+
+            $(function () {
+                $("#departDate").datepicker(
+                    {
+                        changeYear: true,
+                        yearRange: "-90:+0"
+                    });
+            });
+
+        });
+    </script>
+}
