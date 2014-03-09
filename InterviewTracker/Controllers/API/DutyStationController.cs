@@ -104,6 +104,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, dutystation);
         }
 
+        // TEST api/DutyStation/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestDutyStation([FromUri] DutyStation dutyStation)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, dutyStation);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

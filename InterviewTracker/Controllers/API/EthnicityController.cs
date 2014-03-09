@@ -103,6 +103,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, ethnicity);
         }
 
+        // TEST api/Ethnicity/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestEthnicity([FromUri] Ethnicity ethnicity)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, ethnicity);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

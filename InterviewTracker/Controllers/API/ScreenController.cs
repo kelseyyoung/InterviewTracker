@@ -104,6 +104,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, screen);
         }
 
+        // TEST api/Screen/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestScreen([FromUri] Screen screen)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, screen);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

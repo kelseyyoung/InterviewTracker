@@ -103,6 +103,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, degreetype);
         }
 
+        // TEST api/DegreeType/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestDegreeType([FromUri] DegreeType degreeType)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, degreeType);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

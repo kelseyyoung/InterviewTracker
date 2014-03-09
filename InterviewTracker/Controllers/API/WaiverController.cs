@@ -104,6 +104,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, waiver);
         }
 
+        // TEST api/Waiver/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestWaiver([FromUri] Waiver waiver)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, waiver);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

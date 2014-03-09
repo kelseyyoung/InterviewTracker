@@ -104,6 +104,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, schoolstandings);
         }
 
+        // TEST api/SchoolStandings/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestSchoolStandings([FromUri] SchoolStandings schoolStandings)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, schoolStandings);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

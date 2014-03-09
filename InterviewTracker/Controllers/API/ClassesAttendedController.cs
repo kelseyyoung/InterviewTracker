@@ -104,6 +104,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, classesattended);
         }
 
+        // TEST api/ClassesAttended/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestClassesAttended([FromUri] ClassesAttended classesAttended)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, classesAttended);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

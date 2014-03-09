@@ -103,6 +103,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, sources);
         }
 
+        // TEST api/Sources/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestSources([FromUri] Sources sources)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, sources);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

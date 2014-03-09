@@ -103,7 +103,7 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, major);
         }
 
-        // TEST api/Major/Test
+        // TEST api/Major/test
         [ActionName("Test")]
         [HttpPost]
         public HttpResponseMessage TestMajor([FromUri] Major major)

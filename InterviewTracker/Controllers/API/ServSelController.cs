@@ -103,6 +103,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, servsel);
         }
 
+        // TEST api/ServSel/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestServSel([FromUri] ServSel servSel)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, servSel);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

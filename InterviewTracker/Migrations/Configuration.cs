@@ -248,18 +248,21 @@ namespace InterviewTracker.Migrations
             {
                 Subject = "MATH",
                 Code = "109",
+                Name = "Algebra",
                 Technical = true
             };
             Classes ENGL266 = new Classes
             {
                 Subject = "ENGL",
                 Code = "266",
+                Name = "Technical Writing",
                 Technical = false
             };
             Classes PHYS418 = new Classes
             {
                 Subject = "PHYS",
                 Code = "418",
+                Name = "Static Physics",
                 Technical = true
             };
 
@@ -598,7 +601,7 @@ namespace InterviewTracker.Migrations
             // RD
             RD JohnRD = new RD
             {
-                Type = "DEVOL",
+                Type = RDType.DEVOL,
                 Reason = "US Traitor",
                 Date = DateTime.Parse("2009-1-1"),
                 BioData = John
@@ -656,7 +659,7 @@ namespace InterviewTracker.Migrations
             // Waiver
             Waiver SteveWaiver = new Waiver
             {
-                Type = "Drug",
+                Type = WaiverType.Drug,
                 Date = DateTime.Parse("2012-1-1"),
                 Comments = "Addicted to the pipe",
                 BioData = Steve

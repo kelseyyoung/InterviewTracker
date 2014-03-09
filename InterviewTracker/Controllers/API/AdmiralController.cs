@@ -104,6 +104,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, admiral);
         }
 
+        // TEST api/Admiral/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestAdmiral([FromUri] Admiral admiral)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, admiral);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

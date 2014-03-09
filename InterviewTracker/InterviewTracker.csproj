@@ -218,9 +218,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403042255202_Initial.cs" />
-    <Compile Include="Migrations\201403042255202_Initial.Designer.cs">
-      <DependentUpon>201403042255202_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201403090249179_Initial.cs" />
+    <Compile Include="Migrations\201403090249179_Initial.Designer.cs">
+      <DependentUpon>201403090249179_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admiral.cs" />
@@ -988,8 +988,8 @@
     <None Include="Properties\PublishProfiles\interviewtracker.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403042255202_Initial.resx">
-      <DependentUpon>201403042255202_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201403090249179_Initial.resx">
+      <DependentUpon>201403090249179_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

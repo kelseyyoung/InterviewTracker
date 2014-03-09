@@ -103,6 +103,18 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, fygoals);
         }
 
+        // TEST api/FYGoals/test
+        [ActionName("Test")]
+        [HttpPost]
+        public HttpResponseMessage TestFYGoals([FromUri] FYGoals fygoals)
+        {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, fygoals);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
