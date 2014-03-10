@@ -59,6 +59,16 @@ namespace InterviewTracker.Controllers
             return Json(retValue);
         }
 
+        private JsonResult getProgramSelectValues(ICollection<Program> programList)
+        {
+            var retValue = programList.Select(
+                x => new
+                {
+                    value = x.ProgramValue,
+                }).ToArray();
+            return Json(retValue);
+        }
+
         public ActionResult Edit()
         {
             ViewBag.bioData = db.BioData.Find(2);
@@ -73,6 +83,7 @@ namespace InterviewTracker.Controllers
             ViewBag.dutyStations = db.DutyStation.ToList();
            
             ViewBag.schoolsAttended = ViewBag.bioData.SchoolsAttended;
+            ViewBag.programsToSelect = ViewBag.bioData.Programs;
 
             if (ViewBag.bioData.SubSources != null)
                 ViewBag.subsourcePreload = ViewBag.bioData.SubSources;
@@ -89,6 +100,9 @@ namespace InterviewTracker.Controllers
             var schoolSelects = getSchoolSelectValues(ViewBag.schoolsAttended);
             JavaScriptSerializer serializer2 = new JavaScriptSerializer();
             ViewBag.schoolSelectValues = serializer2.Serialize(schoolSelects.Data);
+
+            var programSelects = getProgramSelectValues(ViewBag.programsToSelect);
+            ViewBag.programSelectValues = serializer.Serialize(programSelects.Data);
 
             return View();
         }
