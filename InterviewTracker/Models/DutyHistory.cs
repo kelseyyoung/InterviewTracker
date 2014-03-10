@@ -18,5 +18,7 @@ namespace InterviewTracker.Models
         [ForeignKey("BioData")]
         public virtual int BioDataID { get; set; } // FK to BioData table
         public virtual BioData BioData { get; set; }
+
+        public virtual ICollection<DutyStation> DutyStations { get; set; } // Collection of stations that make up this DutyHistory
     }
 }

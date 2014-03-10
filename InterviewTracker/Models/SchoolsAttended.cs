@@ -20,5 +20,8 @@ namespace InterviewTracker.Models
         [ForeignKey("School")]
         public virtual int SchoolID { get; set; } // FK to School table
         public virtual School School { get; set; }
+
+        public virtual ICollection<SchoolStandings> SchoolStandings { get; set; } // Associated SchoolStandings
+        public virtual ICollection<Degree> Degree { get; set; } //Associated degree with this school attendance
     }
 }
