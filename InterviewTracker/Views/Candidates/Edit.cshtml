@@ -637,7 +637,7 @@
                 var obj = schoolSelectValues[k];
                 $("#Graduated-" + obj.id + " option[value=" + obj.graduated + "]").attr('selected', 'selected');
                 $("#DegreeTypeValue-" + obj.id + " option[value=" + obj.degreeType + "]").attr('selected', 'selected');
-                //  $("#MajorValue-" + obj.id + " option[value=" + obj.major + "]").attr('selected', 'selected');
+                $("#MajorValue-" + obj.id + " option[value=\"" + obj.major + "\"]").attr('selected', 'selected');
 
             }
 
@@ -652,10 +652,7 @@
 
             //Set the 'Select' values for Programs
             var programJSON = [ @Html.Raw(Json.Encode(@ViewBag.programSelectValues))];
-            console.log("program JSON = " + programJSON);
             var programSelectValues = JSON.parse(programJSON);
-            console.log("values = " + programSelectValues);
-            var select = document.getElementById('Programs');
             for (var j = 0; j <programSelectValues.length; j++)
             {
                 var obj = programSelectValues[j];
