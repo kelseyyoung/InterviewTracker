@@ -628,7 +628,7 @@
             $("#Sources option[value=@ViewBag.sources[@ViewBag.bioData.SourcesID - 1].SourcesValue]").attr('selected', 'selected');
             $("#Ethnicity option[value=@ViewBag.ethnicities[@ViewBag.bioData.EthnicityID-1].EthnicityValue]").attr('selected', 'selected');
             $("#SubSources option[value=@ViewBag.subsourcePreload.SubSourcesValue]").attr('selected', 'selected');
-            
+
             //Set the 'Select' values for School (i.e. Major, Graduated and Degree Type)
             var schoolJSON = [ @Html.Raw(Json.Encode(@ViewBag.schoolSelectValues))];
             var schoolSelectValues = JSON.parse(schoolJSON);
@@ -658,9 +658,7 @@
                 var obj = programSelectValues[j];
                 $("#Programs option[value=" + obj.value + "]").attr('selected', 'selected');
             }
-            
+
         });
     </script>
 }
-
-

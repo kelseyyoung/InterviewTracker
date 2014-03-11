@@ -14,8 +14,6 @@ namespace InterviewTracker.Models
         public bool? Decision { get; set; } // T/F if accepted applicant
         [Required]
         public bool? Accepted { get; set; } // T/F if applicant accepted
-        [Required]
-        [DataType(DataType.Text)]
         public string Comments { get; set; } // Personal comments from admiral (not printed)
         [Required]
         public bool? NP500 { get; set; } // T/F instructed to attend NP500
@@ -29,13 +27,10 @@ namespace InterviewTracker.Models
         public bool? Letter { get; set; } // T/F if instructed to write letter to admiral
         [Required]
         public bool? LetterReceived { get; set; } // T/F if letter was received
-        [Required]
-        [DataType(DataType.Text)]
         public string AdmiralNotes { get; set; } // Printed notes from admiral
         [Required]
         public bool? InviteBack { get; set; } // T/F if invited back for another interview
         [Required]
-        [DataType(DataType.Text)]
         public string SERVSEL { get; set; } // Community chosen by applicant for their contract
 
         [ForeignKey("BioData")]

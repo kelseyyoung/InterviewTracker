@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -11,15 +12,22 @@ namespace InterviewTracker.Models
     {
         public int ScreenID { get; set; } // PK for Screen table
         public virtual ICollection<Program> ProgramsAppliedFor { get; set; } // List of programs applicant applied for
-        // TODO: I think this is currently unused
+        // TODO: I think this is currently unused (in our system)
+        [Required]
         public string Screener { get; set; } // Name of screener
         // TODO: should this be a User? Fname and Lname?
+        [Required]
         public string Location { get; set; } // Location screened
         // TODO: should this be a source?
-        public DateTime ScreenDate { get; set; } // Date of screening
-        public ScreenStatus NRStatus { get; set; } // Status of NR
-        public ScreenStatus INSTStatus { get; set; } // Status of INST
-        public ScreenStatus NPSStatus { get; set; } // Status of NPS
+        [Required]
+        public DateTime? ScreenDate { get; set; } // Date of screening
+        [Required]
+        public ScreenStatus? NRStatus { get; set; } // Status of NR
+        [Required]
+        public ScreenStatus? INSTStatus { get; set; } // Status of INST
+        [Required]
+        public ScreenStatus? NPSStatus { get; set; } // Status of NPS
+        [Required]
         public string Notes { get; set; } // Notes on screen
 
         [ForeignKey("BioData")]

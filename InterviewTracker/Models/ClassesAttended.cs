@@ -11,8 +11,7 @@ namespace InterviewTracker.Models
     {
         public int ClassesAttendedID { get; set; } // PK for ClassesAttended table
         [Required]
-        [RegularExpression(@"^[0-9]{4}$", ErrorMessage="Year Taken must be a valid year")]
-        public int? YearTaken { get; set; } // Year class was taken
+        public int? YearTaken { get; set; } // Year class was taken in int (year 1, 2, 3, etc)
         [Required]
         public string Grade { get; set; } // Grade received
 

@@ -10,15 +10,20 @@ namespace InterviewTracker.Models
     {
         [Key]
         public int FY { get; set; } // PK for FYGoals table
-        public Sources Source { get; set; } // Commissioning source
-        public int SUB { get; set; } // Submarine goal
-        public int SWO { get; set; } // Surface goal
-        public int NR { get; set; } // NR Duty goal
-        public int INST { get; set; } // Instructor Duty goal
+        [Required]
+        public FYSource? Source { get; set; } // Commissioning source
+        [Required]
+        public int? SUB { get; set; } // Submarine goal
+        [Required]
+        public int? SWO { get; set; } // Surface goal
+        [Required]
+        public int? NR { get; set; } // NR Duty goal
+        [Required]
+        public int? INST { get; set; } // Instructor Duty goal
     }
 }
 
-public enum Source
+public enum FYSource
 {
     USNA = 1,
     NROTC = 2,

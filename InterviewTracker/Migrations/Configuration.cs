@@ -6,6 +6,9 @@ namespace InterviewTracker.Migrations
     using System.Linq;
     using InterviewTracker.Models;
     using System.Collections.Generic;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
+    using System.Text;
 
     internal sealed class Configuration : DbMigrationsConfiguration<InterviewTracker.DAL.InterviewTrackerContext>
     {
@@ -21,6 +24,7 @@ namespace InterviewTracker.Migrations
             /**** Lookup Table Data ****/
 
             // Ethnicity
+
             Ethnicity CAUC = new Ethnicity { EthnicityValue = "CAUC" };
             Ethnicity BLACK = new Ethnicity { EthnicityValue = "BLACK" };
             Ethnicity HISP = new Ethnicity { EthnicityValue = "HISP" };
@@ -53,7 +57,7 @@ namespace InterviewTracker.Migrations
                 LDO,
                 CWO
             );
-            
+
             // SubSources
             SubSources ECP = new SubSources { SubSourcesValue = "ECP" };
             SubSources MECP = new SubSources { SubSourcesValue = "MECP" };
@@ -158,6 +162,7 @@ namespace InterviewTracker.Migrations
             /**** Normal Table Data ****/
 
             // BioData
+            
             List<Program> KelseyPrograms = new List<Program> { NR, INST };
             BioData Kelsey = new BioData
                 {
@@ -202,7 +207,7 @@ namespace InterviewTracker.Migrations
                     Sources = CWO
                 };
 
-            context.BioData.AddOrUpdate (i => i.ID,
+            context.BioData.AddOrUpdate(i => i.ID,
                 Kelsey,
                 John,
                 Steve
@@ -271,7 +276,7 @@ namespace InterviewTracker.Migrations
                 ENGL266,
                 PHYS418
             );
-
+            
             // Duty History
             DutyHistory KelseyDutyHistory = new DutyHistory
             {
@@ -303,14 +308,14 @@ namespace InterviewTracker.Migrations
                 JohnDutyHistory,
                 SteveDutyHistory
             );
-
+            
             // Duty Station
             DutyStation KelseyDutyStation = new DutyStation
             {
                 ReportDate = DateTime.Parse("2008-1-1"),
                 DepartDate = DateTime.Parse("2011-1-1"),
                 Duties = "Was an officer",
-                GPA = 3.5M,
+                GPA = 3.5,
                 RankOverallVal = 20,
                 RankOverallTot = 200,
                 RankInRateVal = 100,
@@ -320,10 +325,10 @@ namespace InterviewTracker.Migrations
             };
             DutyStation JohnDutyStation = new DutyStation
             {
-                ReportDate = DateTime.Parse("2009-1-1"),
+                ReportDate = DateTime.Parse("2008-1-1"),
                 DepartDate = DateTime.Parse("2009-12-31"),
                 Duties = "Cooked meals",
-                GPA = 2.4M,
+                GPA = 2.4,
                 RankOverallVal = 100,
                 RankOverallTot = 300,
                 RankInRateVal = 200,
@@ -336,7 +341,7 @@ namespace InterviewTracker.Migrations
                 ReportDate = DateTime.Parse("2011-1-1"),
                 DepartDate = DateTime.Parse("2013-1-1"),
                 Duties = "Corporal duties",
-                GPA = 3.94M,
+                GPA = 3.94,
                 RankOverallVal = 2,
                 RankOverallTot = 100,
                 RankInRateVal = 3,
@@ -350,12 +355,12 @@ namespace InterviewTracker.Migrations
                 JohnDutyStation,
                 SteveDutyStation
             );
-
+            
             // FY Goals
             FYGoals FY2012 = new FYGoals
             {
                 FY = 2012,
-                Source = NROTC,
+                Source = FYSource.NROTC,
                 SUB = 30,
                 SWO = 25,
                 NR = 10,
@@ -364,7 +369,7 @@ namespace InterviewTracker.Migrations
             FYGoals FY2013 = new FYGoals
             {
                 FY = 2013,
-                Source = NUPOC,
+                Source = FYSource.NUPOC,
                 SUB = 10,
                 SWO = 30,
                 NR = 13,
@@ -373,7 +378,7 @@ namespace InterviewTracker.Migrations
             FYGoals FY2014 = new FYGoals
             {
                 FY = 2014,
-                Source = USNA,
+                Source = FYSource.USNA,
                 SUB = 11,
                 SWO = 84,
                 NR = 44,
@@ -385,7 +390,7 @@ namespace InterviewTracker.Migrations
                 FY2013,
                 FY2014
             );
-
+            
             // SchoolsAttended
             SchoolsAttended KelseySchoolsAttended = new SchoolsAttended
             {
@@ -412,18 +417,18 @@ namespace InterviewTracker.Migrations
                 BioData = Steve,
                 School = Stanford
             };
-
+            
             context.SchoolsAttended.AddOrUpdate(i => i.SchoolsAttendedID,
                 KelseySchoolsAttended,
                 JohnSchoolsAttended,
                 SteveSchoolsAttended
             );
-
+            
             // School Standings
             SchoolStandings KelseySchoolStandings = new SchoolStandings
             {
-                YearOfRecord = 2010,
-                GPA = 3.2M,
+                YearOfRecord = 1,
+                GPA = 3.2,
                 AOMVal = 30,
                 AOMTot = 300,
                 OOMVal = 20,
@@ -434,8 +439,8 @@ namespace InterviewTracker.Migrations
             };
             SchoolStandings JohnSchoolStandings = new SchoolStandings
             {
-                YearOfRecord = 2009,
-                GPA = 2.3M,
+                YearOfRecord = 2,
+                GPA = 2.3,
                 AOMVal = 10,
                 AOMTot = 600,
                 OOMVal = 500,
@@ -446,8 +451,8 @@ namespace InterviewTracker.Migrations
             };
             SchoolStandings SteveSchoolStandings = new SchoolStandings
             {
-                YearOfRecord = 2012,
-                GPA = 3.9M,
+                YearOfRecord = 3,
+                GPA = 3.9,
                 AOMVal = 2,
                 AOMTot = 80,
                 OOMVal = 1,
@@ -462,7 +467,7 @@ namespace InterviewTracker.Migrations
                 JohnSchoolStandings,
                 SteveSchoolStandings
             );
-
+            
             // Interviews
             Interview KelseyInterview = new Interview
             {
@@ -529,7 +534,7 @@ namespace InterviewTracker.Migrations
                 InterviewerUser = Interviewer,
                 BioData = John
             };
-            
+
             context.Interview.AddOrUpdate(i => i.InterviewerID,
                 KelseyInterview,
                 JohnInterview,
@@ -625,6 +630,7 @@ namespace InterviewTracker.Migrations
             {
 
             };
+            
 
             context.Screen.AddOrUpdate(i => i.ScreenID,
                 KelseyScreen,
@@ -632,6 +638,7 @@ namespace InterviewTracker.Migrations
                 SteveScreen
             );
             */
+            
 
             // Admiral
             Admiral SteveAdmiral = new Admiral
@@ -668,7 +675,7 @@ namespace InterviewTracker.Migrations
             context.Waiver.AddOrUpdate(i => i.WaiverID,
                 SteveWaiver
             );
-
+            
         }
     }
 }

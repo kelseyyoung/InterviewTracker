@@ -48,6 +48,7 @@ namespace InterviewTracker.Models
         [ForeignKey("SubSources")]
         public virtual int? SubSourcesID { get; set; } // FK to SubSource table (optional)
         public virtual SubSources SubSources { get; set; }
+        // TODO: need RequiredIf validator
 
         /*
          * Collections of data auto populated when a row contains this BioID FK

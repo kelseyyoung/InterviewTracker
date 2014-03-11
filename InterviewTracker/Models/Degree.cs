@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,7 @@ namespace InterviewTracker.Models
     public class Degree
     {
         public int DegreeID { get; set; } // PK for Degree table
+        [Required]
         public DateTime DegreeDate { get; set; } // DateTime degree received, also grad date if 'graduated'
 
         [ForeignKey("SchoolsAttended")]
