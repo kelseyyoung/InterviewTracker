@@ -161,7 +161,7 @@ namespace InterviewTracker.Migrations
             List<Program> KelseyPrograms = new List<Program> { NR, INST };
             BioData Kelsey = new BioData
                 {
-                    SSN = 123456789,
+                    SSN = "123-45-6789",
                     LName = "Young",
                     MName = "Jeanne",
                     FName = "Kelsey",
@@ -175,7 +175,7 @@ namespace InterviewTracker.Migrations
             List<Program> JohnPrograms = new List<Program> { NR, ENLTECH, DOE };
             BioData John = new BioData
                 {
-                    SSN = 223456789,
+                    SSN = "223-45-6789",
                     LName = "Doe",
                     MName = "Edward",
                     FName = "John",
@@ -190,7 +190,7 @@ namespace InterviewTracker.Migrations
             List<Program> StevePrograms = new List<Program> { NPS, PXO };
             BioData Steve = new BioData
                 {
-                    SSN = 323456789,
+                    SSN = "323-45-6789",
                     LName = "Aardvark",
                     MName = "Hank",
                     FName = "Steve",

@@ -103,18 +103,6 @@ namespace InterviewTracker.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, school);
         }
 
-        // TEST api/School/Test
-        [ActionName("Test")]
-        [HttpGet]
-        public bool TestSchool([FromUri] School school)
-        {
-            if (ModelState.IsValid)
-            {
-                return true;
-            }
-            return false;
-        }
-
         // TEST api/School/test
         [ActionName("Test")]
         [HttpPost]

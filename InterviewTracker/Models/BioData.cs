@@ -12,16 +12,28 @@ namespace InterviewTracker.Models
     {
         [Key]
         public int ID { get; set; } // PK for BioData table
-        public int SSN { get; set; } // Social Security #
+        [Required]
+        [RegularExpression(@"^\d\d\d-\d\d-\d\d\d\d$", ErrorMessage="SSN must be in the form 000-00-0000")]
+        public string SSN { get; set; } // Social Security #
+        [Required]
+        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage="Last Name must start with a capital letter")]
         public string LName { get; set; } // Last Name
+        [Required]
+        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage="First Name must start with a capital letter")]
         public string FName { get; set; } // First Name
+        [Required]
+        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage="Middle Name must start with a capital letter")]
         public string MName { get; set; } // Middle Name
-        public string Suffix { get; set; } // Suffix (optional) **Don't need ?, is already nullable
-        public DateTime DOB { get; set; } // Date of Birth
-        public Sex Sex { get; set; } // Sex (Options: M, F)
+        public string Suffix { get; set; } // Suffix (optional)
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime? DOB { get; set; } // Date of Birth
+        [Required]
+        public Sex? Sex { get; set; } // Sex (Options: M, F)
         public virtual ICollection<Program> Programs { get; set; } // List of programs being applied for
         public int? UnitID { get; set; } // Unit ID (optional)
-        public int FYG { get; set; } // Fiscal Year Group
+        [Required]
+        public int? FYG { get; set; } // Fiscal Year Group
         public int? ACTM { get; set; } // ACT Math Score (optional)
         public int? ACTV { get; set; } // ACT Verbal Score (optional)
         public int? SATM { get; set; } // SAT Math Score (optional)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,10 @@ namespace InterviewTracker.Models
     public class ClassesAttended
     {
         public int ClassesAttendedID { get; set; } // PK for ClassesAttended table
-        public int YearTaken { get; set; } // Year class was taken
+        [Required]
+        [RegularExpression(@"^[0-9]{4}$", ErrorMessage="Year Taken must be a valid year")]
+        public int? YearTaken { get; set; } // Year class was taken
+        [Required]
         public string Grade { get; set; } // Grade received
 
         [ForeignKey("SchoolsAttended")]
