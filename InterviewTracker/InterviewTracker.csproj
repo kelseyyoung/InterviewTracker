@@ -986,6 +986,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\interviewtracker.pubxml" />
+    <Content Include="Views\Candidates\Edit2.cshtml" />
     <Content Include="Views\Candidates\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>

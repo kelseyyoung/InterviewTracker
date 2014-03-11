@@ -653,8 +653,7 @@
             //Set the 'Select' values for Programs
             var programJSON = [ @Html.Raw(Json.Encode(@ViewBag.programSelectValues))];
             var programSelectValues = JSON.parse(programJSON);
-            for (var j = 0; j <programSelectValues.length; j++)
-            {
+            for (var j = 0; j < programSelectValues.length; j++) {
                 var obj = programSelectValues[j];
                 $("#Programs option[value=" + obj.value + "]").attr('selected', 'selected');
             }

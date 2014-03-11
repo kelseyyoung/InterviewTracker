@@ -91,6 +91,7 @@ namespace InterviewTracker.Controllers
                 ViewBag.subsourcePreload = db.SubSources.First();
 
             ViewBag.dutyHistories = ViewBag.bioData.DutyHistories;
+            //ViewBag.dutyHistory = ViewBag.bioData.DutyHistories.FirstOrDefault();
             ViewBag.classesAttended = ViewBag.bioData.ClassesAttended;
 
             var DHselects = getDHSelectValues(ViewBag.dutyHistories);
