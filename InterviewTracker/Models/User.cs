@@ -23,14 +23,14 @@ namespace InterviewTracker.Models
         public string Code { get; set; } // Division/section code
         //TODO: QUALS
         [Required]
-        public UserGroup? UserGroup { get; set; } // Type of user
+        public string UserGroup { get; set; } // Type of user
     }
 
 }
 
 public enum UserGroup
 {
-    ADMIN,
-    COORD,
-    INTER
+    ADMIN = 1,
+    COORD = 2,
+    INTER = 3
 }

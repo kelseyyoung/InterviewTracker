@@ -13,7 +13,7 @@ namespace InterviewTracker.Models
         [Required]
         public DateTime? Date { get; set; } // Date of interview
         [Required]
-        public Status? Status { get; set; } // Status of interview
+        public string Status { get; set; } // Status of interview
         public string Comments { get; set; } // Comments from interviewer
         public string EditedComments { get; set; } // Edited comments from interview coordinator
         [Required]

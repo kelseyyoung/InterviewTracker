@@ -29,7 +29,7 @@ namespace InterviewTracker.Models
         [DataType(DataType.DateTime)]
         public DateTime? DOB { get; set; } // Date of Birth
         [Required]
-        public Sex? Sex { get; set; } // Sex (Options: M, F)
+        public string Sex { get; set; } // Sex (Options: M, F)
         public virtual ICollection<Program> Programs { get; set; } // List of programs being applied for
         public int? UnitID { get; set; } // Unit ID (optional)
         [Required]
@@ -63,7 +63,6 @@ namespace InterviewTracker.Models
 
 
     }
-
 }
 
 public enum Sex

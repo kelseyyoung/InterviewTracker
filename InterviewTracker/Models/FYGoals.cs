@@ -11,7 +11,7 @@ namespace InterviewTracker.Models
         [Key]
         public int FY { get; set; } // PK for FYGoals table
         [Required]
-        public FYSource? Source { get; set; } // Commissioning source
+        public string Source { get; set; } // Commissioning source
         [Required]
         public int? SUB { get; set; } // Submarine goal
         [Required]
