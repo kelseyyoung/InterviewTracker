@@ -956,6 +956,7 @@
     <Content Include="Scripts\js\jquery-1.9.1.js" />
     <Content Include="Scripts\js\jquery.dataTables.js" />
     <Content Include="Scripts\js\jquery.ui.menubar.js" />
+    <Content Include="Scripts\js\tabcontrols.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

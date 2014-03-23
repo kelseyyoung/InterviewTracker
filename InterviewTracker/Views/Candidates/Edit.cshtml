@@ -124,8 +124,8 @@
 
                         <div class="span8">
                             <select id="Sex" name="Sex">
-                                <option value="M" @if (ViewBag.bioData.Sex == Sex.M.ToString()) { <text> selected </text>           }>M</option>
-                                <option value="F" @if (ViewBag.bioData.Sex == Sex.F.ToString()) { <text> selected </text>           }>F</option>
+                                <option value="M" @if (ViewBag.bioData.Sex == Sex.M.ToString()) { <text> selected </text>            }>M</option>
+                                <option value="F" @if (ViewBag.bioData.Sex == Sex.F.ToString()) { <text> selected </text>            }>F</option>
                             </select>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                                 @foreach (var e in ViewBag.ethnicities)
                                 {
                                     <option value="@e.EthnicityValue"
-                                            @if (ViewBag.ethnicities[ViewBag.bioData.EthnicityID - 1].EthnicityValue == e.EthnicityValue) { <text> selected </text>        }>
+                                            @if (ViewBag.ethnicities[ViewBag.bioData.EthnicityID - 1].EthnicityValue == e.EthnicityValue) { <text> selected </text>         }>
                                         @e.EthnicityValue
                                     </option>
                                 }
@@ -150,7 +150,7 @@
                                 @foreach (var s in ViewBag.sources)
                                 {
                                     <option value="@s.SourcesValue"
-                                            @if (ViewBag.sources[ViewBag.bioData.SourcesID - 1].SourcesValue == s.SourcesValue) { <text> selected </text>        }>
+                                            @if (ViewBag.sources[ViewBag.bioData.SourcesID - 1].SourcesValue == s.SourcesValue) { <text> selected </text>         }>
                                         @s.SourcesValue
                                     </option>
                                 }
@@ -165,7 +165,7 @@
                                 @foreach (var s in ViewBag.subsources)
                                 {
                                     <option value="@s.SubSourcesValue"
-                                            @if (ViewBag.subsourcePreload.SubSourcesValue == s.SubSourcesValue) { <text> selected </text>        }>
+                                            @if (ViewBag.subsourcePreload.SubSourcesValue == s.SubSourcesValue) { <text> selected </text>         }>
                                         @s.SubSourcesValue
                                     </option>
                                 }
@@ -226,7 +226,7 @@
                 @{int i = 1;}}
                 @foreach (var sa in ViewBag.schoolsAttended)
                 {
-                    <li><a href="#school-content-@i">@sa.School.SchoolValue</a></li>
+                <li><a href="#school-content-@i">@sa.School.SchoolValue</a></li>
                     i++;
                 }
                 <li id="add-school-tab"><a href="#add-school"><i class="fa fa-plus"></i></a></li>
@@ -234,78 +234,78 @@
             @{i = 1;}
             @foreach (var sa in ViewBag.schoolsAttended)
             {
-                <div id="school-content-@i">
-                    <form class="form-horizontal school-form">
-                        <div class="row-fluid">
-                            <!--School info block-->
-                            <div class="span12 panel-body">
-                                <div class="row-fluid">
-                                    <div class="span5">
-                                        <div class="form-group">
-                                            <label for="YearStart" class="control-label span3">Start Year</label>
-                                            <div class="span4">
-                                                <input type="text" class="form-control span10" name="YearStart" id="YearStart" value="@sa.YearStart" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="YearEnd" class="control-label span3">End Year</label>
-                                            <div class="span4">
-                                                <input type="text" class="form-control span10" name="YearEnd" id="YearEnd" value="@sa.YearEnd" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Graduated" class="control-label span3">Graduated?</label>
-                                            <div class="span2">
-                                                <select id="Graduated" name="Graduated" class="span12">
-                                                    <option value="true">Yes</option>
-                                                    <option value="false">No</option>
-                                                </select>
-                                            </div>
+            <div id="school-content-@i">
+                <form class="form-horizontal school-form">
+                    <div class="row-fluid">
+                        <!--School info block-->
+                        <div class="span12 panel-body">
+                            <div class="row-fluid">
+                                <div class="span5">
+                                    <div class="form-group">
+                                        <label for="YearStart" class="control-label span3">Start Year</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span10" name="YearStart" id="YearStart" value="@sa.YearStart" />
                                         </div>
                                     </div>
-                                    <div class="span7">
-                                        <div class="form-group">
-                                            <label for="MajorValue" class="control-label span3">Major</label>
-                                            <div class="span4">
-                                                <!--TODO: will be select2, because you can add a non-existing major-->
-                                                <select id="MajorValue-@sa.SchoolsAttendedID" name="MajorValue" class="span10">
-                                                    @foreach (var m in ViewBag.majors)
+                                    <div class="form-group">
+                                        <label for="YearEnd" class="control-label span3">End Year</label>
+                                        <div class="span4">
+                                            <input type="text" class="form-control span10" name="YearEnd" id="YearEnd" value="@sa.YearEnd" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Graduated" class="control-label span3">Graduated?</label>
+                                        <div class="span2">
+                                            <select id="Graduated" name="Graduated" class="span12">
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span7">
+                                    <div class="form-group">
+                                        <label for="MajorValue" class="control-label span3">Major</label>
+                                        <div class="span4">
+                                            <!--TODO: will be select2, because you can add a non-existing major-->
+                                            <select id="MajorValue-@sa.SchoolsAttendedID" name="MajorValue" class="span10">
+                                                @foreach (var m in ViewBag.majors)
                                                     {
-                                                        <option value="@m.MajorValue">@m.MajorValue</option>
+                                                    <option value="@m.MajorValue">@m.MajorValue</option>
                                                     }
-                                                </select>
-                                            </div>
-                                            <label for="DegreeTypeValue" class="control-label span2">Degree</label>
-                                            <div class="span2">
-                                                <select id="DegreeTypeValue" name="DegreeTypeValue" class="span12">
-                                                    @foreach (var d in ViewBag.degreeTypes)
+                                            </select>
+                                        </div>
+                                        <label for="DegreeTypeValue" class="control-label span2">Degree</label>
+                                        <div class="span2">
+                                            <select id="DegreeTypeValue" name="DegreeTypeValue" class="span12">
+                                                @foreach (var d in ViewBag.degreeTypes)
                                                     {
-                                                        <option value="@d.DegreeTypeValue">@d.DegreeTypeValue</option>
+                                                    <option value="@d.DegreeTypeValue">@d.DegreeTypeValue</option>
                                                     }
-                                                </select>
-                                            </div>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <label for="Comments" class="control-label span2">Comments</label>
-                                <div class="span10">
-                                    <textarea name="Comments" id="Comments" class="span12" rows="3" style="resize:vertical" placeholder="Comments regarding school attendance">@sa.Comments</textarea>
-                                </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <label for="Comments" class="control-label span2">Comments</label>
+                            <div class="span10">
+                                <textarea name="Comments" id="Comments" class="span12" rows="3" style="resize:vertical" placeholder="Comments regarding school attendance">@sa.Comments</textarea>
                             </div>
                         </div>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <input type="hidden" id="school-name" value="@sa.School.SchoolValue" />
-                                <button type="button" class="btn-success pull-left btn-ignore generate-classes">Generate Classes Tab</button>
-                                <button type="button" class="btn-danger pull-left btn-ignore remove-school">Remove</button>
-                            </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <input type="hidden" id="school-name" value="@sa.School.SchoolValue" />
+                            <button type="button" class="btn-success pull-left btn-ignore generate-classes">Generate Classes Tab</button>
+                            <button type="button" class="btn-danger pull-left btn-ignore remove-school">Remove</button>
                         </div>
-                    </form>
-                </div> <!--End of first tab-->
+                    </div>
+                </form>
+            </div> <!--End of first tab-->
                 i++;
             }
             <div id="add-school">
@@ -317,7 +317,7 @@
                             <select id="SchoolValue" name="SchoolValue">
                                 @foreach (var s in ViewBag.schools)
                                 {
-                                    <option value="@s.SchoolValue">@s.SchoolValue</option>
+                                <option value="@s.SchoolValue">@s.SchoolValue</option>
                                 }
                             </select>
                         </div>
@@ -479,127 +479,127 @@
         </div>
         @foreach (var dh in ViewBag.dutyHistories)
         {
-            <div class="row-fluid">
-                <div class="span12 panel-body">
-                    <form class="form-horizontal" id="duty-history-form">
-                        <div class="form-group">
-                            <label for="Branch" class="control-label span2">Branch</label>
-                            <div class="span4">
-                                <select id="Branch" name="Branch" class="span10">
-                                    <option value="AF">Air Force</option>
-                                    <option value="Army">Army</option>
-                                    <option value="Navy">Navy</option>
-                                    <option value="USMC">USMC</option>
-                                </select>
-                            </div>
-                            <label for="NUCD" class="control-label span2">Prior NUC</label>
-                            <div class="span4">
-                                <select id="NUCD" name="NUC" class="span10">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>
-                            </div>
+        <div class="row-fluid">
+            <div class="span12 panel-body">
+                <form class="form-horizontal" id="duty-history-form">
+                    <div class="form-group">
+                        <label for="Branch" class="control-label span2">Branch</label>
+                        <div class="span4">
+                            <select id="Branch" name="Branch" class="span10">
+                                <option value="AF">Air Force</option>
+                                <option value="Army">Army</option>
+                                <option value="Navy">Navy</option>
+                                <option value="USMC">USMC</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label for="Rating" class="control-label span2">Rating</label>
-                            <div class="span4">
-                                <input type="text" class="form-control span10" name="Rating" id="Rating" value="@dh.Rating" />
-                            </div>
-                            <label for="Rank" class="control-label span2">Rank</label>
-                            <div class="span4">
-                                <input type="text" class="form-control span10" name="Rank" id="Rank" value="@dh.Rank" />
-                            </div>
+                        <label for="NUCD" class="control-label span2">Prior NUC</label>
+                        <div class="span4">
+                            <select id="NUCD" name="NUC" class="span10">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Rating" class="control-label span2">Rating</label>
+                        <div class="span4">
+                            <input type="text" class="form-control span10" name="Rating" id="Rating" value="@dh.Rating" />
+                        </div>
+                        <label for="Rank" class="control-label span2">Rank</label>
+                        <div class="span4">
+                            <input type="text" class="form-control span10" name="Rank" id="Rank" value="@dh.Rank" />
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="tabs" id="duty-station-tabs">
-                <ul>
-                    @foreach (var ds in dh.DutyStations)
-                    {
-                        <li><a href="#duty-station-content-1">Duty Station</a></li>
-                    }
-                    <li><a href="#add-duty-station"><i class="fa fa-plus"></i></a></li>
-                </ul>
+        </div>
+        <div class="tabs" id="duty-station-tabs">
+            <ul>
                 @foreach (var ds in dh.DutyStations)
+                    {
+                    <li><a href="#duty-station-content-1">Duty Station</a></li>
+                    }
+                <li><a href="#add-duty-station"><i class="fa fa-plus"></i></a></li>
+            </ul>
+            @foreach (var ds in dh.DutyStations)
                 {
-                    <div id="duty-station-content-@ds.DutyStationID">
-                        <form class="form-horizontal duty-station-form">
-                            <div class="row-fluid">
-                                <div class="span12 panel-body">
-                                    <div class="span6">
-                                        <div class="form-group">
-                                            <label for="GPA" class="control-label span2">GPA/Fitrep</label>
-                                            <div class="span10">
-                                                <input type="text" class="form-control span6" name="GPA" id="GPA" value="@ds.GPA" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Duties" class="control-label span2">Duties</label>
-                                            <div class="span10">
-                                                <textarea name="Duties" id="Duties" class="span12" rows="3" style="resize:vertical" placeholder="Describe duties">@ds.Duties</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Notes" class="control-label span2">Notes</label>
-                                            <div class="span10">
-                                                <textarea name="Notes" id="Notes" class="span12" rows="3" style="resize:vertical" placeholder="Notes about performance">@ds.Notes</textarea>
-                                            </div>
-                                        </div>
-                                    </div> <!--End of first column-->
-                                    <div class="span6">
-                                        <div class="form-group">
-                                            <label for="ReportDate" class="control-label span3">Report Date</label>
-                                            <div class="span9">
-                                                <input type="text" class="date form-control" name="ReportDate" id="ReportDate" value="@ds.ReportDate" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="DepartDate" class="control-label span3">Depart Date</label>
-                                            <div class="span9">
-                                                <input type="text" class="form-control date" name="DepartDate" id="DepartDate" value="@ds.DepartDate" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="RankOverallVal" class="control-label span3">Overall Rank</label>
-                                            <div class="span3">
-                                                <input type="text" class="form-control span10" name="RankOverallVal" id="RankOverallVal" value="@ds.RankOverallVal" />
-                                            </div>
-                                            <label for="RankOverallTot" class="control-label span1">of</label>
-                                            <div class="span3">
-                                                <input type="text" class="form-control span10" name="RankOverallTot" id="RankOverallTot" value="@ds.RankOverallTot" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="RankInRateVal" class="control-label span3">Rank In Rate</label>
-                                            <div class="span3">
-                                                <input type="text" class="form-control span10" name="RankInRateVal" id="RankInRateVal" value="@ds.RankInRateVal" />
-                                            </div>
-                                            <label for="RankInRateTot" class="control-label span1">of</label>
-                                            <div class="span3">
-                                                <input type="text" class="form-control span10" name="RankInRateTot" id="RankInRateTot" value="@ds.RankInRateTot" />
-                                            </div>
-                                        </div>
-                                    </div> <!--End of second column-->
+        <div id="duty-station-content-@ds.DutyStationID">
+            <form class="form-horizontal duty-station-form">
+                <div class="row-fluid">
+                    <div class="span12 panel-body">
+                        <div class="span6">
+                            <div class="form-group">
+                                <label for="GPA" class="control-label span2">GPA/Fitrep</label>
+                                <div class="span10">
+                                    <input type="text" class="form-control span6" name="GPA" id="GPA" value="@ds.GPA" />
                                 </div>
                             </div>
-                            <div class="row-fluid">
-                                <div class="span12">
-                                    <button type="button" class="btn-danger pull-left btn-ignore remove-duty-station">Remove</button>
+                            <div class="form-group">
+                                <label for="Duties" class="control-label span2">Duties</label>
+                                <div class="span10">
+                                    <textarea name="Duties" id="Duties" class="span12" rows="3" style="resize:vertical" placeholder="Describe duties">@ds.Duties</textarea>
                                 </div>
                             </div>
-                        </form>
-                    </div> <!--End of Duty Station Tabs-->
+                            <div class="form-group">
+                                <label for="Notes" class="control-label span2">Notes</label>
+                                <div class="span10">
+                                    <textarea name="Notes" id="Notes" class="span12" rows="3" style="resize:vertical" placeholder="Notes about performance">@ds.Notes</textarea>
+                                </div>
+                            </div>
+                        </div> <!--End of first column-->
+                        <div class="span6">
+                            <div class="form-group">
+                                <label for="ReportDate" class="control-label span3">Report Date</label>
+                                <div class="span9">
+                                    <input type="text" class="date form-control" name="ReportDate" id="ReportDate" value="@ds.ReportDate" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="DepartDate" class="control-label span3">Depart Date</label>
+                                <div class="span9">
+                                    <input type="text" class="form-control date" name="DepartDate" id="DepartDate" value="@ds.DepartDate" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="RankOverallVal" class="control-label span3">Overall Rank</label>
+                                <div class="span3">
+                                    <input type="text" class="form-control span10" name="RankOverallVal" id="RankOverallVal" value="@ds.RankOverallVal" />
+                                </div>
+                                <label for="RankOverallTot" class="control-label span1">of</label>
+                                <div class="span3">
+                                    <input type="text" class="form-control span10" name="RankOverallTot" id="RankOverallTot" value="@ds.RankOverallTot" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="RankInRateVal" class="control-label span3">Rank In Rate</label>
+                                <div class="span3">
+                                    <input type="text" class="form-control span10" name="RankInRateVal" id="RankInRateVal" value="@ds.RankInRateVal" />
+                                </div>
+                                <label for="RankInRateTot" class="control-label span1">of</label>
+                                <div class="span3">
+                                    <input type="text" class="form-control span10" name="RankInRateTot" id="RankInRateTot" value="@ds.RankInRateTot" />
+                                </div>
+                            </div>
+                        </div> <!--End of second column-->
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <button type="button" class="btn-danger pull-left btn-ignore remove-duty-station">Remove</button>
+                    </div>
+                </div>
+            </form>
+        </div> <!--End of Duty Station Tabs-->
                 }
 
-                <div id="add-duty-station">
-                    <form class="form-horizontal">
-                        <div class="form-group text-center">
-                            <button type="button" class="btn-success btn-ignore" id="add-duty-station-button">Add Duty Station</button>
-                        </div>
-                    </form>
-                </div> <!--End of add duty history tab-->
-            </div> <!--End of all tabs-->
+            <div id="add-duty-station">
+                <form class="form-horizontal">
+                    <div class="form-group text-center">
+                        <button type="button" class="btn-success btn-ignore" id="add-duty-station-button">Add Duty Station</button>
+                    </div>
+                </form>
+            </div> <!--End of add duty history tab-->
+        </div> <!--End of all tabs-->
         }
     </div>
 </div>
@@ -614,7 +614,7 @@
                 @{i = 1;}
                 @foreach (var w in ViewBag.waivers)
                 {
-                    <li><a href="#waiver-content-@i">Waiver</a></li>
+                <li><a href="#waiver-content-@i">Waiver</a></li>
                     i++;
                 }
                 <li><a href="#add-waiver"><i class="fa fa-plus"></i></a></li>
@@ -622,35 +622,35 @@
             @{i = 1;}
             @foreach (var w in ViewBag.waivers)
             {
-                <div id="waiver-content-@i">
-                    <form class="form-horizontal waiver-form">
-                        <div class="form-group">
-                            <label for="Type" class="control-label span2">Type</label>
-                            <div class="span3">
-                                <select class="form-control span12" name="Type" id="Type">
-                                    <option value="ACADEMIC" @if (w.Type == WaiverType.Academic.ToString()) { <text> selected </text>        }>Academic</option>
-                                    <option value="AGE" @if (w.Type == WaiverType.Age.ToString()) { <text> selected </text>        }>Age</option>
-                                    <option value="DRUG" @if (w.Type == WaiverType.Drug.ToString()) { <text> selected </text>        }>Drug</option>
-                                </select>
-                            </div>
-                            <label for="Date" class="control-label span2">Date</label>
-                            <div class="span3">
-                                <input class="form-control span12 date" type="text" name="Date" id="Date" value="@w.Date" />
-                            </div>
+            <div id="waiver-content-@i">
+                <form class="form-horizontal waiver-form">
+                    <div class="form-group">
+                        <label for="Type" class="control-label span2">Type</label>
+                        <div class="span3">
+                            <select class="form-control span12" name="Type" id="Type">
+                                <option value="ACADEMIC" @if (w.Type == WaiverType.Academic.ToString()) { <text> selected </text>         }>Academic</option>
+                                <option value="AGE" @if (w.Type == WaiverType.Age.ToString()) { <text> selected </text>         }>Age</option>
+                                <option value="DRUG" @if (w.Type == WaiverType.Drug.ToString()) { <text> selected </text>         }>Drug</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label for="Comments" class="control-label span2">Comments</label>
-                            <div class="span10">
-                                <textarea class="form-control span12" name="Comments" id="Comments">@w.Comments</textarea>
-                            </div>
+                        <label for="Date" class="control-label span2">Date</label>
+                        <div class="span3">
+                            <input class="form-control span12 date" type="text" name="Date" id="Date" value="@w.Date" />
                         </div>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <button type="button" class="btn-danger pull-left btn-ignore remove-waiver">Remove</button>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Comments" class="control-label span2">Comments</label>
+                        <div class="span10">
+                            <textarea class="form-control span12" name="Comments" id="Comments">@w.Comments</textarea>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <button type="button" class="btn-danger pull-left btn-ignore remove-waiver">Remove</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 i++;
             }
             <div id="add-waiver">
@@ -674,7 +674,7 @@ i++;
                 @{i = 1;}
                 @foreach (var s in ViewBag.screens)
                 {
-                    <li><a href="#screen-content-@i">Screen</a></li>
+                <li><a href="#screen-content-@i">Screen</a></li>
                     i++;
                 }
                 <li><a href="#add-screen"><i class="fa fa-plus"></i></a></li>
@@ -682,70 +682,70 @@ i++;
             @{i = 1;}
             @foreach (var s in ViewBag.screens)
             {
-                <div id="screen-content-@i">
-                    <form class="form-horizontal screen-form">
-                        <div class="form-group">
-                            <label for="Screener" class="control-label span2">Screener</label>
-                            <div class="span2">
-                                <input type="text" class="form-control span12" name="Screener" id="Screener" value="@s.Screener">
-                            </div>
-                            <label for="Location" class="control-label span2">Location</label>
-                            <div class="span2">
-                                <input type="text" class="form-control span12" name="Location" id="Location" value="@s.Location">
-                            </div>
-                            <label for="ScreenDate" class="control-label span2">Screen Date</label>
-                            <div class="span2">
-                                <input class="form-control span12 date" type="text" name="ScreenDate" id="ScreenDate" value="@s.ScreenDate" />
-                            </div>
+            <div id="screen-content-@i">
+                <form class="form-horizontal screen-form">
+                    <div class="form-group">
+                        <label for="Screener" class="control-label span2">Screener</label>
+                        <div class="span2">
+                            <input type="text" class="form-control span12" name="Screener" id="Screener" value="@s.Screener">
                         </div>
-                        <div class="form-group">
-                            <label for="NRStatus" class="control-label span2">NR</label>
-                            <div class="span2">
-                                <select class="form-control span12" name="NRStatus" id="NRStatus">
-                                    <option value="Blank" @if (s.NRStatus == ScreenStatus.Blank.ToString()) { <text> selected </text>       }>--None--</option>
-                                    <option value="Yes" @if (s.NRStatus == ScreenStatus.Yes.ToString()) { <text> selected </text>       }>Yes</option>
-                                    <option value="No" @if (s.NRStatus == ScreenStatus.No.ToString()) { <text> selected </text>       }>No</option>
-                                    <option value="Pending" @if (s.NRStatus == ScreenStatus.Pending.ToString()) { <text> selected </text>       }>Pending</option>
-                                    <option value="Forward" @if (s.NRStatus == ScreenStatus.Forward.ToString()) { <text> selected </text>       }>Forward</option>
-                                    <option value="Maybe" @if (s.NRStatus == ScreenStatus.Maybe.ToString()) { <text> selected </text>       }>Maybe</option>
-                                </select>
-                            </div>
-                            <label for="INSTStatus" class="control-label span2">INST</label>
-                            <div class="span2">
-                                <select class="form-control span12" name="INSTStatus" id="INSTStatus">
-                                    <option value="Blank" @if (s.INSTStatus == ScreenStatus.Blank.ToString()) { <text> selected </text>        }>--None--</option>
-                                    <option value="Yes" @if (s.INSTtatus == ScreenStatus.Yes.ToString()) { <text> selected </text>        }>Yes</option>
-                                    <option value="No" @if (s.INSTtatus == ScreenStatus.No.ToString()) { <text> selected </text>        }>No</option>
-                                    <option value="Pending" @if (s.INSTStatus == ScreenStatus.Pending.ToString()) { <text> selected </text>        }>Pending</option>
-                                    <option value="Forward" @if (s.INSTStatus == ScreenStatus.Forward.ToString()) { <text> selected </text>        }>Forward</option>
-                                    <option value="Maybe" @if (s.INSTStatus == ScreenStatus.Maybe.ToString()) { <text> selected </text>        }>Maybe</option>
-                                </select>
-                            </div>
-                            <label for="NPSStatus" class="control-label span2">NPS</label>
-                            <div class="span2">
-                                <select class="form-control span12" name="NPSStatus" id="NPSStatus">
-                                    <option value="Blank" @if (s.NPSStatus == ScreenStatus.Blank.ToString()) { <text> selected </text>        }>--None--</option>
-                                    <option value="Yes" @if (s.NPSStatus == ScreenStatus.Yes.ToString()) { <text> selected </text>        }>Yes</option>
-                                    <option value="No" @if (s.NPSStatus == ScreenStatus.No.ToString()) { <text> selected </text>        }>No</option>
-                                    <option value="Pending" @if (s.NPSStatus == ScreenStatus.Pending.ToString()) { <text> selected </text>        }>Pending</option>
-                                    <option value="Forward" @if (s.NPSStatus == ScreenStatus.Forward.ToString()) { <text> selected </text>        }>Forward</option>
-                                    <option value="Maybe" @if (s.NPSStatus == ScreenStatus.Maybe.ToString()) { <text> selected </text>        }>Maybe</option>
-                                </select>
-                            </div>
+                        <label for="Location" class="control-label span2">Location</label>
+                        <div class="span2">
+                            <input type="text" class="form-control span12" name="Location" id="Location" value="@s.Location">
                         </div>
-                        <div class="form-group">
-                            <label for="Notes" class="control-label span2">Notes</label>
-                            <div class="span10">
-                                <textarea class="form-control span12" name="Notes" id="Notes">@s.Notes</textarea>
-                            </div>
+                        <label for="ScreenDate" class="control-label span2">Screen Date</label>
+                        <div class="span2">
+                            <input class="form-control span12 date" type="text" name="ScreenDate" id="ScreenDate" value="@s.ScreenDate" />
                         </div>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <button type="button" class="btn-danger pull-left btn-ignore remove-screen">Remove</button>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="NRStatus" class="control-label span2">NR</label>
+                        <div class="span2">
+                            <select class="form-control span12" name="NRStatus" id="NRStatus">
+                                <option value="Blank" @if (s.NRStatus == ScreenStatus.Blank.ToString()) { <text> selected </text>        }>--None--</option>
+                                <option value="Yes" @if (s.NRStatus == ScreenStatus.Yes.ToString()) { <text> selected </text>        }>Yes</option>
+                                <option value="No" @if (s.NRStatus == ScreenStatus.No.ToString()) { <text> selected </text>        }>No</option>
+                                <option value="Pending" @if (s.NRStatus == ScreenStatus.Pending.ToString()) { <text> selected </text>        }>Pending</option>
+                                <option value="Forward" @if (s.NRStatus == ScreenStatus.Forward.ToString()) { <text> selected </text>        }>Forward</option>
+                                <option value="Maybe" @if (s.NRStatus == ScreenStatus.Maybe.ToString()) { <text> selected </text>        }>Maybe</option>
+                            </select>
                         </div>
-                    </form>
-                </div>
+                        <label for="INSTStatus" class="control-label span2">INST</label>
+                        <div class="span2">
+                            <select class="form-control span12" name="INSTStatus" id="INSTStatus">
+                                <option value="Blank" @if (s.INSTStatus == ScreenStatus.Blank.ToString()) { <text> selected </text>         }>--None--</option>
+                                <option value="Yes" @if (s.INSTtatus == ScreenStatus.Yes.ToString()) { <text> selected </text>         }>Yes</option>
+                                <option value="No" @if (s.INSTtatus == ScreenStatus.No.ToString()) { <text> selected </text>         }>No</option>
+                                <option value="Pending" @if (s.INSTStatus == ScreenStatus.Pending.ToString()) { <text> selected </text>         }>Pending</option>
+                                <option value="Forward" @if (s.INSTStatus == ScreenStatus.Forward.ToString()) { <text> selected </text>         }>Forward</option>
+                                <option value="Maybe" @if (s.INSTStatus == ScreenStatus.Maybe.ToString()) { <text> selected </text>         }>Maybe</option>
+                            </select>
+                        </div>
+                        <label for="NPSStatus" class="control-label span2">NPS</label>
+                        <div class="span2">
+                            <select class="form-control span12" name="NPSStatus" id="NPSStatus">
+                                <option value="Blank" @if (s.NPSStatus == ScreenStatus.Blank.ToString()) { <text> selected </text>         }>--None--</option>
+                                <option value="Yes" @if (s.NPSStatus == ScreenStatus.Yes.ToString()) { <text> selected </text>         }>Yes</option>
+                                <option value="No" @if (s.NPSStatus == ScreenStatus.No.ToString()) { <text> selected </text>         }>No</option>
+                                <option value="Pending" @if (s.NPSStatus == ScreenStatus.Pending.ToString()) { <text> selected </text>         }>Pending</option>
+                                <option value="Forward" @if (s.NPSStatus == ScreenStatus.Forward.ToString()) { <text> selected </text>         }>Forward</option>
+                                <option value="Maybe" @if (s.NPSStatus == ScreenStatus.Maybe.ToString()) { <text> selected </text>         }>Maybe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Notes" class="control-label span2">Notes</label>
+                        <div class="span10">
+                            <textarea class="form-control span12" name="Notes" id="Notes">@s.Notes</textarea>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <button type="button" class="btn-danger pull-left btn-ignore remove-screen">Remove</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 i++;
             }
             <div id="add-screen">
@@ -769,7 +769,7 @@ i++;
                 @{i = 1;}
                 @foreach (var rd in ViewBag.RDs)
                 {
-                    <li><a href="#rd-content-@i">RD</a></li>
+                <li><a href="#rd-content-@i">RD</a></li>
                     i++;
                 }
                 <li><a href="#add-rd"><i class="fa fa-plus"></i></a></li>
@@ -777,34 +777,34 @@ i++;
             @{i = 1;}
             @foreach (var rd in ViewBag.RDs)
             {
-                <div id="rd-content-@i">
-                    <form class="form-horizontal rd-form">
-                        <div class="form-group">
-                            <label for="Type" class="control-label span2">Type</label>
-                            <div class="span3">
-                                <select class="form-control span12" name="Type" id="Type">
-                                    <option value="DEVOL" @if (rd.Type == RDType.DEVOL.ToString()) { <text> selected </text>   }>DEVOL</option>
-                                    <option value="RECLAMA" @if (rd.Type == RDType.RECLAMA.ToString()) { <text> selected </text>  }>RECLAMA</option>
-                                </select>
-                            </div>
-                            <label for="Date" class="control-label span2">Date</label>
-                            <div class="span3">
-                                <input class="date form-control span12" type="text" name="Date" id="Date" value="@rd.Date" />
-                            </div>
+            <div id="rd-content-@i">
+                <form class="form-horizontal rd-form">
+                    <div class="form-group">
+                        <label for="Type" class="control-label span2">Type</label>
+                        <div class="span3">
+                            <select class="form-control span12" name="Type" id="Type">
+                                <option value="DEVOL" @if (rd.Type == RDType.DEVOL.ToString()) { <text> selected </text>    }>DEVOL</option>
+                                <option value="RECLAMA" @if (rd.Type == RDType.RECLAMA.ToString()) { <text> selected </text>   }>RECLAMA</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label for="Reason" class="control-label span2">Reason</label>
-                            <div class="span10">
-                                <textarea class="form-control span12" name="Reason" id="Reason">@rd.Reason</textarea>
-                            </div>
+                        <label for="Date" class="control-label span2">Date</label>
+                        <div class="span3">
+                            <input class="date form-control span12" type="text" name="Date" id="Date" value="@rd.Date" />
                         </div>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <button type="button" class="btn-danger pull-left btn-ignore remove-rd">Remove</button>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Reason" class="control-label span2">Reason</label>
+                        <div class="span10">
+                            <textarea class="form-control span12" name="Reason" id="Reason">@rd.Reason</textarea>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <button type="button" class="btn-danger pull-left btn-ignore remove-rd">Remove</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 i++;
             }
             <div id="add-rd">
@@ -852,7 +852,7 @@ i++;
                     }
                 }
             }
-            
+
             $("#dialog-confirm").dialog({
                 title: title,
                 modal: true,
@@ -1121,12 +1121,26 @@ i++;
             /** Remove Functionalities **/
 
             $(document).on("click", ".remove-school", function (e) {
-                // Ask for confirmation
-                showDialog("Remove School?", "Are you sure you want to remove this school entry?", false, function () {
+                var btn = $(this);
+                var f = function () {
                     console.log("remove school");
-                    // Remove the school tab and content
-                    // Remove class tab and content
-                });
+                    var schoolName = $(btn).prev().prev().val();
+                    //Remove school from schoolList
+                    schoolList.splice(schoolList.indexOf(schoolName), 1);
+                    var links = $("a:contains(" + schoolName + ")").filter(function () { return $(this).text() == schoolName });
+                    //Delete link and associated content in links
+                    //Accounts for class tab
+                    for (var i = 0; i < links.length; i++) {
+                        var link = links[i];
+                        var contentId = $(link).attr("href");
+                        //Remove link
+                        $(link).remove();
+                        //Remove content
+                        $(contentId).remove();
+                    }
+                    numSchools--;
+                }
+                showDialog("Remove School?", "Are you sure you want to remove this school (and class info) entry?", false, f);
             });
 
             $(document).on("click", ".remove-class", function (e) {
@@ -1140,30 +1154,66 @@ i++;
 
             $(document).on("click", ".remove-duty-station", function (e) {
                 // Remove duty station tab and content
-                showDialog("Remove Duty Station?", "Are you sure you want to remove this duty station entry?", false, function () {
+                var btn = $(this);
+                var f = function () {
                     console.log("remove duty station");
-                });
+                    var contentDiv = $(btn).parent().parent().parent().parent();
+                    var num = $(contentDiv).attr("id").slice(-1);
+                    //Remove content
+                    $(contentDiv).remove();
+                    //Remove tab
+                    $("a[href='#duty-station-content-" + num + "']").parent().remove();
+                    numDutyStations--;
+                }
+                showDialog("Remove Duty Station?", "Are you sure you want to remove this duty station entry?", false, f);
             });
 
             $(document).on("click", ".remove-waiver", function (e) {
                 // Remove waiver tab and content
-                showDialog("Remove Waiver?", "Are you sure you want to remove this waiver entry?", false, function () {
+                var btn = $(this);
+                var f = function () {
                     console.log("remove waiver");
-                });
+                    var contentDiv = $(btn).parent().parent().parent().parent();
+                    var num = $(contentDiv).attr("id").slice(-1);
+                    //Remove content
+                    $(contentDiv).remove();
+                    //Remove tab
+                    $("a[href='#waiver-content-" + num + "']").parent().remove();
+                    numWaivers--;
+                }
+                showDialog("Remove Waiver?", "Are you sure you want to remove this waiver entry?", false, f);
             });
 
             $(document).on("click", ".remove-screen", function (e) {
                 // Remove screen tab and content
-                showDialog("Remove Screen?", "Are you sure you want to remove this screen entry?", false, function () {
+                var btn = $(this);
+                var f = function () {
                     console.log("remove screen");
-                });
+                    var contentDiv = $(btn).parent().parent().parent().parent();
+                    var num = $(contentDiv).attr("id").slice(-1);
+                    //Remove content
+                    $(contentDiv).remove();
+                    //Remove tab
+                    $("a[href='#screen-content-" + num + "']").parent().remove();
+                    numScreens--;
+                };
+                showDialog("Remove Screen?", "Are you sure you want to remove this screen entry?", false, f);
             });
 
             $(document).on("click", ".remove-rd", function (e) {
                 // Remove rd tab and content
-                showDialog("Remove RD?", "Are you sure you want to remove this RD entry?", false, function () {
-                    console.log("remove RD");
-                });
+                var btn = $(this);
+                var f = function () {
+                    console.log("remove rd");
+                    var contentDiv = $(btn).parent().parent().parent().parent();
+                    var num = $(contentDiv).attr("id").slice(-1);
+                    //Remove content
+                    $(contentDiv).remove();
+                    //Remove tab
+                    $("a[href='#rd-content-" + num + "']").parent().remove();
+                    numRDs--;
+                }
+                showDialog("Remove RD?", "Are you sure you want to remove this RD entry?", false, f);
             });
 
             // Create Candidate button click

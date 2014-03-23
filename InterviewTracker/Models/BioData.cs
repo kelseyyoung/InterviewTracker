@@ -26,7 +26,6 @@ namespace InterviewTracker.Models
         public string MName { get; set; } // Middle Name
         public string Suffix { get; set; } // Suffix (optional)
         [Required]
-        [DataType(DataType.DateTime)]
         public DateTime? DOB { get; set; } // Date of Birth
         [Required]
         public string Sex { get; set; } // Sex (Options: M, F)
