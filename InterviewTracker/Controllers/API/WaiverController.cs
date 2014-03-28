@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Waiver
+        [ActionName("GetAll")]
         public IEnumerable<Waiver> GetWaivers()
         {
             var waiver = db.Waiver.Include(w => w.BioData);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/Waiver/5
+        [ActionName("Get")]
         public Waiver GetWaiver(int id)
         {
             Waiver waiver = db.Waiver.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Waiver/5
+        [ActionName("Put")]
         public HttpResponseMessage PutWaiver(int id, Waiver waiver)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Waiver
+        [ActionName("Post")]
         public HttpResponseMessage PostWaiver(Waiver waiver)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Waiver/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteWaiver(int id)
         {
             Waiver waiver = db.Waiver.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, waiver);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Waiver> GetBy()
+        {
+            return db.Waiver.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

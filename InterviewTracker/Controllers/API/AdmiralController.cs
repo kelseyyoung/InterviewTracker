@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Admiral
+        [ActionName("GetAll")]
         public IEnumerable<Admiral> GetAdmirals()
         {
             var admiral = db.Admiral.Include(a => a.BioData).Include(a => a.Interview);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/Admiral/5
+        [ActionName("Get")]
         public Admiral GetAdmiral(int id)
         {
             Admiral admiral = db.Admiral.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Admiral/5
+        [ActionName("Put")]
         public HttpResponseMessage PutAdmiral(int id, Admiral admiral)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Admiral
+        [ActionName("Post")]
         public HttpResponseMessage PostAdmiral(Admiral admiral)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Admiral/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteAdmiral(int id)
         {
             Admiral admiral = db.Admiral.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, admiral);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Admiral> GetBy()
+        {
+            return db.Admiral.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

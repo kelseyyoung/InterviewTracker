@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Degree
+        [ActionName("GetAll")]
         public IEnumerable<Degree> GetDegrees()
         {
             var degree = db.Degree.Include(d => d.SchoolsAttended).Include(d => d.Major).Include(d => d.DegreeType);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/Degree/5
+        [ActionName("Get")]
         public Degree GetDegree(int id)
         {
             Degree degree = db.Degree.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Degree/5
+        [ActionName("Put")]
         public HttpResponseMessage PutDegree(int id, Degree degree)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Degree
+        [ActionName("Post")]
         public HttpResponseMessage PostDegree(Degree degree)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Degree/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteDegree(int id)
         {
             Degree degree = db.Degree.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, degree);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Degree> GetBy()
+        {
+            return db.Degree.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

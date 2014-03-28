@@ -1,6 +1,7 @@
 ﻿//Counters for tabs
 var numSchools = 0;
 var schoolCounter = 0;
+var classCounter = 0;
 var numDutyStations = 0;
 var dutyStationCounter = 0;
 var numWaivers = 0;
@@ -49,7 +50,8 @@ $(document).ready(function () {
     /** Add functionalities **/
 
     $("#add-school-button").click(function () {
-        var schoolName = $("#SchoolValue").val(); // Get school name from dropdown
+        var schoolID = $("#SchoolValue").val(); // Get school ID from dropdown
+        var schoolName = $("#SchoolValue option[value='" + schoolID + "']").text(); // Get school name from dropdown
         if (schoolList.indexOf(schoolName) != -1) {
             showDialog("School Exists", "This school has already been added", true, function () { });
             return;
@@ -65,9 +67,19 @@ $(document).ready(function () {
         var content = $(schoolContentClone).clone();
         $(content).find("input").addClass("ui-corner-all");
         $(content).find("textarea").addClass("ui-corner-all");
+        $(content).find(".date").attr("id", "")
+            .removeClass("hasDatepicker")
+            .removeData("datepicker")
+            .unbind()
+            .datepicker({
+                changeYear: true,
+                yearRange: "-90:+0"
+            });
         $(content).attr("id", "school-content-" + schoolCounter);
         // Put school name in hidden input
         $(content).find("#school-name").val(schoolName);
+        // Put school id in #SchoolID
+        $(content).find("#SchoolID").val(schoolID);
         $("#school-tabs > ul").prepend(li);
         $("#school-tabs > ul").after(content);
         // Re-init tabs
@@ -83,6 +95,7 @@ $(document).ready(function () {
             return;
         }
         var schoolName = $(this).prev().val();
+        classCounter++;
         var content;
         // Use clones
         var li = $(classTabClone).clone();
@@ -90,9 +103,9 @@ $(document).ready(function () {
         $(content).find("input").addClass("ui-corner-all");
         $(content).find("textarea").addClass("ui-corner-all");
         // Set tab to school name
-        $(li).children().first().attr("href", "#class-content-" + schoolCounter);
+        $(li).children().first().attr("href", "#class-content-" + classCounter);
         $(li).children().first().html(schoolName);
-        $(content).attr("id", "class-content-" + schoolCounter);
+        $(content).attr("id", "class-content-" + classCounter);
         $("#class-tabs > ul").prepend(li);
         $("#class-tabs > ul").after(content);
         // Re-init tabs
@@ -108,6 +121,11 @@ $(document).ready(function () {
             $(yearTab).find("a").attr("href", "#year-content-" + (i + 1));
             // Set year content id
             $(yearContent).attr("id", "year-content-" + (i + 1));
+            $(yearContent).find("input").addClass("ui-corner-all");
+            $(yearContent).find("textarea").addClass("ui-corner-all");
+            // Set YearTaken and Year of Record
+            $(yearContent).find("#YearTaken").val((i + 1));
+            $(yearContent).find("#YearOfRecord").val((i + 1));
             $(content).find("ul").append(yearTab); // Make consecutive downward
             $(content).find("ul").after(yearContent);
         }
@@ -128,17 +146,17 @@ $(document).ready(function () {
             showDialog("Empty Fields", "Please enter values in all of the fields", true, function () { });
             return;
         }
-        tech = tech == "true" ? "Yes" : "No";
+        var techDisplay = tech == "true" ? "Yes" : "No";
         // Add to table
         $(table).find("tbody").append("" +
-        "<tr>" +
-        "<td>" + subject + "</td>" +
-        "<td>" + code + "</td>" +
-        "<td>" + name + "</td>" +
-        "<td>" + grade + "</td>" +
-        "<td>" + tech + "</td>" +
+        "<tr><form class='classes-form'>" +
+        "<td>" + subject + "<input type='hidden' name='Subject' value='" + subject + "'></td>" +
+        "<td>" + code + "<input type='hidden' name='Code' value='" + code + "'></td>" +
+        "<td>" + name + "<input type='hidden' name='Name' value='" + name + "'></td>" +
+        "<td>" + grade + "<input type='hidden' name='Grade' value='" + grade + "'></td>" +
+        "<td>" + techDisplay + "<input type='hidden' name='Technical' value='" + tech + "'></td>" +
         "<td class='text-center'><button class='btn-ignore btn-danger remove-class' type='button'>Remove</button></td>" +
-        "</tr>");
+        "</form></tr>");
         // Clear out fields
         $(this).parent().parent().find("#Name").val("");
         $(this).parent().parent().find("#Subject").val("");

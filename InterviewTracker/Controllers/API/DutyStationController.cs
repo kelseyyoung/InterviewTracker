@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/DutyStation
+        [ActionName("GetAll")]
         public IEnumerable<DutyStation> GetDutyStations()
         {
             var dutystation = db.DutyStation.Include(d => d.DutyHistory);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/DutyStation/5
+        [ActionName("Get")]
         public DutyStation GetDutyStation(int id)
         {
             DutyStation dutystation = db.DutyStation.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/DutyStation/5
+        [ActionName("Put")]
         public HttpResponseMessage PutDutyStation(int id, DutyStation dutystation)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/DutyStation
+        [ActionName("Post")]
         public HttpResponseMessage PostDutyStation(DutyStation dutystation)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/DutyStation/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteDutyStation(int id)
         {
             DutyStation dutystation = db.DutyStation.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, dutyStation);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<DutyStation> GetBy()
+        {
+            return db.DutyStation.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

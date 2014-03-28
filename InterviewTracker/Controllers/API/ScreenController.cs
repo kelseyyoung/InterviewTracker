@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Screen
+        [ActionName("GetAll")]
         public IEnumerable<Screen> GetScreens()
         {
             var screen = db.Screen.Include(s => s.BioData);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/Screen/5
+        [ActionName("Get")]
         public Screen GetScreen(int id)
         {
             Screen screen = db.Screen.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Screen/5
+        [ActionName("Put")]
         public HttpResponseMessage PutScreen(int id, Screen screen)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Screen
+        [ActionName("Post")]
         public HttpResponseMessage PostScreen(Screen screen)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Screen/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteScreen(int id)
         {
             Screen screen = db.Screen.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, screen);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Screen> GetBy()
+        {
+            return db.Screen.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

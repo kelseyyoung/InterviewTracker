@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Ethnicity
+        [ActionName("GetAll")]
         public IEnumerable<Ethnicity> GetEthnicities()
         {
             return db.Ethnicity.AsEnumerable();
         }
 
         // GET api/Ethnicity/5
+        [ActionName("Get")]
         public Ethnicity GetEthnicity(int id)
         {
             Ethnicity ethnicity = db.Ethnicity.Find(id);
@@ -36,6 +38,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Ethnicity/5
+        [ActionName("Put")]
         public HttpResponseMessage PutEthnicity(int id, Ethnicity ethnicity)
         {
             if (!ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Ethnicity
+        [ActionName("Post")]
         public HttpResponseMessage PostEthnicity(Ethnicity ethnicity)
         {
             if (ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Ethnicity/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteEthnicity(int id)
         {
             Ethnicity ethnicity = db.Ethnicity.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, ethnicity);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Ethnicity> GetBy()
+        {
+            return db.Ethnicity.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

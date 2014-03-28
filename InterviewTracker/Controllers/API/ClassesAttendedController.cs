@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/ClassesAttended
+        [ActionName("GetAll")]
         public IEnumerable<ClassesAttended> GetClassesAttendeds()
         {
             var classesattended = db.ClassesAttended.Include(c => c.SchoolsAttended).Include(c => c.BioData).Include(c => c.Classes);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/ClassesAttended/5
+        [ActionName("Get")]
         public ClassesAttended GetClassesAttended(int id)
         {
             ClassesAttended classesattended = db.ClassesAttended.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/ClassesAttended/5
+        [ActionName("Put")]
         public HttpResponseMessage PutClassesAttended(int id, ClassesAttended classesattended)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/ClassesAttended
+        [ActionName("Post")]
         public HttpResponseMessage PostClassesAttended(ClassesAttended classesattended)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/ClassesAttended/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteClassesAttended(int id)
         {
             ClassesAttended classesattended = db.ClassesAttended.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, classesAttended);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<ClassesAttended> GetBy()
+        {
+            return db.ClassesAttended.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

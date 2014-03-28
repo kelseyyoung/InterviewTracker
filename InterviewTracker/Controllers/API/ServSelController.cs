@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/ServSel
+        [ActionName("GetAll")]
         public IEnumerable<ServSel> GetServSels()
         {
             return db.ServSel.AsEnumerable();
         }
 
         // GET api/ServSel/5
+        [ActionName("Get")]
         public ServSel GetServSel(int id)
         {
             ServSel servsel = db.ServSel.Find(id);
@@ -36,6 +38,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/ServSel/5
+        [ActionName("Put")]
         public HttpResponseMessage PutServSel(int id, ServSel servsel)
         {
             if (!ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/ServSel
+        [ActionName("Post")]
         public HttpResponseMessage PostServSel(ServSel servsel)
         {
             if (ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/ServSel/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteServSel(int id)
         {
             ServSel servsel = db.ServSel.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, servSel);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<ServSel> GetBy()
+        {
+            return db.ServSel.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

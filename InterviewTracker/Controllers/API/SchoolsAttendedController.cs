@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/SchoolsAttended
+        [ActionName("GetAll")]
         public IEnumerable<SchoolsAttended> GetSchoolsAttendeds()
         {
             var schoolsattended = db.SchoolsAttended.Include(s => s.BioData).Include(s => s.School);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/SchoolsAttended/5
+        [ActionName("Get")]
         public SchoolsAttended GetSchoolsAttended(int id)
         {
             SchoolsAttended schoolsattended = db.SchoolsAttended.Find(id);
@@ -37,6 +39,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/SchoolsAttended/5
+        [ActionName("Put")]
         public HttpResponseMessage PutSchoolsAttended(int id, SchoolsAttended schoolsattended)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/SchoolsAttended
+        [ActionName("Post")]
         public HttpResponseMessage PostSchoolsAttended(SchoolsAttended schoolsattended)
         {
             if (ModelState.IsValid)
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/SchoolsAttended/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteSchoolsAttended(int id)
         {
             SchoolsAttended schoolsattended = db.SchoolsAttended.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, schoolsAttended);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<SchoolsAttended> GetBy()
+        {
+            return db.SchoolsAttended.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

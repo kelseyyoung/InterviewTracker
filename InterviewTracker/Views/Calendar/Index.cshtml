@@ -54,23 +54,28 @@
                 </form>
                 <p class="text-center">
                     <button type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
-                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i> Cancel</button>
+                    <button type="button" class="btn-ignore btn-danger" id="cancelInterview"><i class="fa fa-times-circle"></i> Cancel</button>
                 </p>
             </div>
         </div>
         <!-- Interview information panel -->
-        <div class="panel panel-primary">
+        <div class="panel panel-primary hide" id="interview-info">
             <div class="panel-heading">
                 <h4 class="panel-title">Interview Info</h4>
             </div>
             <div class="panel-body">
-                <b>Date:</b> July 8th, 2014<br />
-                <b>Time:</b> 15:00<br />
-                <b>Location:</b> Room 256<br />
+                <b>Date: </b><span id="interview-info-date"></span><br />
+                <b>Time: </b><span id="interview-info-time"></span><br />
+                <b>Location: </b><span id="interview-info-location"></span><br />
+                <b>Interviewers: </b><span id="interview-info-interviewers"></span><br />
+                <b>Candidates: </b><span id="interview-info-candidates"></span><br />
                 <p class="text-center">
                     <button type="button"><i class="fa fa-edit"></i> Edit</button>
                     <a type="button" class="button" href="@Url.Action("Comments", "Interviews")"><i class="fa fa-comment"></i> Comments</a>
                     <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times"></i> Delete</button>
+                </p>
+                <p class="text-center">
+                    <button type="button" id="hide-interview-info" class="btn-ignore btn-danger">Close Info</button>
                 </p>
             </div>
         </div>
@@ -80,6 +85,28 @@
 @section AddToScripts {
     <script type="text/javascript">
         $(document).ready(function () {
+
+            /*
+            // Sample for odata
+            var obj = {
+                "$filter": "Date gt datetime'2014-05-01' and Date lt datetime'2014-05-31'"
+            };
+            console.log($.param(obj));
+            $.ajax({
+                url: "http://localhost:50741/api/Interview/GetBy?" + $.param(obj),
+                type: "Get",
+                success: function (data) {
+                    console.log("success");
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log("error");
+                    console.log(data);
+                    console.log(data.responseText);
+                }
+            });
+            */
+
             $("#calendar").fullCalendar({
                 header: {
                     left: "prev,next today",
@@ -95,11 +122,71 @@
                 },
                 selectable: true,
                 eventColor: "#17599D",
-
+                viewRender: function(view, element) {
+                    var start = view.start;
+                    var end = view.end;
+                    console.log(start.toISOString());
+                    console.log(end.toISOString());
+                    //Remove all events
+                    $("#calendar").fullCalendar("removeEvents");
+                    //Fetch events from API
+                    var obj = {
+                        "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
+                            end.toISOString() + "'"
+                    };
+                    console.log($.param(obj));
+                    $.ajax({
+                        url: "http://localhost:50741/api/Interview/GetBy?" + $.param(obj),
+                        type: "Get",
+                        success: function (data) {
+                            console.log("success");
+                            for (var i = 0; i < data.length; i++) {
+                                var interview = data[i];
+                                console.log(interview.StartTime);
+                                console.log(interview.EndTime);
+                                var event = {
+                                    id: interview.InterviewID,
+                                    //TODO: change this title to something else? or to icon?
+                                    title: "Interview",
+                                    allDay: false,
+                                    start: interview.StartTime,
+                                    end: interview.EndTime
+                                };
+                                $("#calendar").fullCalendar("renderEvent", event);
+                            }
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                            console.log(data.responseText);
+                        }
+                    });
+                },
                 dayClick: function (date, allDay, jsEvent, view) {
                     var myDate = $("#calendar").fullCalendar('getDate');
                     //alert("The current date of the calendar is " + myDate);
                     $("#scheduledDate").datepicker("setDate", date);
+                },
+                eventClick: function (event, jsEvent, view) {
+                    var id = event.id;
+                    console.log(id);
+                    // Get interview from API
+                    $.ajax({
+                        url: "http://localhost:50741/api/Interview/Get/" + id,
+                        type: "Get",
+                        success: function (data) {
+                            console.log("success");
+                            // Display information in sidebar
+
+                            // Show sidebar at end
+                            $("#interview-info").removeClass("hide");
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                            console.log(data.responseText);
+                        }
+                    });
                 }
 
             });
@@ -117,8 +204,8 @@
                 textColor: "#000000"
             };
 
-            $("#calendar").fullCalendar("renderEvent", sampleEvent, true);
-            $("#calendar").fullCalendar("renderEvent", sampleEvent2, true);
+            //$("#calendar").fullCalendar("renderEvent", sampleEvent, true);
+            //$("#calendar").fullCalendar("renderEvent", sampleEvent2, true);
 
             $("#createInterview").click(function () {
                 $("#showCreate").slideToggle();
@@ -131,52 +218,52 @@
                 $("#endTime").val('');
             });
 
-            $(function () {
-                $("#scheduledDate").datepicker();
+            $("#hide-interview-info").click(function () {
+                $("#interview-info").addClass("hide");
             });
 
-            $(function () {
-                $("#candidate").select2(
-                    {
-                        minimumInputLength: 3,
-                        placeholder: 'Enter name',
-                        ajax: {
-                            url: "http://www.weighttraining.com/sm/search",
-                            dataType: 'jsonp',
-                            quietMillis: 100,
-                            data: function (term, page) {
-                                return {
-                                    types: ["exercise"],
-                                    limit: -1,
-                                    term: term
-                                };
-                            },
-                            results: function (data, page) {
-                                return { results: data.results.exercise }
-                            }
+            $("#scheduledDate").datepicker();
+
+            /*
+            $("#candidate").select2(
+                {
+                    minimumInputLength: 3,
+                    placeholder: 'Enter name',
+                    ajax: {
+                        url: "http://www.weighttraining.com/sm/search",
+                        dataType: 'jsonp',
+                        quietMillis: 100,
+                        data: function (term, page) {
+                            return {
+                                types: ["exercise"],
+                                limit: -1,
+                                term: term
+                            };
                         },
-                        formatResult: function (exercise) {
-                            return "<div class='select2-user-result'>" + exercise.term + "</div>";
-                        },
-                        formatSelection: function (exercise) {
-                            return exercise.term;
-                        },
-                        initSelection: function (element, callback) {
-                            var elementText = $(element).attr('data-init-text');
-                            callback({ "term": elementText });
+                        results: function (data, page) {
+                            return { results: data.results.exercise }
                         }
-                    });
-            });
+                    },
+                    formatResult: function (exercise) {
+                        return "<div class='select2-user-result'>" + exercise.term + "</div>";
+                    },
+                    formatSelection: function (exercise) {
+                        return exercise.term;
+                    },
+                    initSelection: function (element, callback) {
+                        var elementText = $(element).attr('data-init-text');
+                        callback({ "term": elementText });
+                    }
+                });
 
-            $(function () {
-                $("#interviewer").select2(
-                    {
-                        placeholder: 'Enter name',
-                        minimumInputLength: 1,
-                        allowClear: true,
-                        quietMillis: 100
-                    });
-            });
+            $("#interviewer").select2(
+                {
+                    placeholder: 'Enter name',
+                    minimumInputLength: 1,
+                    allowClear: true,
+                    quietMillis: 100
+                });
+                */
 
         });
     </script>

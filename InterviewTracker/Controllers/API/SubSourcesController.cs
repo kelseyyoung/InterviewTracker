@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/SubSources
+        [ActionName("GetAll")]
         public IEnumerable<SubSources> GetSubSources()
         {
             return db.SubSources.AsEnumerable();
         }
 
         // GET api/SubSources/5
+        [ActionName("Get")]
         public SubSources GetSubSources(int id)
         {
             SubSources subsources = db.SubSources.Find(id);
@@ -36,6 +38,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/SubSources/5
+        [ActionName("Put")]
         public HttpResponseMessage PutSubSources(int id, SubSources subsources)
         {
             if (!ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/SubSources
+        [ActionName("Post")]
         public HttpResponseMessage PostSubSources(SubSources subsources)
         {
             if (ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/SubSources/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteSubSources(int id)
         {
             SubSources subsources = db.SubSources.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, subsources);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<SubSources> GetBy()
+        {
+            return db.SubSources.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/DegreeType
+        [ActionName("GetAll")]
         public IEnumerable<DegreeType> GetDegreeTypes()
         {
             return db.DegreeType.AsEnumerable();
         }
 
         // GET api/DegreeType/5
+        [ActionName("Get")]
         public DegreeType GetDegreeType(int id)
         {
             DegreeType degreetype = db.DegreeType.Find(id);
@@ -36,6 +38,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/DegreeType/5
+        [ActionName("Put")]
         public HttpResponseMessage PutDegreeType(int id, DegreeType degreetype)
         {
             if (!ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/DegreeType
+        [ActionName("Post")]
         public HttpResponseMessage PostDegreeType(DegreeType degreetype)
         {
             if (ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/DegreeType/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteDegreeType(int id)
         {
             DegreeType degreetype = db.DegreeType.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, degreeType);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<DegreeType> GetBy()
+        {
+            return db.DegreeType.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

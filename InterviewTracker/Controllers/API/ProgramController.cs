@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Program
+        [ActionName("GetAll")]
         public IEnumerable<Program> GetPrograms()
         {
             return db.Program.AsEnumerable();
         }
 
         // GET api/Program/5
+        [ActionName("Get")]
         public Program GetProgram(int id)
         {
             Program program = db.Program.Find(id);
@@ -36,6 +38,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Program/5
+        [ActionName("Put")]
         public HttpResponseMessage PutProgram(int id, Program program)
         {
             if (!ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Program
+        [ActionName("Post")]
         public HttpResponseMessage PostProgram(Program program)
         {
             if (ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Program/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteProgram(int id)
         {
             Program program = db.Program.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, program);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Program> GetBy()
+        {
+            return db.Program.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)
