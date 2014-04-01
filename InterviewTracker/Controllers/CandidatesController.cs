@@ -72,7 +72,7 @@ namespace InterviewTracker.Controllers
         public ActionResult Edit()
         {
             ViewBag.bioData = db.BioData.Find(2);
-
+            
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
             ViewBag.subsources = db.SubSources.ToList();
@@ -91,7 +91,6 @@ namespace InterviewTracker.Controllers
                 ViewBag.subsourcePreload = db.SubSources.First();
 
             ViewBag.dutyHistories = ViewBag.bioData.DutyHistories;
-            //ViewBag.dutyHistory = ViewBag.bioData.DutyHistories.FirstOrDefault();
             ViewBag.classesAttended = ViewBag.bioData.ClassesAttended;
 
             var DHselects = getDHSelectValues(ViewBag.dutyHistories);
