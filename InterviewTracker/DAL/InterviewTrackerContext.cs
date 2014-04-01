@@ -10,29 +10,29 @@ namespace InterviewTracker.DAL
 {
     public class InterviewTrackerContext : DbContext
     {
-        public DbSet<Admiral> Admiral { get; set; }
-        public DbSet<BioData> BioData { get; set; }
-        public DbSet<Classes> Classes { get; set; }
-        public DbSet<ClassesAttended> ClassesAttended { get; set; }
-        public DbSet<Degree> Degree { get; set; }
-        public DbSet<DegreeType> DegreeType { get; set; }
-        public DbSet<DutyHistory> DutyHistory { get; set; }
-        public DbSet<DutyStation> DutyStation { get; set; }
-        public DbSet<Ethnicity> Ethnicity { get; set; }
-        public DbSet<FYGoals> FYGoals { get; set; }
-        public DbSet<Interview> Interview { get; set; }
-        public DbSet<Major> Major { get; set; }
-        public DbSet<Program> Program { get; set; }
-        public DbSet<RD> RD { get; set; }
-        public DbSet<School> School { get; set; }
-        public DbSet<SchoolsAttended> SchoolsAttended { get; set; }
-        public DbSet<SchoolStandings> SchoolStandings { get; set; }
-        public DbSet<Screen> Screen { get; set; }
-        public DbSet<ServSel> ServSel { get; set; }
-        public DbSet<Sources> Sources { get; set; }
-        public DbSet<SubSources> SubSources { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<Waiver> Waiver { get; set; }
+        public ICollection<Admiral> Admiral { get; set; }
+        public ICollection<BioData> BioData { get; set; }
+        public ICollection<Classes> Classes { get; set; }
+        public ICollection<ClassesAttended> ClassesAttended { get; set; }
+        public ICollection<Degree> Degree { get; set; }
+        public ICollection<DegreeType> DegreeType { get; set; }
+        public ICollection<DutyHistory> DutyHistory { get; set; }
+        public ICollection<DutyStation> DutyStation { get; set; }
+        public ICollection<Ethnicity> Ethnicity { get; set; }
+        public ICollection<FYGoals> FYGoals { get; set; }
+        public ICollection<Interview> Interview { get; set; }
+        public ICollection<Major> Major { get; set; }
+        public ICollection<Program> Program { get; set; }
+        public ICollection<RD> RD { get; set; }
+        public ICollection<School> School { get; set; }
+        public ICollection<SchoolsAttended> SchoolsAttended { get; set; }
+        public ICollection<SchoolStandings> SchoolStandings { get; set; }
+        public ICollection<Screen> Screen { get; set; }
+        public ICollection<ServSel> ServSel { get; set; }
+        public ICollection<Sources> Sources { get; set; }
+        public ICollection<SubSources> SubSources { get; set; }
+        public ICollection<User> User { get; set; }
+        public ICollection<Waiver> Waiver { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

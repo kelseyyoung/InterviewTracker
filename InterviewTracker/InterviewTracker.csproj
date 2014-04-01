@@ -981,7 +981,7 @@
     <Content Include="Views\Candidates\Create.cshtml" />
     <Content Include="Views\Candidates\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Interviews\Comments.cshtml" />
+    <Content Include="Views\Interviews\Edit.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

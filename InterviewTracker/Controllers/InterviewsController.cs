@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InterviewTracker.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,15 +9,13 @@ namespace InterviewTracker.Controllers
 {
     public class InterviewsController : Controller
     {
-        //
-        // GET: /Interviews/
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        public ActionResult Comments()
+        private InterviewTrackerContext db = new InterviewTrackerContext();
+
+        public ActionResult Edit(int id)
         {
+            ViewBag.interview = db.Interview.Find(id);
+            ViewBag.otherInterviews = "";
             return View();
         }
     }
