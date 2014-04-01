@@ -221,6 +221,16 @@ namespace InterviewTracker.Migrations
                 LoginID = "adminaa",
                 Password = "admin",
                 Code = "08A",
+                NR = true,
+                INST = false,
+                NPS = true,
+                PXO = false,
+                EDO = true,
+                ENLTECH = false,
+                NR1 = true,
+                SUPPLY = false,
+                EOOW = false,
+                DOE = false,
                 UserGroup = UserGroup.ADMIN.ToString()
             };
             User Coord = new User
@@ -230,6 +240,16 @@ namespace InterviewTracker.Migrations
                 LoginID = "coordbb",
                 Password = "coord",
                 Code = "08B",
+                NR = false,
+                INST = false,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = false,
+                NR1 = true,
+                SUPPLY = false,
+                EOOW = true,
+                DOE = false,
                 UserGroup = UserGroup.COORD.ToString()
             };
             User Interviewer = new User
@@ -239,6 +259,16 @@ namespace InterviewTracker.Migrations
                 LoginID = "interviewercc",
                 Password = "interviewer",
                 Code = "08C",
+                NR = false,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = false,
+                ENLTECH = false,
+                NR1 = false,
+                SUPPLY = false,
+                EOOW = false,
+                DOE = false,
                 UserGroup = UserGroup.INTER.ToString()
             };
 
@@ -471,8 +501,9 @@ namespace InterviewTracker.Migrations
             // Interviews
             Interview KelseyInterview = new Interview
             {
-                Date = DateTime.Parse("2014-5-13"),
+                Date = DateTime.Parse("2014/5/13 12:00:00"),
                 Status = Status.Scheduled.ToString(),
+                Location = "Room 203",
                 StartTime = DateTime.Parse("2014/5/13 15:00:00"),
                 EndTime = DateTime.Parse("2014/5/13 16:00:00"),
                 Duration = 60,
@@ -491,11 +522,12 @@ namespace InterviewTracker.Migrations
             };
             Interview JohnInterview = new Interview
             {
-                Date = DateTime.Parse("2014-1-20"),
+                Date = DateTime.Parse("2014/1/20 12:00:00"),
                 Status = Status.Entered.ToString(),
+                Location = "Room 155",
                 Comments = "Seemed like a good worker",
                 StartTime = DateTime.Parse("2014/1/20 9:00:00"),
-                EndTime = DateTime.Parse("2013/5/13 11:00:00"),
+                EndTime = DateTime.Parse("2014/1/20 11:00:00"),
                 Duration = 120,
                 NR = true,
                 INST = false,
@@ -512,8 +544,9 @@ namespace InterviewTracker.Migrations
             };
             Interview SteveInterview = new Interview
             {
-                Date = DateTime.Parse("2014-2-2"),
+                Date = DateTime.Parse("2014/2/2 12:00:00"),
                 Status = Status.Edited.ToString(),
+                Location = "Room 555",
                 Comments = "Gave off a bad impression",
                 EditedComments = "Gave off a bad impression, did not respond well to questions",
                 StartTime = DateTime.Parse("2014/2/2 11:00:00"),
@@ -535,10 +568,37 @@ namespace InterviewTracker.Migrations
                 BioData = John
             };
 
+            Interview FinalInterview = new Interview
+            {
+                Date = DateTime.Parse("2014/5/18 12:00:00"),
+                Status = Status.Final.ToString(),
+                Location = "Room 757",
+                Comments = "Gave off a bad impression",
+                EditedComments = "Gave off a bad impression, did not respond well to questions",
+                StartTime = DateTime.Parse("2014/5/18 11:00:00"),
+                EndTime = DateTime.Parse("2014/5/18 11:30:00"),
+                Duration = 180,
+                EditTime = DateTime.Parse("2014/5/20 9:30:00"),
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = false,
+                EDO = false,
+                ENLTECH = true,
+                NR1 = false,
+                SUPPLY = false,
+                EOOW = false,
+                DOE = false,
+                CurrentlyEditingUser = Coord,
+                InterviewerUser = Interviewer,
+                BioData = Kelsey
+            };
+
             context.Interview.AddOrUpdate(i => i.InterviewerID,
                 KelseyInterview,
                 JohnInterview,
-                SteveInterview
+                SteveInterview,
+                FinalInterview
             );
             
             // Classes Attended

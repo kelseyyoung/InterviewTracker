@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/Screen/5
         [ActionName("Put")]
-        public HttpResponseMessage PutScreen(int id, Screen screen)
+        public HttpResponseMessage PutScreen(int id, [FromUri] Screen screen)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/Screen
         [ActionName("Post")]
-        public HttpResponseMessage PostScreen(Screen screen)
+        public HttpResponseMessage PostScreen([FromUri] Screen screen)
         {
             if (ModelState.IsValid)
             {

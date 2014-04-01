@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/Interview/5
         [ActionName("Put")]
-        public HttpResponseMessage PutInterview(int id, Interview interview)
+        public HttpResponseMessage PutInterview(int id, [FromUri] Interview interview)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/Interview
         [ActionName("Post")]
-        public HttpResponseMessage PostInterview(Interview interview)
+        public HttpResponseMessage PostInterview([FromUri] Interview interview)
         {
             if (ModelState.IsValid)
             {

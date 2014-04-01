@@ -2,6 +2,14 @@
     ViewBag.Title = "Calendar";
 }
 
+@section AddToTextCss {
+
+    .fc-event {
+    cursor: pointer;
+    }
+
+}
+
 <div class="row-fluid">
     <div class="span8">
         <div id="calendar">
@@ -16,44 +24,118 @@
                 <h4 class="panel-title">Create New Interview</h4>
             </div>
             <div class="panel-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" id="interview-form">
                     <div class="form-group">
-                        <label for="scheduledDate" class="control-label span3">Date</label>
+                        <label for="date-holder" class="control-label span3">Date</label>
                         <div class="span7">
-                            <input type="text" class="form-control span11" name="scheduledDate" id="scheduledDate" />
+                            <input type="text" class="form-control span11" id="date-holder" />
+                            <input type="hidden" name="Date" id="Date"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="startTime" class="control-label span3">Start Time</label>
+                        <label for="start-holder" class="control-label span3">Start Time</label>
                         <div class="span3">
-                            <input type="time" class="form-control span11" name="startTime" id="startTime" />
+                            <select id="start-holder">
+                                @for (var i = ViewBag.startTime; i < ViewBag.endTime; i++)
+                                {
+                                    <option value="@i:00">@i:00</option>
+                                    <option value="@i:30">@i:30</option>
+                                }
+                            </select>
+                            <input type="hidden" class="form-control span11" name="StartTime" id="StartTime" />
                         </div>
-                        <label for="endTime" class="control-label span3">End Time</label>
+                        <label for="end-holder" class="control-label span3">End Time</label>
                         <div class="span3">
-                            <input type="time" class="form-control span11" name="endTime" id="endTime" />
+                            <select id="end-holder">
+                                @for (var i = ViewBag.startTime; i <= ViewBag.endTime; i++)
+                                {
+                                    <option value="@i:00">@i:00</option>
+                                    <option value="@i:30">@i:30</option>
+                                }
+                            </select>
+                            <input type="hidden" class="form-control span11" name="EndTime" id="EndTime" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="candidate" class="control-label span3">Candidate</label>
+                        <label for="BioDataID" class="control-label span3">Candidate</label>
                         <div class="span7">
-                            <input type="text" class="form-control span11" name="candidate" id="candidate" />
+                            <select class="form-control span11" name="BioDataID" id="BioDataID">
+                                <option value=""></option>
+                                @foreach (var c in ViewBag.candidates)
+                                {
+                                    <option value="@c.ID" data-alt="@c.SSN">@c.FName @c.LName (@c.SSN)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="checkbox text-center">
+                        <label for="NR">
+                            <input id="NR" name="NR" type="checkbox" />NR
+                        </label>
+                        <label for="INST">
+                            <input id="INST" name="INST" type="checkbox" />INST
+                        </label>
+                        <label for="NPS">
+                            <input id="NPS" name="NPS" type="checkbox" />NPS
+                        </label>
+                        <label for="PXO">
+                            <input id="PXO" name="PXO" type="checkbox" />PXO
+                        </label>
+                        <label for="EDO">
+                            <input id="EDO" name="EDO" type="checkbox" />EDO
+                        </label>
+                    </div>
+                    <div class="checkbox text-center">
+                        <label for="ENLTECH">
+                            <input id="ENLTECH" name="ENLTECH" type="checkbox" />ENLTECH
+                        </label>
+                        <label for="NR1">
+                            <input id="NR1" name="NR1" type="checkbox" />NR1
+                        </label>
+                        <label for="SUPPLY">
+                            <input id="SUPPLY" name="SUPPLY" type="checkbox" />SUPPLY
+                        </label>
+                    </div>
+                    <div class="checkbox text-center">
+                        <label for="EOOW">
+                            <input id="EOOW" name="EOOW" type="checkbox" />EOOW
+                        </label>
+                        <label for="DOE">
+                            <input id="DOE" name="INST" type="checkbox" />DOE
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" id="submit-quals">Filter by Quals</button>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label for="InterviewerID" class="control-label span3">Interviewer</label>
+                        <div class="span7">
+                            <select class="form-control span11" name="InterviewerID" id="InterviewerID">
+                                <option value=""></option>
+                                @foreach (var i in ViewBag.interviewers)
+                                {
+                                    <option value="@i.UserID">@i.LoginID</option>
+                                }
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="interviewer" class="control-label span3">Interviewer</label>
+                        <label for="Location" class="control-label span3">Location</label>
                         <div class="span7">
-                            <input type="text" class="form-control span11" name="interviewer" id="interviewer" />
+                            <input type="text" class="form-control span11" name="Location" id="Location" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="room" class="control-label span3">Room</label>
-                        <div class="span7">
-                            <input type="text" class="form-control span11" name="room" id="room" />
-                        </div>
-                    </div>
+                    <input type="hidden" name="Status" id="Status" value="@Status.Scheduled.ToString()" />
+                    <input type="hidden" name="Duration" id="Duration" value="" />
                 </form>
+                <div class="row-fluid">
+                    <div id="interview-errors" class="alert hide alert-error span10 offset1">
+                        <p></p>
+                    </div>
+                </div>
                 <p class="text-center">
-                    <button type="button" class="btn-ignore btn-success"><i class="fa fa-check"></i> Schedule</button>
+                    <button type="button" class="btn-ignore btn-success" id="schedule-interview"><i class="fa fa-check"></i> Schedule</button>
                     <button type="button" class="btn-ignore btn-danger" id="cancelInterview"><i class="fa fa-times-circle"></i> Cancel</button>
                 </p>
             </div>
@@ -65,10 +147,10 @@
             </div>
             <div class="panel-body">
                 <b>Date: </b><span id="interview-info-date"></span><br />
-                <b>Time: </b><span id="interview-info-time"></span><br />
+                <b>Time: </b><span id="interview-info-start"></span> - <span id="interview-info-end"></span><br />
                 <b>Location: </b><span id="interview-info-location"></span><br />
-                <b>Interviewers: </b><span id="interview-info-interviewers"></span><br />
-                <b>Candidates: </b><span id="interview-info-candidates"></span><br />
+                <b>Interviewer: </b><span id="interview-info-interviewers"></span><br />
+                <b>Candidate: </b><span id="interview-info-candidates"></span><br />
                 <p class="text-center">
                     <button type="button"><i class="fa fa-edit"></i> Edit</button>
                     <a type="button" class="button" href="@Url.Action("Comments", "Interviews")"><i class="fa fa-comment"></i> Comments</a>
@@ -84,20 +166,52 @@
 
 @section AddToScripts {
     <script type="text/javascript">
-        $(document).ready(function () {
 
-            /*
-            // Sample for odata
+        var quals = [
+                "NR", "INST", "NPS", "PXO", "EDO", "ENLTECH",
+                "NR1", "SUPPLY", "EOOW", "DOE"
+        ];
+
+        var eventColors = {
+            "scheduled": "#DB2C38",
+            "entered": "#CCBF33",
+            "edited": "#17599D",
+            "final": "#39C72A"
+        };
+
+        function updateCalendar(view) {
+            console.log("update calendar");
+            var start = view.start;
+            console.log(start.toISOString());
+            var end = view.end;
+            console.log(end.toISOString());
+            //Fetch events from API
             var obj = {
-                "$filter": "Date gt datetime'2014-05-01' and Date lt datetime'2014-05-31'"
+                "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
+                    end.toISOString() + "'"
             };
-            console.log($.param(obj));
             $.ajax({
-                url: "http://localhost:50741/api/Interview/GetBy?" + $.param(obj),
+                url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
                 type: "Get",
                 success: function (data) {
                     console.log("success");
-                    console.log(data);
+                    //Remove all events
+                    $("#calendar").fullCalendar("removeEvents");
+                    console.log(data.length);
+                    for (var i = 0; i < data.length; i++) {
+                        var interview = data[i];
+                        var event = {
+                            id: interview.InterviewID,
+                            //TODO: change this title to something else?
+                            title: interview.BioData.FName + " " + interview.BioData.LName,
+                            allDay: false,
+                            start: interview.StartTime,
+                            end: interview.EndTime,
+                            backgroundColor: eventColors[interview.Status.toLowerCase()],
+                            borderColor: eventColors[interview.Status.toLowerCase()]
+                        };
+                        $("#calendar").fullCalendar("renderEvent", event);
+                    }
                 },
                 error: function (data) {
                     console.log("error");
@@ -105,7 +219,74 @@
                     console.log(data.responseText);
                 }
             });
-            */
+        }
+
+        function updateInterviewers() {
+            var filterStr = "";
+            for (var i = 0; i < quals.length; i++) {
+                var box = $("#" + quals[i]);
+                if ($(box).is(":checked")) {
+                    if (i != 0 && filterStr != "") {
+                        filterStr += " and ";
+                    }
+                    filterStr += quals[i] + " eq true"
+                }
+            }
+            var url;
+            if (filterStr == "") {
+                url = baseURL + "/api/User/GetAll/";
+            } else {
+                // GetBy interviewers
+                var obj = {
+                    "$filter": filterStr
+                };
+                url = baseURL + "/api/User/GetBy?" + $.param(obj);
+            }
+            $.ajax({
+                url: url,
+                type: "Get",
+                success: function (data) {
+                    console.log("success");
+                    console.log(data);
+                    // Clear out current select
+                    $("#InterviewerID").select2("destroy");
+                    $("#InterviewerID").empty();
+                    // Add empty select
+                    $("#InterviewerID").append("<option value=''></option>")
+                    for (var i = 0; i < data.length; i++) {
+                        var interviewer = data[i];
+                        $("#InterviewerID").append("<option value='" + interviewer.UserID + "'>" +
+                            interviewer.LoginID + "</option>");
+                    }
+                    // Re-init select2
+                    $("#InterviewerID").select2({
+                        placeholder: "Choose Interviewer",
+                    });
+                },
+                error: function (data) {
+                    console.log("error");
+                    console.log(data);
+                    console.log(data.responseText);
+                }
+            });
+        }
+
+        function clearForm() {
+            $("#Location").val("");
+            $("#Duration").val("");
+            $("#StartTime").val("");
+            $("#EndTime").val("");
+            $("#InterviewerID").val("");
+            $("#BioDataID").val("");
+            // Clear quals
+            for (var i = 0; i < quals.length; i++) {
+                $("#" + quals[i]).prop("checked", false);
+            }
+            // Hide errors
+            $("#interview-errors").addClass("hide");
+        }
+
+        $(document).ready(function () {
 
             $("#calendar").fullCalendar({
                 header: {
@@ -122,61 +303,34 @@
                 },
                 selectable: true,
                 eventColor: "#17599D",
-                viewRender: function(view, element) {
-                    var start = view.start;
-                    var end = view.end;
-                    console.log(start.toISOString());
-                    console.log(end.toISOString());
-                    //Remove all events
-                    $("#calendar").fullCalendar("removeEvents");
-                    //Fetch events from API
-                    var obj = {
-                        "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
-                            end.toISOString() + "'"
-                    };
-                    console.log($.param(obj));
-                    $.ajax({
-                        url: "http://localhost:50741/api/Interview/GetBy?" + $.param(obj),
-                        type: "Get",
-                        success: function (data) {
-                            console.log("success");
-                            for (var i = 0; i < data.length; i++) {
-                                var interview = data[i];
-                                console.log(interview.StartTime);
-                                console.log(interview.EndTime);
-                                var event = {
-                                    id: interview.InterviewID,
-                                    //TODO: change this title to something else? or to icon?
-                                    title: "Interview",
-                                    allDay: false,
-                                    start: interview.StartTime,
-                                    end: interview.EndTime
-                                };
-                                $("#calendar").fullCalendar("renderEvent", event);
-                            }
-                        },
-                        error: function (data) {
-                            console.log("error");
-                            console.log(data);
-                            console.log(data.responseText);
-                        }
-                    });
+                viewRender: function (view, element) {
+                    updateCalendar(view);
                 },
                 dayClick: function (date, allDay, jsEvent, view) {
                     var myDate = $("#calendar").fullCalendar('getDate');
                     //alert("The current date of the calendar is " + myDate);
-                    $("#scheduledDate").datepicker("setDate", date);
+                    $("#Date").datepicker("setDate", date);
                 },
                 eventClick: function (event, jsEvent, view) {
                     var id = event.id;
-                    console.log(id);
                     // Get interview from API
                     $.ajax({
-                        url: "http://localhost:50741/api/Interview/Get/" + id,
+                        url: baseURL + "/api/Interview/Get/" + id,
                         type: "Get",
                         success: function (data) {
                             console.log("success");
+                            console.log(data);
                             // Display information in sidebar
+                            var date = moment(data.Date);
+                            var startDate = moment(data.StartTime);
+                            var endDate = moment(data.EndTime);
+
+                            $("#interview-info-date").text(date.format("MMM Do, YYYY"));
+                            $("#interview-info-start").text(startDate.format("HH:mm"));
+                            $("#interview-info-end").text(endDate.format("HH:mm"));
+                            $("#interview-info-location").text(data.Location);
+                            $("#interview-info-interviewers").text(data.InterviewerUser.LoginID);
+                            $("#interview-info-candidates").text(data.BioData.FName + " " + data.BioData.LName);
 
                             // Show sidebar at end
                             $("#interview-info").removeClass("hide");
@@ -191,21 +345,64 @@
 
             });
 
-            var sampleEvent = {
-                title: "Interview 1",
-                start: "2014-02-10T13:15:30Z"
-            };
+            $("#submit-quals").click(function () {
+                console.log("submit quals");
+                updateInterviewers();
+            });
 
-            var sampleEvent2 = {
-                title: "Interview 2",
-                start: "2014-02-07T13:15:30Z",
-                backgroundColor: "#F2F21B",
-                borderColor: "#F2F21B",
-                textColor: "#000000"
-            };
-
-            //$("#calendar").fullCalendar("renderEvent", sampleEvent, true);
-            //$("#calendar").fullCalendar("renderEvent", sampleEvent2, true);
+            $("#schedule-interview").click(function () {
+                // Hide errors
+                $("#interview-errors").addClass("hide");
+                // Disable all checkboxes
+                $("#interview-form").find(":radio, :checkbox").attr("disabled", true);
+                // Change date hour to 12pm
+                var date = new Date($("#date-holder").val());
+                date.setHours(12);
+                $("#Date").val(date.toISOString());
+                // Get form data
+                var interview = $("#interview-form").serialize();
+                console.log(interview);
+                // Test
+                $.ajax({
+                    url: baseURL + "/api/Interview/Test?" + interview,
+                    type: "Post",
+                    success: function (data) {
+                        console.log(data);
+                        // Submit interview
+                        $.ajax({
+                            url: baseURL + "/api/Interview/Post?" + interview,
+                            type: "Post",
+                            success: function (data) {
+                                console.log("interview post successful");
+                                // Update calendar
+                                updateCalendar($("#calendar").fullCalendar("getView"));
+                                // Re-enable checkboxes
+                                $("#interview-form").find(":radio, :checkbox").removeAttr("disabled");
+                                clearForm();
+                            },
+                            error: function (data) {
+                                // Re-enable checkboxes
+                                $("#interview-form").find(":radio, :checkbox").removeAttr("disabled");
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        // Show errors
+                        console.log(data);
+                        var errors = "";
+                        var response = $.parseJSON(data.responseText).ModelState;
+                        $.each(response, function (key, value) {
+                            for (var i = 0; i < value.length; i++) {
+                                errors += value[i] + "<br/>";
+                            }
+                        });
+                        $("#interview-errors > p").html(errors);
+                        $("#interview-errors").removeClass("hide");
+                        // Re-enable checkboxes
+                        $("#interview-form").find(":radio, :checkbox").removeAttr("disabled");
+                    }
+                });
+            });
 
             $("#createInterview").click(function () {
                 $("#showCreate").slideToggle();
@@ -213,57 +410,132 @@
 
             $("#cancelInterview").click(function () {
                 $("#showCreate").slideToggle();
-                $("#room").val('');
-                $("#startTime").val('');
-                $("#endTime").val('');
+                clearForm();
             });
 
             $("#hide-interview-info").click(function () {
                 $("#interview-info").addClass("hide");
             });
 
-            $("#scheduledDate").datepicker();
+            $("#date-holder").datepicker();
 
-            /*
-            $("#candidate").select2(
+            $("#BioDataID").select2(
                 {
-                    minimumInputLength: 3,
-                    placeholder: 'Enter name',
-                    ajax: {
-                        url: "http://www.weighttraining.com/sm/search",
-                        dataType: 'jsonp',
-                        quietMillis: 100,
-                        data: function (term, page) {
-                            return {
-                                types: ["exercise"],
-                                limit: -1,
-                                term: term
-                            };
-                        },
-                        results: function (data, page) {
-                            return { results: data.results.exercise }
-                        }
-                    },
-                    formatResult: function (exercise) {
-                        return "<div class='select2-user-result'>" + exercise.term + "</div>";
-                    },
-                    formatSelection: function (exercise) {
-                        return exercise.term;
-                    },
-                    initSelection: function (element, callback) {
-                        var elementText = $(element).attr('data-init-text');
-                        callback({ "term": elementText });
+                    placeholder: "Choose Candidate",
+                    matcher: function (term, text, opt) {
+                        return text.toUpperCase().indexOf(term.toUpperCase()) >= 0
+                            || opt.attr("data-alt").toUpperCase().indexOf(term.toUpperCase()) >= 0;
                     }
                 });
 
-            $("#interviewer").select2(
+            $("#InterviewerID").select2(
                 {
-                    placeholder: 'Enter name',
-                    minimumInputLength: 1,
-                    allowClear: true,
-                    quietMillis: 100
+                    placeholder: "Choose Interviewer",
                 });
-                */
+
+            $("#start-holder").on("change", function () {
+                var hour = $(this).val().split(":")[0];
+                if (hour.length < 2) {
+                    hour = "0" + hour;
+                }
+                var min = $(this).val().split(":")[1];
+                if (min == "00") {
+                    min = "0";
+                }
+                // Change StartTime value
+                var time;
+                if ($("#StartTime").val() == "") {
+                    time = new Date();
+                } else {
+                    time = new Date($("#StartTime").val());
+                }
+                time.setHours(hour);
+                time.setMinutes(min);
+                $("#StartTime").val(time.toISOString());
+                console.log($("#StartTime").val());
+                // Change Duration
+                if ($("#EndTime").val() != "") {
+                    var start = moment($("#StartTime").val());
+                    var end = moment($("#EndTime").val());
+                    var hoursPassed = end.hours() - start.hours();
+                    var minsPassed = end.minutes() - start.minutes();
+                    if (minsPassed < 0) {
+                        minsPassed += 60;
+                        hoursPassed -= 1;
+                    }
+                    var duration = hoursPassed * 60 + minsPassed;
+                    console.log(duration);
+                    $("#Duration").val(duration);
+                }
+            });
+
+            $("#end-holder").on("change", function () {
+                var hour = $(this).val().split(":")[0];
+                if (hour.length < 2) {
+                    hour = "0" + hour;
+                }
+                var min = $(this).val().split(":")[1];
+                if (min == "00") {
+                    min = "0";
+                }
+                // Change EndTime value
+                var time;
+                if ($("#EndTime").val() == "") {
+                    time = new Date();
+                } else {
+                    time = new Date($("#EndTime").val());
+                }
+                time.setHours(hour);
+                time.setMinutes(min);
+                $("#EndTime").val(time.toISOString());
+                console.log($("#EndTime").val());
+                // Change Duration
+                if ($("#StartTime").val() != "") {
+                    var start = moment($("#StartTime").val());
+                    var end = moment($("#EndTime").val());
+                    var hoursPassed = end.hours() - start.hours();
+                    var minsPassed = end.minutes() - start.minutes();
+                    if (minsPassed < 0) {
+                        minsPassed += 60;
+                        hoursPassed -= 1;
+                    }
+                    var duration = hoursPassed * 60 + minsPassed;
+                    console.log(duration);
+                    $("#Duration").val(duration);
+                }
+            });
+
+
+            $("#date-holder").on("change", function () {
+                var date = $(this).datepicker("getDate");
+                // Change StartTime
+                if ($("#StartTime").val() == "") {
+                    $("#StartTime").val(date.toISOString());
+                } else {
+                    var date = new Date(date.toISOString());
+                    var time = new Date($("#StartTime").val());
+                    date.setHours(time.getHours());
+                    date.setMinutes(time.getMinutes());
+                    $("#StartTime").val(date.toISOString());
+                }
+                console.log($("#StartTime").val());
+                // Change EndTime
+                if ($("#EndTime").val() == "") {
+                    $("#EndTime").val(date.toISOString());
+                } else {
+                    var date = new Date(date.toISOString());
+                    var time = new Date($("#EndTime").val());
+                    date.setHours(time.getHours());
+                    date.setMinutes(time.getMinutes());
+                    $("#EndTime").val(date.toISOString());
+                }
+                console.log($("#EndTime").val());
+            });
+
+            // Update calendar every minute
+            setInterval(function () {
+                updateCalendar($("#calendar").fullCalendar("getView"));
+            }, 60000);
 
         });
     </script>

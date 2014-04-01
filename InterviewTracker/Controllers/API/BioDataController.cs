@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/BioData/5
         [ActionName("Put")]
-        public HttpResponseMessage PutBioData(int id, BioData biodata)
+        public HttpResponseMessage PutBioData(int id, [FromUri] BioData biodata)
         {
             if (!ModelState.IsValid)
             {

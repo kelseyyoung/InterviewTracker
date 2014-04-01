@@ -39,7 +39,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/Ethnicity/5
         [ActionName("Put")]
-        public HttpResponseMessage PutEthnicity(int id, Ethnicity ethnicity)
+        public HttpResponseMessage PutEthnicity(int id, [FromUri] Ethnicity ethnicity)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/Ethnicity
         [ActionName("Post")]
-        public HttpResponseMessage PostEthnicity(Ethnicity ethnicity)
+        public HttpResponseMessage PostEthnicity([FromUri] Ethnicity ethnicity)
         {
             if (ModelState.IsValid)
             {

@@ -218,9 +218,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403221829533_Initial.cs" />
-    <Compile Include="Migrations\201403221829533_Initial.Designer.cs">
-      <DependentUpon>201403221829533_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201404011704462_Initial.cs" />
+    <Compile Include="Migrations\201404011704462_Initial.Designer.cs">
+      <DependentUpon>201404011704462_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admiral.cs" />
@@ -256,6 +256,10 @@
     <Content Include="Content\css\jquery.ui.menubar.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\scaffolding.css" />
+    <Content Include="Content\css\select2-bootstrap.css" />
+    <Content Include="Content\css\select2-spinner.gif" />
+    <Content Include="Content\css\select2.css" />
+    <Content Include="Content\css\select2.png" />
     <Content Include="Content\font-awesome-4.0.3\css\font-awesome.css" />
     <Content Include="Content\font-awesome-4.0.3\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome-4.0.3\fonts\fontawesome-webfont.svg" />
@@ -956,7 +960,9 @@
     <Content Include="Scripts\js\jquery-1.9.1.js" />
     <Content Include="Scripts\js\jquery.dataTables.js" />
     <Content Include="Scripts\js\jquery.ui.menubar.js" />
+    <Content Include="Scripts\js\select2.js" />
     <Content Include="Scripts\js\tabcontrols.js" />
+    <Content Include="Scripts\js\moment.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -991,8 +997,8 @@
     <Content Include="Views\Candidates\Edit3.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403221829533_Initial.resx">
-      <DependentUpon>201403221829533_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404011704462_Initial.resx">
+      <DependentUpon>201404011704462_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

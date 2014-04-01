@@ -39,7 +39,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/FYGoals/5
         [ActionName("Put")]
-        public HttpResponseMessage PutFYGoals(int id, FYGoals fygoals)
+        public HttpResponseMessage PutFYGoals(int id, [FromUri] FYGoals fygoals)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/FYGoals
         [ActionName("Post")]
-        public HttpResponseMessage PostFYGoals(FYGoals fygoals)
+        public HttpResponseMessage PostFYGoals([FromUri] FYGoals fygoals)
         {
             if (ModelState.IsValid)
             {

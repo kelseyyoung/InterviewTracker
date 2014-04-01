@@ -88,6 +88,19 @@
 
     @Scripts.Render("~/bundles/js")
     <script type="text/javascript">
+
+        var scheme = "@Request.Url.Scheme";
+        var port = "@HttpContext.Current.Request.ServerVariables["SERVER_PORT"]";
+        if (port == null || port == "80" || port == "443")
+        {
+            port = "";
+        } else {
+            port = ":" + port;
+        }
+        var host = "@HttpContext.Current.Request.ServerVariables["SERVER_NAME"]";
+        var baseURL = scheme + "://" + host + port;
+        console.log(baseURL);
+
         $(document).ready(function () {
 
             $("button:not(.btn-ignore)").button();

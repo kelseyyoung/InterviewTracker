@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/Admiral/5
         [ActionName("Put")]
-        public HttpResponseMessage PutAdmiral(int id, Admiral admiral)
+        public HttpResponseMessage PutAdmiral(int id, [FromUri] Admiral admiral)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/Admiral
         [ActionName("Post")]
-        public HttpResponseMessage PostAdmiral(Admiral admiral)
+        public HttpResponseMessage PostAdmiral([FromUri] Admiral admiral)
         {
             if (ModelState.IsValid)
             {

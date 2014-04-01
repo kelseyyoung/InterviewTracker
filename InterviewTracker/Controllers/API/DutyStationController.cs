@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/DutyStation/5
         [ActionName("Put")]
-        public HttpResponseMessage PutDutyStation(int id, DutyStation dutystation)
+        public HttpResponseMessage PutDutyStation(int id, [FromUri] DutyStation dutystation)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/DutyStation
         [ActionName("Post")]
-        public HttpResponseMessage PostDutyStation(DutyStation dutystation)
+        public HttpResponseMessage PostDutyStation([FromUri] DutyStation dutystation)
         {
             if (ModelState.IsValid)
             {

@@ -39,7 +39,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/Sources/5
         [ActionName("Put")]
-        public HttpResponseMessage PutSources(int id, Sources sources)
+        public HttpResponseMessage PutSources(int id, [FromUri] Sources sources)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/Sources
         [ActionName("Post")]
-        public HttpResponseMessage PostSources(Sources sources)
+        public HttpResponseMessage PostSources([FromUri] Sources sources)
         {
             if (ModelState.IsValid)
             {

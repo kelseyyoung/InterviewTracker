@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/SchoolStandings/5
         [ActionName("Put")]
-        public HttpResponseMessage PutSchoolStandings(int id, SchoolStandings schoolstandings)
+        public HttpResponseMessage PutSchoolStandings(int id, [FromUri] SchoolStandings schoolstandings)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/SchoolStandings
         [ActionName("Post")]
-        public HttpResponseMessage PostSchoolStandings(SchoolStandings schoolstandings)
+        public HttpResponseMessage PostSchoolStandings([FromUri] SchoolStandings schoolstandings)
         {
             if (ModelState.IsValid)
             {

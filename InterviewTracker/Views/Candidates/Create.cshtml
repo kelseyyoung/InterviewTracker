@@ -62,6 +62,8 @@
     position: relative;
     left: -1px;
     }
+
+    /* Hides top of dialog */
     .no-close .ui-dialog-titlebar-close {display: none }
 }
 
@@ -905,7 +907,7 @@
                 counter++;
             };
             $.ajax({
-                url: "http://localhost:50741/api/" + model + "/Test?" + formData,
+                url: baseURL + "/api/" + model + "/Test?" + formData,
                 type: "Post",
                 asynch: false,
                 success: success,

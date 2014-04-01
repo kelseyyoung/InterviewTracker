@@ -39,7 +39,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/ServSel/5
         [ActionName("Put")]
-        public HttpResponseMessage PutServSel(int id, ServSel servsel)
+        public HttpResponseMessage PutServSel(int id, [FromUri] ServSel servsel)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/ServSel
         [ActionName("Post")]
-        public HttpResponseMessage PostServSel(ServSel servsel)
+        public HttpResponseMessage PostServSel([FromUri] ServSel servsel)
         {
             if (ModelState.IsValid)
             {

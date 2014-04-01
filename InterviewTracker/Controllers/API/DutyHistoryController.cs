@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/DutyHistory/5
         [ActionName("Put")]
-        public HttpResponseMessage PutDutyHistory(int id, DutyHistory dutyhistory)
+        public HttpResponseMessage PutDutyHistory(int id, [FromUri] DutyHistory dutyhistory)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/DutyHistory
         [ActionName("Post")]
-        public HttpResponseMessage PostDutyHistory(DutyHistory dutyhistory)
+        public HttpResponseMessage PostDutyHistory([FromUri] DutyHistory dutyhistory)
         {
             if (ModelState.IsValid)
             {

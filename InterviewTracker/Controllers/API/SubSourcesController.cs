@@ -39,7 +39,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/SubSources/5
         [ActionName("Put")]
-        public HttpResponseMessage PutSubSources(int id, SubSources subsources)
+        public HttpResponseMessage PutSubSources(int id, [FromUri] SubSources subsources)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/SubSources
         [ActionName("Post")]
-        public HttpResponseMessage PostSubSources(SubSources subsources)
+        public HttpResponseMessage PostSubSources([FromUri] SubSources subsources)
         {
             if (ModelState.IsValid)
             {

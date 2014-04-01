@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/Waiver/5
         [ActionName("Put")]
-        public HttpResponseMessage PutWaiver(int id, Waiver waiver)
+        public HttpResponseMessage PutWaiver(int id, [FromUri] Waiver waiver)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/Waiver
         [ActionName("Post")]
-        public HttpResponseMessage PostWaiver(Waiver waiver)
+        public HttpResponseMessage PostWaiver([FromUri] Waiver waiver)
         {
             if (ModelState.IsValid)
             {

@@ -40,7 +40,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/ClassesAttended/5
         [ActionName("Put")]
-        public HttpResponseMessage PutClassesAttended(int id, ClassesAttended classesattended)
+        public HttpResponseMessage PutClassesAttended(int id, [FromUri] ClassesAttended classesattended)
         {
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/ClassesAttended
         [ActionName("Post")]
-        public HttpResponseMessage PostClassesAttended(ClassesAttended classesattended)
+        public HttpResponseMessage PostClassesAttended([FromUri] ClassesAttended classesattended)
         {
             if (ModelState.IsValid)
             {

@@ -19,6 +19,10 @@ namespace InterviewTracker.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.ethnicities = db.Ethnicity.ToList();
+            ViewBag.sources = db.Sources.ToList();
+            ViewBag.subsources = db.SubSources.ToList();
+            ViewBag.programs = db.Program.ToList();
             return View();
         }
 

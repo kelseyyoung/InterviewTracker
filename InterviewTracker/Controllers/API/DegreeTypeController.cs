@@ -39,7 +39,7 @@ namespace InterviewTracker.Controllers.API
 
         // PUT api/DegreeType/5
         [ActionName("Put")]
-        public HttpResponseMessage PutDegreeType(int id, DegreeType degreetype)
+        public HttpResponseMessage PutDegreeType(int id, [FromUri] DegreeType degreetype)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace InterviewTracker.Controllers.API
 
         // POST api/DegreeType
         [ActionName("Post")]
-        public HttpResponseMessage PostDegreeType(DegreeType degreetype)
+        public HttpResponseMessage PostDegreeType([FromUri] DegreeType degreetype)
         {
             if (ModelState.IsValid)
             {
