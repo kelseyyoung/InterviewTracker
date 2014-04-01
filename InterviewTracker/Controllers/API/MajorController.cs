@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Major
+        [ActionName("GetAll")]
         public IEnumerable<Major> GetMajors()
         {
             return db.Major.AsEnumerable();
         }
 
         // GET api/Major/5
+        [ActionName("Get")]
         public Major GetMajor(int id)
         {
             Major major = db.Major.Find(id);
@@ -36,6 +38,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Major/5
+        [ActionName("Put")]
         public HttpResponseMessage PutMajor(int id, [FromUri] Major major)
         {
             if (!ModelState.IsValid)
@@ -63,6 +66,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Major
+        [ActionName("Post")]
         public HttpResponseMessage PostMajor([FromUri] Major major)
         {
             if (ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Major/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteMajor(int id)
         {
             Major major = db.Major.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, major);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Major> GetBy()
+        {
+            return db.Major.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

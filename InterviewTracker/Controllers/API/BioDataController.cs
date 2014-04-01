@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/BioData
+        [ActionName("GetAll")]
         public IEnumerable<BioData> GetBioDatas()
         {
             var biodata = db.BioData.Include(b => b.Ethnicity).Include(b => b.Sources).Include(b => b.SubSources);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/BioData/5
+        [ActionName("Get")]
         public BioData GetBioData(int id)
         {
             BioData biodata = db.BioData.Find(id);
@@ -37,7 +39,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/BioData/5
-        public HttpResponseMessage PutBioData(int id, BioData biodata)
+        [ActionName("Put")]
+        public HttpResponseMessage PutBioData(int id, [FromUri] BioData biodata)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +67,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/BioData
-        public HttpResponseMessage PostBioData(BioData biodata)
+        [ActionName("Post")]
+        public HttpResponseMessage PostBioData([FromUri] BioData biodata)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/BioData/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteBioData(int id)
         {
             BioData biodata = db.BioData.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, biodata);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<BioData> GetBy()
+        {
+            return db.BioData.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

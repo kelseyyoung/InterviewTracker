@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Validation.Providers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -23,6 +24,10 @@ namespace InterviewTracker
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            GlobalConfiguration.Configuration.Services.RemoveAll(
+                typeof(System.Web.Http.Validation.ModelValidatorProvider),
+                v => v is InvalidModelValidatorProvider);
 
         }
     }

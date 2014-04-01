@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/SchoolStandings
+        [ActionName("GetAll")]
         public IEnumerable<SchoolStandings> GetSchoolStandings()
         {
             var schoolstandings = db.SchoolStandings.Include(s => s.SchoolsAttended);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/SchoolStandings/5
+        [ActionName("Get")]
         public SchoolStandings GetSchoolStandings(int id)
         {
             SchoolStandings schoolstandings = db.SchoolStandings.Find(id);
@@ -37,7 +39,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/SchoolStandings/5
-        public HttpResponseMessage PutSchoolStandings(int id, SchoolStandings schoolstandings)
+        [ActionName("Put")]
+        public HttpResponseMessage PutSchoolStandings(int id, [FromUri] SchoolStandings schoolstandings)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +67,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/SchoolStandings
-        public HttpResponseMessage PostSchoolStandings(SchoolStandings schoolstandings)
+        [ActionName("Post")]
+        public HttpResponseMessage PostSchoolStandings([FromUri] SchoolStandings schoolstandings)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/SchoolStandings/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteSchoolStandings(int id)
         {
             SchoolStandings schoolstandings = db.SchoolStandings.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, schoolStandings);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<SchoolStandings> GetBy()
+        {
+            return db.SchoolStandings.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

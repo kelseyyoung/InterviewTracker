@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Interview
+        [ActionName("GetAll")]
         public IEnumerable<Interview> GetInterviews()
         {
             var interview = db.Interview.Include(i => i.CurrentlyEditingUser).Include(i => i.InterviewerUser).Include(i => i.BioData);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/Interview/5
+        [ActionName("Get")]
         public Interview GetInterview(int id)
         {
             Interview interview = db.Interview.Find(id);
@@ -37,7 +39,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Interview/5
-        public HttpResponseMessage PutInterview(int id, Interview interview)
+        [ActionName("Put")]
+        public HttpResponseMessage PutInterview(int id, [FromUri] Interview interview)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +67,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Interview
-        public HttpResponseMessage PostInterview(Interview interview)
+        [ActionName("Post")]
+        public HttpResponseMessage PostInterview([FromUri] Interview interview)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Interview/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteInterview(int id)
         {
             Interview interview = db.Interview.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, interview);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Interview> GetBy()
+        {
+            return db.Interview.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

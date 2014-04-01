@@ -19,6 +19,10 @@ namespace InterviewTracker.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.ethnicities = db.Ethnicity.ToList();
+            ViewBag.sources = db.Sources.ToList();
+            ViewBag.subsources = db.SubSources.ToList();
+            ViewBag.programs = db.Program.ToList();
             return View();
         }
 
@@ -69,10 +73,10 @@ namespace InterviewTracker.Controllers
             return Json(retValue);
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            ViewBag.bioData = db.BioData.Find(2);
-            
+            ViewBag.bioData = db.BioData.Find(id);
+
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
             ViewBag.subsources = db.SubSources.ToList();
@@ -92,6 +96,9 @@ namespace InterviewTracker.Controllers
 
             ViewBag.dutyHistories = ViewBag.bioData.DutyHistories;
             ViewBag.classesAttended = ViewBag.bioData.ClassesAttended;
+            ViewBag.RDs = ViewBag.bioData.RDs;
+            ViewBag.waivers = ViewBag.bioData.Waivers;
+            ViewBag.screens = ViewBag.bioData.Screens;
 
             var DHselects = getDHSelectValues(ViewBag.dutyHistories);
             JavaScriptSerializer serializer = new JavaScriptSerializer();

@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/DutyHistory
+        [ActionName("GetAll")]
         public IEnumerable<DutyHistory> GetDutyHistories()
         {
             var dutyhistory = db.DutyHistory.Include(d => d.BioData);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/DutyHistory/5
+        [ActionName("Get")]
         public DutyHistory GetDutyHistory(int id)
         {
             DutyHistory dutyhistory = db.DutyHistory.Find(id);
@@ -37,7 +39,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/DutyHistory/5
-        public HttpResponseMessage PutDutyHistory(int id, DutyHistory dutyhistory)
+        [ActionName("Put")]
+        public HttpResponseMessage PutDutyHistory(int id, [FromUri] DutyHistory dutyhistory)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +67,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/DutyHistory
-        public HttpResponseMessage PostDutyHistory(DutyHistory dutyhistory)
+        [ActionName("Post")]
+        public HttpResponseMessage PostDutyHistory([FromUri] DutyHistory dutyhistory)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/DutyHistory/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteDutyHistory(int id)
         {
             DutyHistory dutyhistory = db.DutyHistory.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, dutyHistory);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<DutyHistory> GetBy()
+        {
+            return db.DutyHistory.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

@@ -62,11 +62,14 @@
     position: relative;
     left: -1px;
     }
+
+    /* Hides top of dialog */
+    .no-close .ui-dialog-titlebar-close {display: none }
 }
 
 <!--Basic Information Block-->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="biodata-panel">
         <div class="panel-heading">
             <h2 class="panel-title">Basic Candidate Information</h2>
         </div>
@@ -131,10 +134,10 @@
                     <div class="form-group">
                         <label for="Ethnicity" class="control-label span4">Ethnicity</label>
                         <div class="span8">
-                            <select id="Ethnicity" name="Ethnicity">
+                            <select id="EthnicityID" name="EthnicityID">
                                 @foreach (var e in ViewBag.ethnicities)
                                 {
-                                <option value="@e.EthnicityValue">@e.EthnicityValue</option>
+                                    <option value="@e.EthnicityID">@e.EthnicityValue</option>
                                 }
                             </select>
                         </div>
@@ -142,10 +145,10 @@
                     <div class="form-group">
                         <label for="Sources" class="control-label span4">Source</label>
                         <div class="span8">
-                            <select id="Sources" name="Sources">
+                            <select id="SourcesID" name="SourcesID">
                                 @foreach (var s in ViewBag.sources)
                                 {
-                                <option value="@s.SourcesValue">@s.SourcesValue</option>
+                                    <option value="@s.SourcesID">@s.SourcesValue</option>
                                 }
                             </select>
                         </div>
@@ -154,10 +157,10 @@
                     <div class="form-group">
                         <label for="SubSources" class="control-label span4">SubSource</label>
                         <div class="span8">
-                            <select id="SubSources" name="SubSources">
+                            <select id="SubSourcesID" name="SubSourcesID">
                                 @foreach (var s in ViewBag.subsources)
                                 {
-                                <option value="@s.SubSourcesValue">@s.SubSourcesValue</option>
+                                    <option value="@s.SubSourcesID">@s.SubSourcesValue</option>
                                 }
                             </select>
                         </div>
@@ -168,7 +171,7 @@
                             <select id="Programs" name="Programs" multiple>
                                 @foreach (var p in ViewBag.programs)
                                 {
-                                <option value="@p.ProgramValue">@p.ProgramValue</option>
+                                    <option value="@p.ProgramValue">@p.ProgramValue</option>
                                 }
                             </select>
                         </div>
@@ -203,11 +206,16 @@
                 </div>
             </form> <!-- End of biodata-form -->
         </div>
+        <div class="row-fluid">
+            <div id="biodata-errors" class="alert hide alert-error span10 offset1">
+                <p></p>
+            </div>
+        </div>
     </div>
 </div>
 <!-- School information block -->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="schools-panel">
         <div class="panel-heading">
             <h2 class="panel-title">School Information</h2>
         </div>
@@ -217,12 +225,12 @@
                 <li id="add-school-tab"><a href="#add-school"><i class="fa fa-plus"></i></a></li>
             </ul>
             <div class="hide" id="school-content-1">
-                <form class="form-horizontal school-form">
+                <form class="form-horizontal schools-form">
                     <div class="row-fluid">
                         <!--School info block-->
                         <div class="span12 panel-body">
                             <div class="row-fluid">
-                                <div class="span6">
+                                <div class="span5">
                                     <div class="form-group">
                                         <label for="YearStart" class="control-label span3">Start Year</label>
                                         <div class="span4">
@@ -236,74 +244,49 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="MajorValue" class="control-label span3">Major</label>
-                                        <div class="span6">
-                                            <!--TODO: will be select2, because you can add a non-existing major (?) -->
-                                            <select id="MajorValue" name="MajorValue" class="span10">
-                                                @foreach (var m in ViewBag.majors)
-                                                {
-                                                <option value="@m.MajorValue">@m.MajorValue</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="Graduated" class="control-label span3">Graduated?</label>
                                         <div class="span2">
                                             <select id="Graduated" name="Graduated" class="span12">
-                                                <option value="T">Yes</option>
-                                                <option value="F">No</option>
+                                                <option value="true">Yes</option>
+                                                <option value="false">No</option>
                                             </select>
                                         </div>
-                                        <label for="DegreeTypeValue" class="control-label span3">Degree</label>
-                                        <div class="span2">
-                                            <select id="DegreeTypeValue" name="DegreeTypeValue" class="span12">
-                                                @foreach (var d in ViewBag.degreeTypes)
+                                    </div>
+                                    <!-- Fake values to pass test, get reassigned on submittal -->
+                                    <input type="hidden" name="SchoolID" id="SchoolID" value="1" />
+                                    <input type="hidden" name="BioDataID" id="BioDataID" value="1" />
+                                </div>
+                                <div class="span7">
+                                    <!-- TODO: Need to have more than one major and more than one degree-->
+                                    <div class="form-group">
+                                        <label for="MajorValue" class="control-label span3">Major</label>
+                                        <div class="span4">
+                                            <!--TODO: will be select2, because you can add a non-existing major-->
+                                            <select id="MajorID" name="MajorID" class="span10">
+                                                @foreach (var m in ViewBag.majors)
                                                 {
-                                                <option value="@d.DegreeTypeValue">@d.DegreeTypeValue</option>
+                                                    <option value="@m.MajorID">@m.MajorValue</option>
                                                 }
                                             </select>
-
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="form-group">
-                                        <label for="GPA" class="control-label span3">GPA</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="GPA" id="GPA" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="AOMVal" class="control-label span3">AOM</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="AOMVal" id="AOMVal" />
-                                        </div>
-                                        <label for="AOMTot" class="control-label span1">of</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="AOMTot" id="AOMTot" />
+                                        <label for="DegreeTypeValue" class="control-label span2">Degree</label>
+                                        <div class="span2">
+                                            <select id="DegreeTypeID" name="DegreeTypeID" class="span12">
+                                                @foreach (var d in ViewBag.degreeTypes)
+                                                {
+                                                    <option value="@d.DegreeTypeID">@d.DegreeTypeValue</option>
+                                                }
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="OOMVal" class="control-label span3">OOM</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="OOMVal" id="OOMVal" />
-                                        </div>
-                                        <label for="OOMTot" class="control-label span1">of</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="OOMTot" id="OOMTot" />
+                                        <label for="DegreeDate" class="control-label span3">Degree Date</label>
+                                        <div class="span9">
+                                            <input type="text" class="form-control span6 date" name="DegreeDate" id="DegreeDate" />
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="InMajorVal" class="control-label span3">Rank in Major</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="InMajorVal" id="InMajorVal" />
-                                        </div>
-                                        <label for="InMajorTot" class="control-label span1">of</label>
-                                        <div class="span4">
-                                            <input type="text" class="form-control span12" name="InMajorTot" id="InMajorTot" />
-                                        </div>
-                                    </div>
+                                    <!-- Fake SchoolsAttended ID -->
+                                    <input type="hidden" id="SchoolsAttendedID" value="1" />
                                 </div>
                             </div>
                         </div>
@@ -323,6 +306,11 @@
                             <button type="button" class="btn-danger pull-left btn-ignore remove-school">Remove</button>
                         </div>
                     </div>
+                    <div class="row-fluid">
+                        <div class="schools-errors alert hide alert-error span10 offset1">
+                            <p></p>
+                        </div>
+                    </div>
                 </form>
             </div> <!--End of first tab-->
             <div id="add-school">
@@ -334,7 +322,7 @@
                             <select id="SchoolValue" name="SchoolValue">
                                 @foreach (var s in ViewBag.schools)
                                 {
-                                <option value="@s.SchoolValue">@s.SchoolValue</option>
+                                    <option value="@s.SchoolID">@s.SchoolValue</option>
                                 }
                             </select>
                         </div>
@@ -349,7 +337,7 @@
 </div>
 <!--Class information block-->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="class-panel">
         <div class="panel-heading">
             <h2 class="panel-title">Class Information</h2>
         </div>
@@ -411,6 +399,7 @@
                                                 <th>Subject</th>
                                                 <th>Code</th>
                                                 <th>Name</th>
+                                                <th>Grade</th>
                                                 <th>Technical?</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -435,13 +424,19 @@
                                     </div>
                                     <div class="form-inline">
                                         <label for="Name" class="control-label span1">Name</label>
-                                        <div class="span3">
+                                        <div class="span2">
                                             <input type="text" class="form-control span12" name="Name" id="Name" />
                                         </div>
                                     </div>
                                     <div class="form-inline">
+                                        <label for="Grade" class="control-label span1">Grade</label>
+                                        <div class="span1">
+                                            <input type="text" class="form-control span12" name="Grade" id="Grade" />
+                                        </div>
+                                    </div>
+                                    <div class="form-inline">
                                         <label for="Technical" class="control-label span1">Tech?</label>
-                                        <div class="span2">
+                                        <div class="span1">
                                             <select id="Technical" name="Technical" class="span11">
                                                 <option value="true">Yes</option>
                                                 <option value="false">No</option>
@@ -453,6 +448,18 @@
                             <div class="row-fluid">
                                 <button class="pull-right btn-ignore btn-success add-class" type="button"><i class="fa fa-plus"></i> Add Class</button>
                             </div>
+                            <!-- Fake SchoolsAttendedID, BioDataID, and ClassesID -->
+                            <input type="hidden" name="SchoolsAttendedID" id="SchoolsAttendedID" value="1" />
+                            <input type="hidden" name="BioDataID" id="BioDataID" value="1" />
+                            <input type="hidden" name="ClassesID" id="ClassesID" value="1" />
+                            <!-- Hidden inputs for YearTaken and YearOfRecord, get filled in on creation -->
+                            <input type="hidden" name="YearTaken" id="YearTaken" value="" />
+                            <input type="hidden" name="YearOfRecord" id="YearOfRecord" value="" />
+                            <div class="row-fluid">
+                                <div class="class-errors alert hide alert-error span10 offset1">
+                                    <p></p>
+                                </div>
+                            </div>
                         </form>
                     </div> <!-- End of vertical content -->
                 </div> <!-- End of vertical tabs -->
@@ -462,7 +469,7 @@
 </div>
 <!--Duty history/stations information block-->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="duty-history-panel">
         <div class="panel-heading">
             <h2 class="panel-title">Duty History/Duty Station Information</h2>
         </div>
@@ -482,8 +489,8 @@
                         <label for="NUC" class="control-label span2">Prior NUC</label>
                         <div class="span4">
                             <select id="NUC" name="NUC" class="span10">
-                                <option value="T">Yes</option>
-                                <option value="F">No</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
                     </div>
@@ -500,13 +507,18 @@
                 </form>
             </div>
         </div>
+        <div class="row-fluid">
+            <div id="duty-history-errors" class="alert hide alert-error span10 offset1">
+                <p></p>
+            </div>
+        </div>
         <div class="tabs" id="duty-station-tabs">
             <ul>
                 <li class="hide"><a href="#duty-station-content-1">Duty Station</a></li>
                 <li><a href="#add-duty-station"><i class="fa fa-plus"></i></a></li>
             </ul>
             <div class="hide" id="duty-station-content-1">
-                <form class="form-horizontal duty-station-form">
+                <form class="form-horizontal duty-stations-form">
                     <div class="row-fluid">
                         <div class="span12 panel-body">
                             <div class="span6">
@@ -570,6 +582,11 @@
                             <button type="button" class="btn-danger pull-left btn-ignore remove-duty-station">Remove</button>
                         </div>
                     </div>
+                    <div class="row-fluid">
+                        <div class="duty-stations-errors alert hide alert-error span10 offset1">
+                            <p></p>
+                        </div>
+                    </div>
                 </form>
             </div> <!--End of first tab-->
             <div id="add-duty-station">
@@ -584,7 +601,7 @@
 </div>
 <!-- Waivers -->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="waivers-panel">
         <div class="panel-heading">
             <h2 class="panel-title">Waivers</h2>
         </div>
@@ -594,7 +611,7 @@
                 <li><a href="#add-waiver"><i class="fa fa-plus"></i></a></li>
             </ul>
             <div class="hide" id="waiver-content-1">
-                <form class="form-horizontal waiver-form">
+                <form class="form-horizontal waivers-form">
                     <div class="form-group">
                         <label for="Type" class="control-label span2">Type</label>
                         <div class="span3">
@@ -620,6 +637,11 @@
                             <button type="button" class="btn-danger pull-left btn-ignore remove-waiver">Remove</button>
                         </div>
                     </div>
+                    <div class="row-fluid">
+                        <div class="waivers-errors alert hide alert-error span10 offset1">
+                            <p></p>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div id="add-waiver">
@@ -634,7 +656,7 @@
 </div>
 <!-- Screens -->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="screens-panel">
         <div class="panel-heading">
             <h2 class="panel-title">Screens</h2>
         </div>
@@ -644,7 +666,7 @@
                 <li><a href="#add-screen"><i class="fa fa-plus"></i></a></li>
             </ul>
             <div class="hide" id="screen-content-1">
-                <form class="form-horizontal screen-form">
+                <form class="form-horizontal screens-form">
                     <div class="form-group">
                         <label for="Screener" class="control-label span2">Screener</label>
                         <div class="span2">
@@ -705,6 +727,11 @@
                             <button type="button" class="btn-danger pull-left btn-ignore remove-screen">Remove</button>
                         </div>
                     </div>
+                    <div class="row-fluid">
+                        <div class="screens-errors alert hide alert-error span10 offset1">
+                            <p></p>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div id="add-screen">
@@ -719,7 +746,7 @@
 </div>
 <!-- RD -->
 <div class="row-fluid">
-    <div class="span10 offset1 panel panel-primary">
+    <div class="span10 offset1 panel panel-primary" id="rds-panel">
         <div class="panel-heading">
             <h2 class="panel-title">RDs</h2>
         </div>
@@ -729,7 +756,7 @@
                 <li><a href="#add-rd"><i class="fa fa-plus"></i></a></li>
             </ul>
             <div class="hide" id="rd-content-1">
-                <form class="form-horizontal rd-form">
+                <form class="form-horizontal rds-form">
                     <div class="form-group">
                         <label for="Type" class="control-label span2">Type</label>
                         <div class="span3">
@@ -754,6 +781,11 @@
                             <button type="button" class="btn-danger pull-left btn-ignore remove-rd">Remove</button>
                         </div>
                     </div>
+                    <div class="row-fluid">
+                        <div class="rds-errors alert hide alert-error span10 offset1">
+                            <p></p>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div id="add-rd">
@@ -776,349 +808,36 @@
 <div id="dialog-confirm" title="">
     <p></p>
 </div>
+<div id="submitting-dialog" title="Submitting Candidate">
+    <p>Submitting Candidate...</p>
+</div>
 
 @section AddToScripts {
     <script type="text/javascript">
-        $(document).ready(function () {
 
-            var numSchools = 0;
-            var numClasses = 0;
-            var numDutyStations = 0;
-            var numWaivers = 0;
-            var numScreens = 0;
-            var numRDs = 0;
+        // Counter to wait for ajax calls
+        var counter = 0;
 
+        var passDict = {
+            "biodata": {},
+            "schools": {},
+            "class": {},
+            "duty-history": {},
+            "duty-stations": {},
+            "waivers": {},
+            "screens": {},
+            "rds": {}
+        };
 
-            var schoolTabClone = $("#school-tabs > ul").children().first().clone().removeClass("hide");
-            var schoolContentClone = $("#school-content-1").clone().removeClass("hide");
-            var yearTabClone = $("#year-tab-1").clone();
-            var yearContentClone = $("#year-content-1").clone();
-            //Remove year tab and content after cloning
-            $("#year-tab-1").remove();
-            $("#year-content-1").remove();
-            var classTabClone = $("#class-tabs > ul").children().first().clone().removeClass("hide");
-            var classContentClone = $("#class-content-1").clone().removeClass("hide");
-            var dutyStationTabClone = $("#duty-station-tabs > ul").children().first().clone().removeClass("hide");
-            var dutyStationContentClone = $("#duty-station-content-1").clone().removeClass("hide");
-            var waiverTabClone = $("#waiver-tabs > ul").children().first().clone().removeClass("hide");
-            var waiverContentClone = $("#waiver-content-1").clone().removeClass("hide");
-            var screenTabClone = $("#screen-tabs > ul").children().first().clone().removeClass("hide");
-            var screenContentClone = $("#screen-content-1").clone().removeClass("hide");
-            var rdTabClone = $("#rd-tabs > ul").children().first().clone().removeClass("hide");
-            var rdContentClone = $("#rd-content-1").clone().removeClass("hide");
-
-            var schoolList = [];
-
-            // Init horizontal and vertical tabs
-            $(".tabs").tabs();
-            $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
-            $(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
-
-            // Set datepickers
-            $(".date").datepicker({
-                changeYear: true,
-                yearRange: "-90:+0"
-            });
-
-            /** Add functionalities **/
-
-            $("#add-school-button").click(function () {
-                var schoolName = $("#SchoolValue").val(); // Get school name from dropdown
-                if (schoolList.indexOf(schoolName) != -1) {
-                    showDialog("School Exists", "This school has already been added", true, function () { });
-                    return;
-                }
-                numSchools++;
-                schoolList.push(schoolName);
-                if (numSchools == 1) {
-                    // Just show hidden content
-                    $("#school-tabs > ul").children().first().removeClass("hide");
-                    // Put school name in link
-                    $("#school-tabs > ul").children().first().find("a").html(schoolName);
-                    // Put school name in hidden input
-                    $("#school-content-1 #school-name").val(schoolName);
-                    $("#school-content-1").removeClass("hide");
-                    // Re-init tabs
-                    $("#school-tabs").tabs("refresh");
-                } else {
-                    // Clone and add content
-                    var li = $(schoolTabClone).clone();
-                    $(li).children().first().attr("href", "#school-content-" + numSchools);
-                    // Put school name in link
-                    $(li).children().first().html(schoolName);
-                    var content = $(schoolContentClone).clone();
-                    $(content).attr("id", "school-content-" + numSchools);
-                    // Put school name in hidden input
-                    $(content).find("#school-name").val(schoolName);
-                    $("#school-tabs > ul").prepend(li);
-                    $("#school-tabs > ul").after(content);
-                    // Re-init tabs
-                    $("#school-tabs").tabs("refresh");
-                }
-            });
-
-            $(document).on("click", ".generate-classes", function (e) {
-                // Make sure YearStart and YearEnd are filled
-                var YearStart = parseInt($(this).parent().parent().parent().find("#YearStart").val());
-                var YearEnd = parseInt($(this).parent().parent().parent().find("#YearEnd").val());
-                if (isNaN(YearStart) || isNaN(YearEnd) || (YearStart >= YearEnd)) {
-                    showDialog("Only Numbers Allowed", "Please enter numbers for Year Start and Year End", true, function () { });
-                    return;
-                }
-                numClasses++;
-                var schoolName = $(this).prev().val();
-                var newTabs;
-                var content;
-                if (numClasses == 1) {
-                    // Just show hidden content
-                    $("#class-tabs > ul").children().first().removeClass("hide");
-                    // Set tab to school name
-                    $("#class-tabs > ul").children().first().find("a").html(schoolName);
-                    $("#class-content-1").removeClass("hide");
-                    content = $("#class-content-1");
-                    // Re-init tabs
-                    $("#class-tabs").tabs("refresh");
-                    newTabs = false;
-                } else {
-                    // Use clones
-                    var li = $(classTabClone).clone();
-                    content = $(classContentClone).clone();
-                    // Set tab to school name
-                    $(li).children().first().attr("href", "#class-content-" + numSchools);
-                    $(li).children().first().html(schoolName);
-                    $(content).attr("id", "class-content-" + numSchools);
-                    $("#class-tabs > ul").prepend(li);
-                    $("#class-tabs > ul").after(content);
-                    // Re-init tabs
-                    $("#class-tabs").tabs("refresh");
-                    newTabs = true;
-                }
-                // Clone/create vertical tabs
-                var numYears = YearEnd - YearStart;
-                for (var i = 0; i < numYears; i++) {
-                    // Clone year tab and content, append to 'content'
-                    var yearTab = $(yearTabClone).clone();
-                    var yearContent = $(yearContentClone).clone();
-                    // Set year tab html and href
-                    $(yearTab).find("a").html("Year " + (i + 1));
-                    $(yearTab).find("a").attr("href", "#year-content-" + (i + 1));
-                    // Set year content id
-                    $(yearContent).attr("id", "year-content-" + (i + 1));
-                    $(content).find("ul").append(yearTab); // Make consecutive downward
-                    $(content).find("ul").after(yearContent);
-                }
-                // Init year tabs
-                if (newTabs) {
-                    // Set tabs vertical
-                    $(content).find(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
-                    $(content).find(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
-                } else {
-                    // Just refresh
-                    $(content).find("#year-tabs").tabs("refresh");
-                }
-                //TODO: disable generate button afterwards?
-            });
-
-            $(document).on("click", ".add-class", function (e) {
-                var table = $(this).parent().parent().find(".classes-table");
-                var name = $(this).parent().parent().find("#Name").val();
-                var subject = $(this).parent().parent().find("#Subject").val().toUpperCase();
-                var code = $(this).parent().parent().find("#Code").val();
-                var tech = $(this).parent().parent().find("#Technical").val();
-                if (tech == "" || name == "" || subject == "" || code == "") {
-                    showDialog("Empty Fields", "Please enter values in all of the fields", true, function () { });
-                    return;
-                }
-                tech = tech == "true" ? "Yes" : "No";
-                // Add to table
-                $(table).find("tbody").append("" +
-                "<tr>" +
-                "<td>" + subject + "</td>" +
-                "<td>" + code + "</td>" +
-                "<td>" + name + "</td>" +
-                "<td>" + tech + "</td>" +
-                "<td class='text-center'><button class='btn-ignore btn-danger remove-class' type='button'>Remove</button></td>" +
-                "</tr>");
-                // Clear out fields
-                $(this).parent().parent().find("#Name").val("");
-                $(this).parent().parent().find("#Subject").val("");
-                $(this).parent().parent().find("#Code").val("");
-                $(this).parent().parent().find("#Technical").val("");
-            });
-
-            $("#add-duty-station-button").click(function () {
-                numDutyStations++;
-                if (numDutyStations == 1) {
-                    // Just show hidden content
-                    $("#duty-station-tabs > ul").children().first().removeClass("hide");
-                    $("#duty-station-content-1").removeClass("hide");
-                    // Re-init tabs
-                    $("#duty-station-tabs").tabs("refresh");
-                } else {
-                    // Clone and add content
-                    var li = $(dutyStationTabClone).clone();
-                    $(li).children().first().attr("href", "#duty-station-content-" + numDutyStations);
-                    var content = $(dutyStationContentClone).clone();
-                    $(content).attr("id", "duty-station-content-" + numDutyStations);
-                    $("#duty-station-tabs > ul").prepend(li);
-                    $("#duty-station-tabs > ul").after(content);
-                    // Re-init tabs
-                    $("#duty-station-tabs").tabs("refresh");
-                }
-            });
-
-            $("#add-waiver-button").click(function () {
-                numWaivers++;
-                if (numWaivers == 1) {
-                    // Just show hidden content
-                    $("#waiver-tabs > ul").children().first().removeClass("hide");
-                    $("#waiver-content-1").removeClass("hide");
-                    // Re-init tabs
-                    $("#waiver-tabs").tabs("refresh");
-                } else {
-                    // Clone and add content
-                    var li = $(waiverTabClone).clone();
-                    $(li).children().first().attr("href", "#waiver-content-" + numWaivers);
-                    var content = $(waiverContentClone).clone();
-                    $(content).attr("id", "waiver-content-" + numWaivers);
-                    $("#waiver-tabs > ul").prepend(li);
-                    $("#waiver-tabs > ul").after(content);
-                    // Re-init tabs
-                    $("#waiver-tabs").tabs("refresh");
-                }
-            });
-
-            $("#add-screen-button").click(function () {
-                numScreens++;
-                if (numScreens == 1) {
-                    // Just show hidden content
-                    $("#screen-tabs > ul").children().first().removeClass("hide");
-                    $("#screen-content-1").removeClass("hide");
-                    // Re-init tabs
-                    $("#screen-tabs").tabs("refresh");
-                } else {
-                    // Clone and add content
-                    var li = $(screenTabClone).clone();
-                    $(li).children().first().attr("href", "#screen-content-" + numScreens);
-                    var content = $(screenContentClone).clone();
-                    $(content).attr("id", "screen-content-" + numScreens);
-                    $("#screen-tabs > ul").prepend(li);
-                    $("#screen-tabs > ul").after(content);
-                    // Re-init tabs
-                    $("#screen-tabs").tabs("refresh");
-                }
-            });
-
-            $("#add-rd-button").click(function () {
-                numRDs++;
-                if (numRDs == 1) {
-                    // Just show hidden content
-                    $("#rd-tabs > ul").children().first().removeClass("hide");
-                    $("#rd-content-1").removeClass("hide");
-                    // Re-init tabs
-                    $("#rd-tabs").tabs("refresh");
-                } else {
-                    // Clone and add content
-                    var li = $(rdTabClone).clone();
-                    $(li).children().first().attr("href", "#rd-content-" + numRDs);
-                    var content = $(rdContentClone).clone();
-                    $(content).attr("id", "rd-content-" + numRDs);
-                    $("#rd-tabs > ul").prepend(li);
-                    $("#rd-tabs > ul").after(content);
-                    // Re-init tabs
-                    $("#rd-tabs").tabs("refresh");
-                }
-            });
-
-            /** Remove Functionalities **/
-
-            $(document).on("click", ".remove-school", function (e) {
-                // Ask for confirmation
-                showDialog("Remove School?", "Are you sure you want to remove this school entry?", false, function () {
-                    console.log("remove school");
-                    // Remove the school tab and content
-                    // Remove class tab and content
-                });
-            });
-
-            $(document).on("click", ".remove-class", function (e) {
-                var btn = $(this);
-                var f = function () {
-                    console.log("remove class");
-                    $(btn).parent().parent().remove();
-                }
-                showDialog("Remove Class?", "Are you sure you want to remove this class entry?", false, f);
-            });
-
-            $(document).on("click", ".remove-duty-station", function (e) {
-                // Remove duty station tab and content
-                showDialog("Remove Duty Station?", "Are you sure you want to remove this duty station entry?", false, function () {
-                    console.log("remove duty station");
-                });
-            });
-
-            $(document).on("click", ".remove-waiver", function (e) {
-                // Remove waiver tab and content
-                showDialog("Remove Waiver?", "Are you sure you want to remove this waiver entry?", false, function () {
-                    console.log("remove waiver");
-                });
-            });
-
-            $(document).on("click", ".remove-screen", function (e) {
-                // Remove screen tab and content
-                showDialog("Remove Screen?", "Are you sure you want to remove this screen entry?", false, function () {
-                    console.log("remove screen");
-                });
-            });
-
-            $(document).on("click", ".remove-rd", function (e) {
-                // Remove rd tab and content
-                showDialog("Remove RD?", "Are you sure you want to remove this RD entry?", false, function () {
-                    console.log("remove RD");
-                });
-            });
-
-            // Create Candidate button click
-            $("#create-candidate-button").click(function () {
-                /*
-                    var biodataForm = $("#biodata-form").serialize();
-                    console.log(biodataForm);
-                    var schoolForm = $("#school-form-1").serialize();
-                    console.log(schoolForm);
-                    var classForm = $("#class-form-1").serialize();
-                    console.log(classForm);
-                    var dutyHistoryForm = $("#duty-history-form-1").serialize();
-                    console.log(dutyHistoryForm);
-                    */
-
-                var obj = {
-                    "SSN": "123456789",
-                    "FName": "Test",
-                    "LName": "Test",
-                    "MName": "Test"
-                };
-                console.log($.param(obj));
-
-                $.ajax({
-                    url: "http://localhost:50741/api/BioData/Test?" + $.param(obj),
-                    type: "Post",
-                    success: function (data) {
-                        console.log("success");
-                        console.log(data);
-                    },
-                    error: function (data) {
-                        console.log("error");
-                        console.log(data);
-                        console.log(data.responseText);
-                    }
-                });
-
-            });
-
-        });
-
+        /**
+         * Function to show and set data/callbacks for a confirmation dialog
+         * Params:
+         *  title - (String) Title for the new dialog
+         *  message - (String) Message for the new dialog
+         *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
+         *  okFunction - (Function) Callback function on OK press
+         */
         function showDialog(title, message, okOnly, okFunction) {
-            $("#dialog-confirm").attr("title", title);
             $("#dialog-confirm > p").html(message);
             var buttons;
             if (okOnly) {
@@ -1141,9 +860,278 @@
             }
 
             $("#dialog-confirm").dialog({
+                title: title,
                 modal: true,
                 buttons: buttons
             });
         }
+
+        /**
+         * Function that test whether a form is valid by using API call
+         * Returns: (Boolean) whether or not the form data is valid
+         * Params:
+         *  forms - (Array of HTML Form) Forms to serialize and pass to the API function
+         *  model - (String) Name of the model to use for the API function call
+         *  toSet - (String) Name of key to set in passDict
+         *  index - (Integer) Index to put toSet's data
+         */
+        function test(forms, model, toSet, index) {
+            var formData = "";
+            for (var i = 0; i < forms.length; i++) {
+                formData += $(forms[i]).serialize();
+            }
+            var success = function (data) {
+                counter++;
+            };
+            var error = function (data) {
+                console.log(data);
+                var response = $.parseJSON(data.responseText).ModelState;
+                //delete response.$id;
+                var responseString = "";
+                $.each(response, function (key, value) {
+                    for (var i = 0; i < value.length; i++) {
+                        responseString += value[i] + "<br/>";
+                    }
+                });
+                //responseString = responseString.substring(0, responseString.length - 1);
+                if (model == "Degree" || model == "ClassesAttended" || model == "SchoolStandings") {
+                    //We want to append to what is already there in schools
+                    if (passDict[toSet][index]) {
+                        passDict[toSet][index] += responseString;
+                    } else {
+                        passDict[toSet][index] = responseString;
+                    }
+                } else {
+                    passDict[toSet][index] = responseString;
+                }
+                counter++;
+            };
+            $.ajax({
+                url: baseURL + "/api/" + model + "/Test?" + formData,
+                type: "Post",
+                asynch: false,
+                success: success,
+                error: error
+            });
+        }
+
+        /**
+         * Sets an interval to wait for a certain condition to be true
+         * Params:
+         *  check - (Function) Function to run that returns T/F
+         *  onComplete - (Function) Function to run when check returns true
+         */
+        function waitUntil(check, onComplete) {
+            // if the check returns true, execute onComplete immediately
+            if (check()) {
+                onComplete();
+                return;
+            }
+            var timeoutPointer;
+            var intervalPointer = setInterval(function () {
+                if (!check()) return;
+
+                clearInterval(intervalPointer);
+                if (timeoutPointer) clearTimeout(timeoutPointer);
+                onComplete();
+            }, 100);
+        }
+
+        function testBioData() {
+            counter = 0;
+            var biodataForm = $("#biodata-form");
+            test([biodataForm], "BioData", "biodata", 0);
+            waitUntil(function () { return counter == 1; }, testSchools);
+        }
+
+        function testSchools() {
+            counter = 0;
+            var schoolForms = $(".schools-form");
+            //Test SchoolsAttended
+            for (var i = 0; i < numSchools; i++) {
+                $([schoolForms[i]]).find("#SchoolsAttendedID").removeAttr("name");
+                test([schoolForms[i]], "SchoolsAttended", "schools", i);
+            }
+            waitUntil(function () { return counter == numSchools; }, testDegrees);
+        }
+
+        function testDegrees() {
+            counter = 0;
+            var schoolForms = $(".schools-form");
+            //Test Degree
+            for (var i = 0; i < numSchools; i++) {
+                // Add SchoolsAttendedID name
+                $([schoolForms[i]]).find("#SchoolsAttendedID").attr("name", "SchoolsAttendedID");
+                test([schoolForms[i]], "Degree", "schools", i);
+            }
+            waitUntil(function () { return counter == numSchools; }, testClasses);
+        }
+
+        function testClasses() {
+            counter = 0;
+            var classesForms = $(".classes-form");
+            var classForms = $(".class-form");
+            var length = classesForms.length;
+            for (var i = 0; i < length; i++) {
+                for (var j = 0; j < classForms.length; j++) {
+                    if ($(classForms[j]).find(classesForms[i]).length > 0) {
+                        test([classesForms[i]], "Classes", "class", j);
+                    }
+                }
+            }
+            waitUntil(function () { return counter == length; }, testClassesAttended);
+        }
+
+        function testClassesAttended() {
+            counter = 0;
+            var classForms = $(".class-form");
+            var length = 0;
+            // Figure out how many times for loops will run
+            for (var i = 0; i < length; i++) {
+                //Get all classes for this year
+                var classesForms = $(classForms[i]).find(".classes-form");
+                length += classesForms.length;
+            }
+            for (var i = 0; i < length; i++) {
+                //Get all classes for this year
+                var classesForms = $(classForms[i]).find(".classes-form");
+                for (var j = 0; j < classesForms.length; j++) {
+                    test([classForms[i], classesForms[j]], "ClassesAttended", "class", i);
+                }
+            }
+            waitUntil(function () { return counter == length; }, testSchoolStandings);
+        }
+
+        function testSchoolStandings() {
+            counter = 0;
+            var classForms = $(".class-form");
+            var length = classForms.length;
+            for (var i = 0; i < length; i++) {
+                test([classForms[i]], "SchoolStandings", "class", i);
+            }
+            waitUntil(function () { return counter == length; }, testDutyHistory);
+        }
+
+        function testDutyHistory() {
+            counter = 0;
+            var dutyHistoryForm = $("#duty-history-form");
+            test([dutyHistoryForm], "DutyHistory", "duty-history", 0);
+            waitUntil(function () { return counter == 1; }, testDutyStations);
+        }
+
+        function testDutyStations() {
+            counter = 0;
+            var dutyStationForms = $(".duty-stations-form");
+            for (var i = 0; i < numDutyStations; i++) {
+                test([dutyStationForms[i]], "DutyStation", "duty-stations", i);
+            }
+            waitUntil(function () { return counter == numDutyStations; }, testWaivers);
+        }
+
+        function testWaivers() {
+            counter = 0;
+            var waiverForms = $(".waivers-form");
+            for (var i = 0; i < numWaivers; i++) {
+                test([waiverForms[i]], "Waiver", "waivers", i);
+            }
+            waitUntil(function () { return counter == numWaivers; }, testScreens);
+        }
+
+        function testScreens() {
+            counter = 0;
+            var screenForms = $(".screens-form");
+            for (var i = 0; i < numScreens; i++) {
+                test([screenForms[i]], "Screen", "screens", i);
+            }
+            waitUntil(function () { return counter == numScreens; }, testRDs);
+        }
+
+        function testRDs() {
+            counter = 0;
+            var rdForms = $(".rds-form");
+            for (var i = 0; i < numRDs; i++) {
+                test([rdForms[i]], "RD", "rds", i);
+            }
+            waitUntil(function () { return counter == numRDs; }, checkErrors);
+        }
+
+        function checkErrors() {
+            var allPass = true;
+            //Clear all errors
+            $(".alert").addClass("hide");
+            $(".alert > p").html("");
+            for (var key in passDict) {
+                var errors = passDict[key];
+                $("#" + key + "-panel").removeClass("panel-error");
+                if (Object.keys(errors).length > 0) {
+                    allPass = false;
+                    //Show errors in correct place
+                    $("#" + key + "-panel").addClass("panel-error");
+                    if (key == "biodata" || key == "duty-history") {
+                        $("#" + key + "-errors > p").html(errors[0]);
+                        $("#" + key + "-errors").removeClass("hide");
+                    } else {
+                        //Get forms
+                        var forms = $("." + key + "-form");
+                        for (var i in errors) {
+                            $(forms[i]).find("." + key + "-errors > p").html(errors[i]);
+                            $(forms[i]).find("." + key + "-errors").removeClass("hide");
+                        }
+                    }
+                }
+            }
+            //Clear out dict
+            passDict = {
+                "biodata": {},
+                "schools": {},
+                "class": {},
+                "duty-history": {},
+                "duty-stations": {},
+                "waivers": {},
+                "screens": {},
+                "rds": {}
+            };
+            if (allPass == true) {
+                submitData();
+            } else {
+                //Close dialog at end
+                $("#submitting-dialog").dialog("close");
+            }
+        }
+
+        function submitData() {
+            //Close dialog at end
+            $("#submitting-dialog").dialog("close");
+        }
+
+        $(document).ready(function () {
+
+            // Init horizontal and vertical tabs
+            $(".tabs").tabs();
+            $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+            $(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
+
+            // Set datepickers
+            $(".date").datepicker({
+                changeYear: true,
+                yearRange: "-90:+0"
+            });
+
+            $("#submitting-dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                dialogClass: "no-close"
+            });
+
+            // Create Candidate button click
+            $("#create-candidate-button").click(function () {
+                console.log("starting test");
+                // Show dialog to prevent any further clicking
+                $("#submitting-dialog").dialog("open");
+                testBioData();
+            });
+
+        });
+
     </script>
 }

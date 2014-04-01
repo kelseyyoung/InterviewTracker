@@ -21,16 +21,26 @@ namespace InterviewTracker.Models
         // TODO: this shouldn't be just a string
         [Required]
         public string Code { get; set; } // Division/section code
-        //TODO: QUALS
+        // Quals
+        public bool NR { get; set; } // Recommended for NR duty
+        public bool INST { get; set; } // Recommended for Instructor duty
+        public bool NPS { get; set; } // Recommended for Nuclear Power school duty
+        public bool PXO { get; set; } // Recommended for Prospective XO
+        public bool EDO { get; set; } // Recommended for Engineering Duty Officer
+        public bool ENLTECH { get; set; } // Recommended for Enlisted Tech
+        public bool NR1 { get; set; } // Recommended for NR-1 duty
+        public bool SUPPLY { get; set; } // Recommended for NR duty (supply)
+        public bool EOOW { get; set; } // Recommended for Engineering Officer of the Watch
+        public bool DOE { get; set; } // Recommended for Field Office
         [Required]
-        public UserGroup? UserGroup { get; set; } // Type of user
+        public string UserGroup { get; set; } // Type of user
     }
 
 }
 
 public enum UserGroup
 {
-    ADMIN,
-    COORD,
-    INTER
+    ADMIN = 1,
+    COORD = 2,
+    INTER = 3
 }

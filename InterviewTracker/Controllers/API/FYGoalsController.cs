@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/FYGoals
+        [ActionName("GetAll")]
         public IEnumerable<FYGoals> GetFYGoals()
         {
             return db.FYGoals.AsEnumerable();
         }
 
         // GET api/FYGoals/5
+        [ActionName("Get")]
         public FYGoals GetFYGoals(int id)
         {
             FYGoals fygoals = db.FYGoals.Find(id);
@@ -36,7 +38,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/FYGoals/5
-        public HttpResponseMessage PutFYGoals(int id, FYGoals fygoals)
+        [ActionName("Put")]
+        public HttpResponseMessage PutFYGoals(int id, [FromUri] FYGoals fygoals)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +66,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/FYGoals
-        public HttpResponseMessage PostFYGoals(FYGoals fygoals)
+        [ActionName("Post")]
+        public HttpResponseMessage PostFYGoals([FromUri] FYGoals fygoals)
         {
             if (ModelState.IsValid)
             {
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/FYGoals/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteFYGoals(int id)
         {
             FYGoals fygoals = db.FYGoals.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, fygoals);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<FYGoals> GetBy()
+        {
+            return db.FYGoals.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

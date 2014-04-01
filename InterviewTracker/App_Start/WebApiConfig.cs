@@ -12,20 +12,22 @@ namespace InterviewTracker
         {
             //Adds the filter to report back model errors
             config.Filters.Add(new ValidateModelAttribute());
-            
+
+            /*
             // Custom route for testing
             config.Routes.MapHttpRoute(
                 name: "Test",
                 routeTemplate: "api/{controller}/{action}",
-                defaults: new {},
+                defaults: new { },
                 constraints: new { action = @"^[A-Za-z]+$" }
             );
-             
+             * */
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional },
-                constraints: new { id = @"^[0-9]*$"}
+                constraints: new { id = @"^[0-9]*$" }
             );
 
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.
@@ -36,11 +38,18 @@ namespace InterviewTracker
             /*
              * Removes XML formatting and gets rid of circular object references
              */
+           
             var json = config.Formatters.JsonFormatter;
+            /*
             json.SerializerSettings.PreserveReferencesHandling =
                 Newtonsoft.Json.PreserveReferencesHandling.Objects;
+             */
+            json.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; 
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            // Enable querying support for OData globally
+            //config.EnableQuerySupport();
         }
     }
 }

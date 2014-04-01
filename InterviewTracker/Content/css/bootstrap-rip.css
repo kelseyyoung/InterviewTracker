@@ -630,3 +630,26 @@
     text-align: center;
     overflow: visible;
 }
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.alert > p + p {
+  margin-top: 5px;
+}
+
+.alert-error {
+  color: white;
+  background-color: #BD362F;
+  border-color: #BD362F;
+}

@@ -171,7 +171,7 @@ namespace InterviewTracker.Migrations
                     MName = "Jeanne",
                     FName = "Kelsey",
                     DOB = DateTime.Parse("1992-4-16"),
-                    Sex = Sex.F,
+                    Sex = Sex.F.ToString(),
                     Programs = KelseyPrograms,
                     FYG = 2014,
                     Ethnicity = CAUC,
@@ -185,7 +185,7 @@ namespace InterviewTracker.Migrations
                     MName = "Edward",
                     FName = "John",
                     DOB = DateTime.Parse("1990-8-12"),
-                    Sex = Sex.M,
+                    Sex = Sex.M.ToString(),
                     Programs = JohnPrograms,
                     FYG = 2013,
                     Ethnicity = BLACK,
@@ -200,7 +200,7 @@ namespace InterviewTracker.Migrations
                     MName = "Hank",
                     FName = "Steve",
                     DOB = DateTime.Parse("1994-12-25"),
-                    Sex = Sex.M,
+                    Sex = Sex.M.ToString(),
                     Programs = StevePrograms,
                     FYG = 2012,
                     Ethnicity = API,
@@ -221,7 +221,17 @@ namespace InterviewTracker.Migrations
                 LoginID = "adminaa",
                 Password = "admin",
                 Code = "08A",
-                UserGroup = UserGroup.ADMIN
+                NR = true,
+                INST = false,
+                NPS = true,
+                PXO = false,
+                EDO = true,
+                ENLTECH = false,
+                NR1 = true,
+                SUPPLY = false,
+                EOOW = false,
+                DOE = false,
+                UserGroup = UserGroup.ADMIN.ToString()
             };
             User Coord = new User
             {
@@ -230,7 +240,17 @@ namespace InterviewTracker.Migrations
                 LoginID = "coordbb",
                 Password = "coord",
                 Code = "08B",
-                UserGroup = UserGroup.COORD
+                NR = false,
+                INST = false,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = false,
+                NR1 = true,
+                SUPPLY = false,
+                EOOW = true,
+                DOE = false,
+                UserGroup = UserGroup.COORD.ToString()
             };
             User Interviewer = new User
             {
@@ -239,7 +259,17 @@ namespace InterviewTracker.Migrations
                 LoginID = "interviewercc",
                 Password = "interviewer",
                 Code = "08C",
-                UserGroup = UserGroup.INTER
+                NR = false,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = false,
+                ENLTECH = false,
+                NR1 = false,
+                SUPPLY = false,
+                EOOW = false,
+                DOE = false,
+                UserGroup = UserGroup.INTER.ToString()
             };
 
             context.User.AddOrUpdate(i => i.UserID,
@@ -360,7 +390,7 @@ namespace InterviewTracker.Migrations
             FYGoals FY2012 = new FYGoals
             {
                 FY = 2012,
-                Source = FYSource.NROTC,
+                Source = FYSource.NROTC.ToString(),
                 SUB = 30,
                 SWO = 25,
                 NR = 10,
@@ -369,7 +399,7 @@ namespace InterviewTracker.Migrations
             FYGoals FY2013 = new FYGoals
             {
                 FY = 2013,
-                Source = FYSource.NUPOC,
+                Source = FYSource.NUPOC.ToString(),
                 SUB = 10,
                 SWO = 30,
                 NR = 13,
@@ -378,7 +408,7 @@ namespace InterviewTracker.Migrations
             FYGoals FY2014 = new FYGoals
             {
                 FY = 2014,
-                Source = FYSource.USNA,
+                Source = FYSource.USNA.ToString(),
                 SUB = 11,
                 SWO = 84,
                 NR = 44,
@@ -471,8 +501,9 @@ namespace InterviewTracker.Migrations
             // Interviews
             Interview KelseyInterview = new Interview
             {
-                Date = DateTime.Parse("2014-5-13"),
-                Status = Status.Scheduled,
+                Date = DateTime.Parse("2014/5/13 12:00:00"),
+                Status = Status.Scheduled.ToString(),
+                Location = "Room 203",
                 StartTime = DateTime.Parse("2014/5/13 15:00:00"),
                 EndTime = DateTime.Parse("2014/5/13 16:00:00"),
                 Duration = 60,
@@ -491,11 +522,12 @@ namespace InterviewTracker.Migrations
             };
             Interview JohnInterview = new Interview
             {
-                Date = DateTime.Parse("2014-1-20"),
-                Status = Status.Entered,
+                Date = DateTime.Parse("2014/1/20 12:00:00"),
+                Status = Status.Entered.ToString(),
+                Location = "Room 155",
                 Comments = "Seemed like a good worker",
                 StartTime = DateTime.Parse("2014/1/20 9:00:00"),
-                EndTime = DateTime.Parse("2013/5/13 11:00:00"),
+                EndTime = DateTime.Parse("2014/1/20 11:00:00"),
                 Duration = 120,
                 NR = true,
                 INST = false,
@@ -512,8 +544,9 @@ namespace InterviewTracker.Migrations
             };
             Interview SteveInterview = new Interview
             {
-                Date = DateTime.Parse("2014-2-2"),
-                Status = Status.Edited,
+                Date = DateTime.Parse("2014/2/2 12:00:00"),
+                Status = Status.Edited.ToString(),
+                Location = "Room 555",
                 Comments = "Gave off a bad impression",
                 EditedComments = "Gave off a bad impression, did not respond well to questions",
                 StartTime = DateTime.Parse("2014/2/2 11:00:00"),
@@ -535,10 +568,37 @@ namespace InterviewTracker.Migrations
                 BioData = John
             };
 
+            Interview FinalInterview = new Interview
+            {
+                Date = DateTime.Parse("2014/5/18 12:00:00"),
+                Status = Status.Final.ToString(),
+                Location = "Room 757",
+                Comments = "Gave off a bad impression",
+                EditedComments = "Gave off a bad impression, did not respond well to questions",
+                StartTime = DateTime.Parse("2014/5/18 11:00:00"),
+                EndTime = DateTime.Parse("2014/5/18 11:30:00"),
+                Duration = 180,
+                EditTime = DateTime.Parse("2014/5/20 9:30:00"),
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = false,
+                EDO = false,
+                ENLTECH = true,
+                NR1 = false,
+                SUPPLY = false,
+                EOOW = false,
+                DOE = false,
+                CurrentlyEditingUser = Coord,
+                InterviewerUser = Interviewer,
+                BioData = Kelsey
+            };
+
             context.Interview.AddOrUpdate(i => i.InterviewerID,
                 KelseyInterview,
                 JohnInterview,
-                SteveInterview
+                SteveInterview,
+                FinalInterview
             );
             
             // Classes Attended
@@ -606,7 +666,7 @@ namespace InterviewTracker.Migrations
             // RD
             RD JohnRD = new RD
             {
-                Type = RDType.DEVOL,
+                Type = RDType.DEVOL.ToString(),
                 Reason = "US Traitor",
                 Date = DateTime.Parse("2009-1-1"),
                 BioData = John
@@ -666,7 +726,7 @@ namespace InterviewTracker.Migrations
             // Waiver
             Waiver SteveWaiver = new Waiver
             {
-                Type = WaiverType.Drug,
+                Type = WaiverType.Drug.ToString(),
                 Date = DateTime.Parse("2012-1-1"),
                 Comments = "Addicted to the pipe",
                 BioData = Steve

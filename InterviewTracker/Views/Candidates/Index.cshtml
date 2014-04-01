@@ -22,6 +22,10 @@
     color: black !important;
     background-color: white !important;
     }
+
+    tr td:last-child {
+    text-align: center;
+    }
 }
 <div class="row-fluid">
     <!--Searching-->
@@ -34,25 +38,25 @@
                 <div class="row-fluid">
                     <div class="span4">
                         <div class="form-group">
-                            <label for="first-name" class="control-label span3">First Name</label>
+                            <label for="FName" class="control-label span3">First Name</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="first-name" id="first-name" />
+                                <input type="text" class="form-control" name="FName" id="FName" />
                             </div>
                         </div>
                     </div>
                     <div class="span4">
                         <div class="form-group">
-                            <label for="last-name" class="control-label span3">Last Name</label>
+                            <label for="LName" class="control-label span3">Last Name</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="last-name" id="last-name" />
+                                <input type="text" class="form-control" name="LName" id="LName" />
                             </div>
                         </div>
                     </div>
                     <div class="span4">
                         <div class="form-group">
-                            <label for="ssn" class="control-label span3">SSN</label>
+                            <label for="SSN" class="control-label span3">SSN</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="ssn" id="ssn" />
+                                <input type="text" class="form-control" name="SSN" id="SSN" />
                                 <button type="button" id="toggle-params"><i class="fa fa-plus"></i> More</button>
                             </div>
                         </div>
@@ -61,91 +65,82 @@
                 <div class="row-fluid" id="more-params" style="display: none;">
                     <div class="span4">
                         <div class="form-group">
-                            <label for="middle-name" class="control-label span3">Middle Name</label>
+                            <label for="MName" class="control-label span3">Middle Name</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="middle-name" id="middle-name" />
+                                <input type="text" class="form-control" name="MName" id="MName" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="sex" class="control-label span3">Sex</label>
+                            <label for="Sex" class="control-label span3">Sex</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="sex" id="sex" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="rank" class="control-label span3">Rank</label>
-                            <div class="span9">
-                                <input type="text" class="form-control" name="rank" id="rank" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="span4">
-                        <div class="form-group">
-                            <label for="dob" class="control-label span3">DOB</label>
-                            <div class="span9">
-                                <input type="date" class="form-control" name="dob" id="dob" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="ethnicity" class="control-label span3">Ethnicity</label>
-                            <div class="span9">
-                                <select class="form-control" name="ethnicity" id="ethinicty">
-                                    <option value="CAUC">CAUC</option>
-                                    <option value="BLACK">BLACK</option>
-                                    <option value="HISP">HISP</option>
-                                    <option value="API">API</option>
-                                    <option value="OTHER">OTHER</option> <!--Should this be here?-->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="source" class="control-label span3">Source</label>
-                            <div class="span9">
-                                <select class="form-control" name="source" id="source">
-                                    <option value="USNA">USNA</option>
-                                    <option value="NROTC">NROTC</option>
-                                    <option value="NUPOC">NUPOC</option>
-                                    <option value="STA21N">STA21N</option>
-                                    <option value="FLEET">FLEET</option>
-                                    <option value="LDO">LDO</option>
-                                    <option value="CWO">CWO</option>
+                                <select class="form-control" name="Sex" id="Sex">
+                                    <option value="">--None--</option>
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="span4">
                         <div class="form-group">
-                            <label for="suffix" class="control-label span3">Suffix</label>
+                            <label for="DOB" class="control-label span3">DOB</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="suffix" id="suffix" />
+                                <input type="text" class="form-control date" name="DOB" id="DOB" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="fyg" class="control-label span3">FYG</label>
+                            <label for="EthnicityID" class="control-label span3">Ethnicity</label>
                             <div class="span9">
-                                <input type="text" class="form-control" name="fyg" id="fyg" />
+                                <select class="form-control" name="EthnicityID" id="EthnicityID">
+                                    <option value="">--None--</option>
+                                    @foreach (var e in ViewBag.ethnicities)
+                                    {
+                                        <option value="@e.EthnicityID">@e.EthnicityValue</option>
+                                    }
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="program" class="control-label span3">Program</label>
+                            <label for="SourcesID" class="control-label span3">Source</label>
                             <div class="span9">
-                                <select class="form-control" name="program" id="program">
-                                    <option value="NR">NR</option>
-                                    <option value="INST">INST</option>
-                                    <option value="NPS">NPS</option>
-                                    <option value="PXO">PXO</option>
-                                    <option value="EDO">EDO</option>
-                                    <option value="NR1">NR1</option>
-                                    <option value="ENLTECH">ENLTECH</option>
-                                    <option value="SUPPLY">SUPPLY</option>
-                                    <option value="DOE">DOE</option>
-                                    <option value="EOOW">EOOW</option>
+                                <select class="form-control" name="SourcesID" id="SourcesID">
+                                    <option value="">--None--</option>
+                                    @foreach (var s in ViewBag.sources)
+                                    {
+                                        <option value="@s.SourcesID">@s.SourcesValue</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="Suffix" class="control-label span3">Suffix</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="Suffix" id="Suffix" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="FYG" class="control-label span3">FYG</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="FYG" id="FYG" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Programs" class="control-label span3">Program</label>
+                            <div class="span9">
+                                <select class="form-control" name="Programs" id="Programs" multiple>
+                                    @foreach (var p in ViewBag.programs)
+                                    {
+                                        <option value="@p.ProgramValue">@p.ProgramValue</option>
+                                    }
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="pull-right"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class="pull-right" id="search"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class="pull-right btn-ignore btn-danger" id="clear-search">Clear</button>
             </form>
         </div>
     </div>
@@ -153,49 +148,92 @@
 <div class="row-fluid">
     <!--Results table-->
     <div class="span12">
-        <table id="example">
+        <table id="search-results">
             <thead>
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>DOB</th>
+                    <th>SSN</th>
                     <th>Controls</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Fred</td>
-                    <td>Thomson</td>
-                    <td class="text-center"><button type="button">Edit</button></td>
-                </tr>
-                <tr>
-                    <td>John</td>
-                    <td>Smith</td>
-                    <td class="text-center"><button type="button">Edit</button></td>
-                </tr>
-                <tr>
-                    <td>Lenny</td>
-                    <td>Jones</td>
-                    <td class="text-center"><button type="button">Edit</button></td>
-                </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
 
 @section AddToScripts {
     <script type="text/javascript">
+
+        /**
+         * Converts a serialized form array to a string that can be used for $filter
+         * Returns: (String) string to use for $filter API string
+         * Params:
+         *  formArray - (Array) array of form objects with name and value
+         *
+         */
+        function buildFilterString(formArray) {
+            var ret = "";
+            for (var i = 0; i < formArray.length; i++) {
+                var item = formArray[i];
+                if (item["value"] != "") {
+                    if (i != 0 && ret != "") {
+                        ret += " and ";
+                    }
+                    if (isNaN(item["value"])) {
+                        ret += item["name"] + " eq '" + item["value"] + "'";
+                    } else {
+                        ret += item["name"] + " eq " + item["value"];
+                    }
+                }
+            }
+            return ret;
+        }
+
+        /**
+         * Populates the DataTable
+         * Params:
+         *  obj - (Object) Object return from an API call
+         */
+        function populateTable(obj) {
+            // Clear out table
+            $("#search-results").dataTable().fnClearTable();
+            // Add new rows
+            for (var i = 0; i < obj.length; i++) {
+                var bd = obj[i];
+                var dob = moment(bd.DOB);
+                dob = dob.format("MM/DD/YYYY");
+                var url = "@Url.Action("Edit", "Candidates", new { id = "__id__"})";
+                url = url.replace("__id__", bd.ID);
+                var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button' type='button'>Edit</a>"];
+                $("#search-results").dataTable().fnAddData(a);
+            }
+            //Re-init buttons
+            $("#search-results button:not(.btn-ignore)").button();
+            $("#search-results a.button").button();
+        }
+
         $(document).ready(function () {
+
+            // Set datepicker
+            $(".date").datepicker({
+                changeYear: true,
+                yearRange: "-90:+0"
+            });
+
             $("#toggle-params").click(function () {
                 $("#more-params").slideToggle(function () {
                     if ($("#toggle-params").text().trim() == "More") {
                         $("#toggle-params").button("option", "label", "<i class='fa fa-minus'></i> Less").button("refresh");
                     } else {
                         $("#toggle-params").button("option", "label", "<i class='fa fa-plus'></i> More").button("refresh");
+                        //TODO: clear out hidden parameters
                     }
                 });
             });
 
-            $("#example").dataTable({
+            $("#search-results").dataTable({
                 "bJQueryUI": true,
                 "bFilter": false,
                 "fnDrawCallback": function (oSettings) {
@@ -204,6 +242,58 @@
                     }
                 }
             });
+
+            $("#search").click(function () {
+                var form = $("#search-form");
+                var filterStr = buildFilterString($(form).serializeArray());
+                if (filterStr == "") {
+                    // If empty, get all?
+                } else {
+                    // Make call to API
+                    var obj = {
+                        "$filter": filterStr
+                    };
+                    $.ajax({
+                        url: "http://localhost:50741/api/BioData/GetBy?" + $.param(obj),
+                        type: "Get",
+                        success: function (data) {
+                            console.log("success");
+                            console.log(data);
+                            populateTable(data);
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                            console.log(data.responseText);
+                        }
+                    });
+                }
+            });
+
+            $("#clear-search").click(function () {
+                var formArray = $("#search-form").serializeArray();
+                console.log(formArray);
+                for (var i = 0; i < formArray.length; i++) {
+                    $("#" + formArray[i]["name"]).val("");
+                }
+            });
+
+            //Initial DataTable data is all biodatas
+            $.ajax({
+                url: "http://localhost:50741/api/BioData/GetAll/",
+                type: "Get",
+                success: function (data) {
+                    console.log("success");
+                    console.log(data);
+                    populateTable(data);
+                },
+                error: function (data) {
+                    console.log("error");
+                    console.log(data);
+                    console.log(data.responseText);
+                }
+            });
+
         });
     </script>
 }

@@ -11,7 +11,7 @@ namespace InterviewTracker.Models
     {
         public int RDID { get; set; } // PK for RD table
         [Required]
-        public RDType? Type { get; set; } // Type of devolunteer, RECLAMA or DEVOL
+        public string Type { get; set; } // Type of devolunteer, RECLAMA or DEVOL
         [Required]
         public DateTime Date { get; set; } // Date of request or DEVOL status
         [Required]

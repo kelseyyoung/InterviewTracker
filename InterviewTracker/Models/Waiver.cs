@@ -11,7 +11,7 @@ namespace InterviewTracker.Models
     {
         public int WaiverID { get; set; } // PK for Waiver table
         [Required]
-        public WaiverType? Type { get; set; } // Type of Waiver
+        public string Type { get; set; } // Type of Waiver
         [Required]
         public DateTime? Date { get; set; } // Date of waiver issue
         [Required]

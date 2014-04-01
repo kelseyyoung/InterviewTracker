@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/User
+        [ActionName("GetAll")]
         public IEnumerable<User> GetUsers()
         {
             return db.User.AsEnumerable();
         }
 
         // GET api/User/5
+        [ActionName("Get")]
         public User GetUser(int id)
         {
             User user = db.User.Find(id);
@@ -36,7 +38,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/User/5
-        public HttpResponseMessage PutUser(int id, User user)
+        [ActionName("Put")]
+        public HttpResponseMessage PutUser(int id, [FromUri] User user)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +66,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/User
-        public HttpResponseMessage PostUser(User user)
+        [ActionName("Post")]
+        public HttpResponseMessage PostUser([FromUri] User user)
         {
             if (ModelState.IsValid)
             {
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/User/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteUser(int id)
         {
             User user = db.User.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, user);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<User> GetBy()
+        {
+            return db.User.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

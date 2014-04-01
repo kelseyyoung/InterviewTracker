@@ -18,12 +18,14 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/Sources
+        [ActionName("GetAll")]
         public IEnumerable<Sources> GetSources()
         {
             return db.Sources.AsEnumerable();
         }
 
         // GET api/Sources/5
+        [ActionName("Get")]
         public Sources GetSources(int id)
         {
             Sources sources = db.Sources.Find(id);
@@ -36,7 +38,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/Sources/5
-        public HttpResponseMessage PutSources(int id, Sources sources)
+        [ActionName("Put")]
+        public HttpResponseMessage PutSources(int id, [FromUri] Sources sources)
         {
             if (!ModelState.IsValid)
             {
@@ -63,7 +66,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/Sources
-        public HttpResponseMessage PostSources(Sources sources)
+        [ActionName("Post")]
+        public HttpResponseMessage PostSources([FromUri] Sources sources)
         {
             if (ModelState.IsValid)
             {
@@ -81,6 +85,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/Sources/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteSources(int id)
         {
             Sources sources = db.Sources.Find(id);
@@ -113,6 +118,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, sources);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<Sources> GetBy()
+        {
+            return db.Sources.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)

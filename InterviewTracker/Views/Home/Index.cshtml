@@ -70,11 +70,22 @@
 
         $(document).ready(function () {
             /*
-            var obj = {"SSN" : "123456789"};
+            var obj = {
+                "FName": "Test",
+                "LName": "Test",
+                "MName": "Test",
+                "DOB": "03/25/2014",
+                "Sex": "M",
+                "FYG": 2014,
+                "EthnicityID": 1,
+                "SourcesID": 1,
+                "SubSourcesID": 1,
+                "SSN": "123-45-6789"
+            };
             console.log($.param(obj));
             
             $.ajax({
-                url: "http://localhost:50741/api/BioData/Test?" + $.param(obj),
+                url: "http://localhost:50741/api/BioData/Post?" + $.param(obj),
                 type: "Post",
                 success: function (data) {
                     console.log("success");
@@ -87,7 +98,6 @@
                 }
             });
             */
-            
             
         });
     </script>

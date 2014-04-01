@@ -22,11 +22,11 @@ namespace InterviewTracker.Models
         [Required]
         public DateTime? ScreenDate { get; set; } // Date of screening
         [Required]
-        public ScreenStatus? NRStatus { get; set; } // Status of NR
+        public string NRStatus { get; set; } // Status of NR
         [Required]
-        public ScreenStatus? INSTStatus { get; set; } // Status of INST
+        public string INSTStatus { get; set; } // Status of INST
         [Required]
-        public ScreenStatus? NPSStatus { get; set; } // Status of NPS
+        public string NPSStatus { get; set; } // Status of NPS
         [Required]
         public string Notes { get; set; } // Notes on screen
 

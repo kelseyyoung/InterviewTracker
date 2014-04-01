@@ -13,7 +13,9 @@ namespace InterviewTracker.Models
         [Required]
         public DateTime? Date { get; set; } // Date of interview
         [Required]
-        public Status? Status { get; set; } // Status of interview
+        public string Status { get; set; } // Status of interview
+        [Required]
+        public string Location { get; set; }
         public string Comments { get; set; } // Comments from interviewer
         public string EditedComments { get; set; } // Edited comments from interview coordinator
         [Required]
@@ -25,25 +27,15 @@ namespace InterviewTracker.Models
         [Required]
         public int? Duration { get; set; } // Duration in minutes
         public DateTime? EditTime { get; set; } // Last time interviewer's comments were edited
-        [Required]
         public bool? NR { get; set; } // Recommended for NR duty
-        [Required]
         public bool? INST { get; set; } // Recommended for Instructor duty
-        [Required]
         public bool? NPS { get; set; } // Recommended for Nuclear Power school duty
-        [Required]
         public bool? PXO { get; set; } // Recommended for Prospective XO
-        [Required]
         public bool? EDO { get; set; } // Recommended for Engineering Duty Officer
-        [Required]
         public bool? ENLTECH { get; set; } // Recommended for Enlisted Tech
-        [Required]
         public bool? NR1 { get; set; } // Recommended for NR-1 duty
-        [Required]
         public bool? SUPPLY { get; set; } // Recommended for NR duty (supply)
-        [Required]
         public bool? EOOW { get; set; } // Recommended for Engineering Officer of the Watch
-        [Required]
         public bool? DOE { get; set; } // Recommended for Field Office
 
         [ForeignKey("CurrentlyEditingUser")]

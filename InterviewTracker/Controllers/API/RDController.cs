@@ -18,6 +18,7 @@ namespace InterviewTracker.Controllers.API
         private InterviewTrackerContext db = new InterviewTrackerContext();
 
         // GET api/RD
+        [ActionName("GetAll")]
         public IEnumerable<RD> GetRDs()
         {
             var rd = db.RD.Include(r => r.BioData);
@@ -25,6 +26,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // GET api/RD/5
+        [ActionName("Get")]
         public RD GetRD(int id)
         {
             RD rd = db.RD.Find(id);
@@ -37,7 +39,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // PUT api/RD/5
-        public HttpResponseMessage PutRD(int id, RD rd)
+        [ActionName("Put")]
+        public HttpResponseMessage PutRD(int id, [FromUri] RD rd)
         {
             if (!ModelState.IsValid)
             {
@@ -64,7 +67,8 @@ namespace InterviewTracker.Controllers.API
         }
 
         // POST api/RD
-        public HttpResponseMessage PostRD(RD rd)
+        [ActionName("Post")]
+        public HttpResponseMessage PostRD([FromUri] RD rd)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +86,7 @@ namespace InterviewTracker.Controllers.API
         }
 
         // DELETE api/RD/5
+        [ActionName("Delete")]
         public HttpResponseMessage DeleteRD(int id)
         {
             RD rd = db.RD.Find(id);
@@ -114,6 +119,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.OK, rd);
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [ActionName("GetBy")]
+        [HttpGet]
+        [Queryable]
+        public IQueryable<RD> GetBy()
+        {
+            return db.RD.AsQueryable();
         }
 
         protected override void Dispose(bool disposing)
