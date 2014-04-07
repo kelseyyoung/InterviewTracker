@@ -37,6 +37,7 @@ namespace InterviewTracker.Controllers
         public void generateCandidateReport(/*int bioID*/)
         {
             var bioData = db.BioData.Find(1);
+            //var bioData = db.BioData.Where(x => x.ID == 1).First();
            
             string fileName = Server.MapPath("~/CandidateReport_" + bioData.FName + " " + bioData.LName + ".docx");
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));

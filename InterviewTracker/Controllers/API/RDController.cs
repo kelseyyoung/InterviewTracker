@@ -22,6 +22,7 @@ namespace InterviewTracker.Controllers.API
         public IEnumerable<RD> GetRDs()
         {
             var rd = db.RD.Include(r => r.BioData);
+            //var rd = db.RD;
             return rd.AsEnumerable();
         }
 
@@ -30,6 +31,7 @@ namespace InterviewTracker.Controllers.API
         public RD GetRD(int id)
         {
             RD rd = db.RD.Find(id);
+            //RD rd = db.RD.Where(x => x.RDID == id).First();
             if (rd == null)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
@@ -90,6 +92,7 @@ namespace InterviewTracker.Controllers.API
         public HttpResponseMessage DeleteRD(int id)
         {
             RD rd = db.RD.Find(id);
+            //RD rd = db.RD.Where(x => x.RDID == id).First();
             if (rd == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);

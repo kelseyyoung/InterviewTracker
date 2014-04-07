@@ -26,6 +26,11 @@ namespace InterviewTracker.Controllers
             return View();
         }
 
+        public ActionResult Success()
+        {
+            return View();
+        }
+
         public ActionResult Create()
         {
             ViewBag.ethnicities = db.Ethnicity.ToList();

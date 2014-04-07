@@ -128,6 +128,24 @@ namespace InterviewTracker.Controllers.API
             return db.Major.AsQueryable();
         }
 
+        [ActionName("GetOrCreate")]
+        [HttpPost]
+        public HttpResponseMessage GetOrCreate(string MajorValue)
+        {
+            Major major = db.Major.Where(x => x.MajorValue == MajorValue).FirstOrDefault();
+            if (major == null)
+            {
+                major = new Major { MajorValue = MajorValue };
+                db.Major.Add(major);
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK, major);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, major);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

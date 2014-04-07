@@ -137,7 +137,7 @@
                             <select id="EthnicityID" name="EthnicityID">
                                 @foreach (var e in ViewBag.ethnicities)
                                 {
-                                    <option value="@e.EthnicityID">@e.EthnicityValue</option>
+                                <option value="@e.EthnicityID">@e.EthnicityValue</option>
                                 }
                             </select>
                         </div>
@@ -148,7 +148,7 @@
                             <select id="SourcesID" name="SourcesID">
                                 @foreach (var s in ViewBag.sources)
                                 {
-                                    <option value="@s.SourcesID">@s.SourcesValue</option>
+                                <option value="@s.SourcesID">@s.SourcesValue</option>
                                 }
                             </select>
                         </div>
@@ -160,7 +160,7 @@
                             <select id="SubSourcesID" name="SubSourcesID">
                                 @foreach (var s in ViewBag.subsources)
                                 {
-                                    <option value="@s.SubSourcesID">@s.SubSourcesValue</option>
+                                <option value="@s.SubSourcesID">@s.SubSourcesValue</option>
                                 }
                             </select>
                         </div>
@@ -168,10 +168,10 @@
                     <div class="form-group">
                         <label for="Programs" class="control-label span4">Programs</label>
                         <div class="span8">
-                            <select id="Programs" name="Programs" multiple>
+                            <select id="BiodataPrograms" name="BiodataPrograms" multiple>
                                 @foreach (var p in ViewBag.programs)
                                 {
-                                    <option value="@p.ProgramValue">@p.ProgramValue</option>
+                                <option value="@p.ProgramID">@p.ProgramValue</option>
                                 }
                             </select>
                         </div>
@@ -262,19 +262,21 @@
                                         <label for="MajorValue" class="control-label span3">Major</label>
                                         <div class="span4">
                                             <!--TODO: will be select2, because you can add a non-existing major-->
-                                            <select id="MajorID" name="MajorID" class="span10">
+                                            <select id="MajorValue" name="MajorValue" class="span10">
                                                 @foreach (var m in ViewBag.majors)
                                                 {
-                                                    <option value="@m.MajorID">@m.MajorValue</option>
+                                                <option value="@m.MajorValue">@m.MajorValue</option>
                                                 }
                                             </select>
+                                            <!-- Holder value, gets set on submit -->
+                                            <input type="hidden" name="MajorID" id="MajorID" value="1" />
                                         </div>
                                         <label for="DegreeTypeValue" class="control-label span2">Degree</label>
                                         <div class="span2">
                                             <select id="DegreeTypeID" name="DegreeTypeID" class="span12">
                                                 @foreach (var d in ViewBag.degreeTypes)
                                                 {
-                                                    <option value="@d.DegreeTypeID">@d.DegreeTypeValue</option>
+                                                <option value="@d.DegreeTypeID">@d.DegreeTypeValue</option>
                                                 }
                                             </select>
                                         </div>
@@ -322,7 +324,7 @@
                             <select id="SchoolValue" name="SchoolValue">
                                 @foreach (var s in ViewBag.schools)
                                 {
-                                    <option value="@s.SchoolID">@s.SchoolValue</option>
+                                <option value="@s.SchoolID">@s.SchoolValue</option>
                                 }
                             </select>
                         </div>
@@ -352,6 +354,7 @@
                     </ul>
                     <div id="year-content-1">
                         <form class="form-horizontal class-form">
+                            <input type="hidden" id="school-name" />
                             <div class="row-fluid">
                                 <div class="span12 panel-body">
                                     <!-- Info about GPA and ranks -->
@@ -413,31 +416,31 @@
                                     <div class="form-inline">
                                         <label for="Subject" class="control-label span1">Subject</label>
                                         <div class="span2">
-                                            <input type="text" class="form-control span11" name="Subject" id="Subject" />
+                                            <input type="text" class="form-control span11" id="Subject" />
                                         </div>
                                     </div>
                                     <div class="form-inline">
                                         <label for="Code" class="control-label span1">Code</label>
                                         <div class="span1">
-                                            <input type="text" class="form-control span11" name="Code" id="Code" />
+                                            <input type="text" class="form-control span11" id="Code" />
                                         </div>
                                     </div>
                                     <div class="form-inline">
                                         <label for="Name" class="control-label span1">Name</label>
                                         <div class="span2">
-                                            <input type="text" class="form-control span12" name="Name" id="Name" />
+                                            <input type="text" class="form-control span12" id="Name" />
                                         </div>
                                     </div>
                                     <div class="form-inline">
                                         <label for="Grade" class="control-label span1">Grade</label>
                                         <div class="span1">
-                                            <input type="text" class="form-control span12" name="Grade" id="Grade" />
+                                            <input type="text" class="form-control span12" id="Grade" />
                                         </div>
                                     </div>
                                     <div class="form-inline">
                                         <label for="Technical" class="control-label span1">Tech?</label>
                                         <div class="span1">
-                                            <select id="Technical" name="Technical" class="span11">
+                                            <select id="Technical" class="span11">
                                                 <option value="true">Yes</option>
                                                 <option value="false">No</option>
                                             </select>
@@ -476,6 +479,7 @@
         <div class="row-fluid">
             <div class="span12 panel-body">
                 <form class="form-horizontal" id="duty-history-form">
+                    <input type="hidden" name="BioDataID" id="BioDataID" value="1" />
                     <div class="form-group">
                         <label for="Branch" class="control-label span2">Branch</label>
                         <div class="span4">
@@ -519,6 +523,7 @@
             </ul>
             <div class="hide" id="duty-station-content-1">
                 <form class="form-horizontal duty-stations-form">
+                    <input type="hidden" name="DutyHistoryID" id="DutyHistoryID" value="1" />
                     <div class="row-fluid">
                         <div class="span12 panel-body">
                             <div class="span6">
@@ -612,6 +617,7 @@
             </ul>
             <div class="hide" id="waiver-content-1">
                 <form class="form-horizontal waivers-form">
+                    <input type="hidden" name="BioDataID" id="BioDataID" />
                     <div class="form-group">
                         <label for="Type" class="control-label span2">Type</label>
                         <div class="span3">
@@ -667,6 +673,7 @@
             </ul>
             <div class="hide" id="screen-content-1">
                 <form class="form-horizontal screens-form">
+                    <input type="hidden" name="BioDataID" id="BioDataID" />
                     <div class="form-group">
                         <label for="Screener" class="control-label span2">Screener</label>
                         <div class="span2">
@@ -757,6 +764,7 @@
             </ul>
             <div class="hide" id="rd-content-1">
                 <form class="form-horizontal rds-form">
+                    <input type="hidden" name="BioDataID" id="BioDataID" />
                     <div class="form-group">
                         <label for="Type" class="control-label span2">Type</label>
                         <div class="span3">
@@ -813,12 +821,101 @@
 </div>
 
 @section AddToScripts {
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        // Counter to wait for ajax calls
-        var counter = 0;
+    // Counter to wait for ajax calls
+    var counter = 0;
 
-        var passDict = {
+    /**
+     * Function to show and set data/callbacks for a confirmation dialog
+     * Params:
+     *  title - (String) Title for the new dialog
+     *  message - (String) Message for the new dialog
+     *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
+     *  okFunction - (Function) Callback function on OK press
+     */
+    function showDialog(title, message, okOnly, okFunction) {
+        $("#dialog-confirm > p").html(message);
+        var buttons;
+        if (okOnly) {
+            buttons = {
+                Ok: function () {
+                    okFunction();
+                    $(this).dialog("close");
+                }
+            }
+        } else {
+            buttons = {
+                Ok: function () {
+                    okFunction();
+                    $(this).dialog("close");
+                },
+                Close: function () {
+                    $(this).dialog("close");
+                }
+            }
+        }
+
+        $("#dialog-confirm").dialog({
+            title: title,
+            modal: true,
+            buttons: buttons
+        });
+    }
+
+    /**
+     * Sets an interval to wait for a certain condition to be true
+     * Params:
+     *  check - (Function) Function to run that returns T/F
+     *  onComplete - (Function) Function to run when check returns true
+     */
+    function waitUntil(check, onComplete) {
+        // if the check returns true, execute onComplete immediately
+        if (check()) {
+            onComplete();
+            return;
+        }
+        var timeoutPointer;
+        var intervalPointer = setInterval(function () {
+            if (!check()) return;
+
+            clearInterval(intervalPointer);
+            if (timeoutPointer) clearTimeout(timeoutPointer);
+            onComplete();
+        }, 100);
+    }
+
+    /**
+     * Checks if any errors existed after testing. If so, show the errors. Else, start
+     *      submittal chain.
+     */
+    function checkErrors() {
+        var allPass = true;
+        //Clear all errors
+        $(".alert").addClass("hide");
+        $(".alert > p").html("");
+        for (var key in passDict) {
+            var errors = passDict[key];
+            $("#" + key + "-panel").removeClass("panel-error");
+            if (Object.keys(errors).length > 0) {
+                allPass = false;
+                //Show errors in correct place
+                $("#" + key + "-panel").addClass("panel-error");
+                if (key == "biodata" || key == "duty-history") {
+                    $("#" + key + "-errors > p").html(errors[0]);
+                    $("#" + key + "-errors").removeClass("hide");
+                } else {
+                    //Get forms
+                    var forms = $("." + key + "-form");
+                    for (var i in errors) {
+                        $(forms[i]).find("." + key + "-errors > p").html(errors[i]);
+                        $(forms[i]).find("." + key + "-errors").removeClass("hide");
+                    }
+                }
+            }
+        }
+        //Clear out dict
+        passDict = {
             "biodata": {},
             "schools": {},
             "class": {},
@@ -828,310 +925,47 @@
             "screens": {},
             "rds": {}
         };
-
-        /**
-         * Function to show and set data/callbacks for a confirmation dialog
-         * Params:
-         *  title - (String) Title for the new dialog
-         *  message - (String) Message for the new dialog
-         *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
-         *  okFunction - (Function) Callback function on OK press
-         */
-        function showDialog(title, message, okOnly, okFunction) {
-            $("#dialog-confirm > p").html(message);
-            var buttons;
-            if (okOnly) {
-                buttons = {
-                    Ok: function () {
-                        okFunction();
-                        $(this).dialog("close");
-                    }
-                }
-            } else {
-                buttons = {
-                    Ok: function () {
-                        okFunction();
-                        $(this).dialog("close");
-                    },
-                    Close: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            }
-
-            $("#dialog-confirm").dialog({
-                title: title,
-                modal: true,
-                buttons: buttons
-            });
-        }
-
-        /**
-         * Function that test whether a form is valid by using API call
-         * Returns: (Boolean) whether or not the form data is valid
-         * Params:
-         *  forms - (Array of HTML Form) Forms to serialize and pass to the API function
-         *  model - (String) Name of the model to use for the API function call
-         *  toSet - (String) Name of key to set in passDict
-         *  index - (Integer) Index to put toSet's data
-         */
-        function test(forms, model, toSet, index) {
-            var formData = "";
-            for (var i = 0; i < forms.length; i++) {
-                formData += $(forms[i]).serialize();
-            }
-            var success = function (data) {
-                counter++;
-            };
-            var error = function (data) {
-                console.log(data);
-                var response = $.parseJSON(data.responseText).ModelState;
-                //delete response.$id;
-                var responseString = "";
-                $.each(response, function (key, value) {
-                    for (var i = 0; i < value.length; i++) {
-                        responseString += value[i] + "<br/>";
-                    }
-                });
-                //responseString = responseString.substring(0, responseString.length - 1);
-                if (model == "Degree" || model == "ClassesAttended" || model == "SchoolStandings") {
-                    //We want to append to what is already there in schools
-                    if (passDict[toSet][index]) {
-                        passDict[toSet][index] += responseString;
-                    } else {
-                        passDict[toSet][index] = responseString;
-                    }
-                } else {
-                    passDict[toSet][index] = responseString;
-                }
-                counter++;
-            };
-            $.ajax({
-                url: baseURL + "/api/" + model + "/Test?" + formData,
-                type: "Post",
-                asynch: false,
-                success: success,
-                error: error
-            });
-        }
-
-        /**
-         * Sets an interval to wait for a certain condition to be true
-         * Params:
-         *  check - (Function) Function to run that returns T/F
-         *  onComplete - (Function) Function to run when check returns true
-         */
-        function waitUntil(check, onComplete) {
-            // if the check returns true, execute onComplete immediately
-            if (check()) {
-                onComplete();
-                return;
-            }
-            var timeoutPointer;
-            var intervalPointer = setInterval(function () {
-                if (!check()) return;
-
-                clearInterval(intervalPointer);
-                if (timeoutPointer) clearTimeout(timeoutPointer);
-                onComplete();
-            }, 100);
-        }
-
-        function testBioData() {
-            counter = 0;
-            var biodataForm = $("#biodata-form");
-            test([biodataForm], "BioData", "biodata", 0);
-            waitUntil(function () { return counter == 1; }, testSchools);
-        }
-
-        function testSchools() {
-            counter = 0;
-            var schoolForms = $(".schools-form");
-            //Test SchoolsAttended
-            for (var i = 0; i < numSchools; i++) {
-                $([schoolForms[i]]).find("#SchoolsAttendedID").removeAttr("name");
-                test([schoolForms[i]], "SchoolsAttended", "schools", i);
-            }
-            waitUntil(function () { return counter == numSchools; }, testDegrees);
-        }
-
-        function testDegrees() {
-            counter = 0;
-            var schoolForms = $(".schools-form");
-            //Test Degree
-            for (var i = 0; i < numSchools; i++) {
-                // Add SchoolsAttendedID name
-                $([schoolForms[i]]).find("#SchoolsAttendedID").attr("name", "SchoolsAttendedID");
-                test([schoolForms[i]], "Degree", "schools", i);
-            }
-            waitUntil(function () { return counter == numSchools; }, testClasses);
-        }
-
-        function testClasses() {
-            counter = 0;
-            var classesForms = $(".classes-form");
-            var classForms = $(".class-form");
-            var length = classesForms.length;
-            for (var i = 0; i < length; i++) {
-                for (var j = 0; j < classForms.length; j++) {
-                    if ($(classForms[j]).find(classesForms[i]).length > 0) {
-                        test([classesForms[i]], "Classes", "class", j);
-                    }
-                }
-            }
-            waitUntil(function () { return counter == length; }, testClassesAttended);
-        }
-
-        function testClassesAttended() {
-            counter = 0;
-            var classForms = $(".class-form");
-            var length = 0;
-            // Figure out how many times for loops will run
-            for (var i = 0; i < length; i++) {
-                //Get all classes for this year
-                var classesForms = $(classForms[i]).find(".classes-form");
-                length += classesForms.length;
-            }
-            for (var i = 0; i < length; i++) {
-                //Get all classes for this year
-                var classesForms = $(classForms[i]).find(".classes-form");
-                for (var j = 0; j < classesForms.length; j++) {
-                    test([classForms[i], classesForms[j]], "ClassesAttended", "class", i);
-                }
-            }
-            waitUntil(function () { return counter == length; }, testSchoolStandings);
-        }
-
-        function testSchoolStandings() {
-            counter = 0;
-            var classForms = $(".class-form");
-            var length = classForms.length;
-            for (var i = 0; i < length; i++) {
-                test([classForms[i]], "SchoolStandings", "class", i);
-            }
-            waitUntil(function () { return counter == length; }, testDutyHistory);
-        }
-
-        function testDutyHistory() {
-            counter = 0;
-            var dutyHistoryForm = $("#duty-history-form");
-            test([dutyHistoryForm], "DutyHistory", "duty-history", 0);
-            waitUntil(function () { return counter == 1; }, testDutyStations);
-        }
-
-        function testDutyStations() {
-            counter = 0;
-            var dutyStationForms = $(".duty-stations-form");
-            for (var i = 0; i < numDutyStations; i++) {
-                test([dutyStationForms[i]], "DutyStation", "duty-stations", i);
-            }
-            waitUntil(function () { return counter == numDutyStations; }, testWaivers);
-        }
-
-        function testWaivers() {
-            counter = 0;
-            var waiverForms = $(".waivers-form");
-            for (var i = 0; i < numWaivers; i++) {
-                test([waiverForms[i]], "Waiver", "waivers", i);
-            }
-            waitUntil(function () { return counter == numWaivers; }, testScreens);
-        }
-
-        function testScreens() {
-            counter = 0;
-            var screenForms = $(".screens-form");
-            for (var i = 0; i < numScreens; i++) {
-                test([screenForms[i]], "Screen", "screens", i);
-            }
-            waitUntil(function () { return counter == numScreens; }, testRDs);
-        }
-
-        function testRDs() {
-            counter = 0;
-            var rdForms = $(".rds-form");
-            for (var i = 0; i < numRDs; i++) {
-                test([rdForms[i]], "RD", "rds", i);
-            }
-            waitUntil(function () { return counter == numRDs; }, checkErrors);
-        }
-
-        function checkErrors() {
-            var allPass = true;
-            //Clear all errors
-            $(".alert").addClass("hide");
-            $(".alert > p").html("");
-            for (var key in passDict) {
-                var errors = passDict[key];
-                $("#" + key + "-panel").removeClass("panel-error");
-                if (Object.keys(errors).length > 0) {
-                    allPass = false;
-                    //Show errors in correct place
-                    $("#" + key + "-panel").addClass("panel-error");
-                    if (key == "biodata" || key == "duty-history") {
-                        $("#" + key + "-errors > p").html(errors[0]);
-                        $("#" + key + "-errors").removeClass("hide");
-                    } else {
-                        //Get forms
-                        var forms = $("." + key + "-form");
-                        for (var i in errors) {
-                            $(forms[i]).find("." + key + "-errors > p").html(errors[i]);
-                            $(forms[i]).find("." + key + "-errors").removeClass("hide");
-                        }
-                    }
-                }
-            }
-            //Clear out dict
-            passDict = {
-                "biodata": {},
-                "schools": {},
-                "class": {},
-                "duty-history": {},
-                "duty-stations": {},
-                "waivers": {},
-                "screens": {},
-                "rds": {}
-            };
-            if (allPass == true) {
-                submitData();
-            } else {
-                //Close dialog at end
-                $("#submitting-dialog").dialog("close");
-            }
-        }
-
-        function submitData() {
+        if (allPass == true) {
+            // No errors, start submittal chain
+            console.log("passed testing");
+            submit();
+        } else {
             //Close dialog at end
             $("#submitting-dialog").dialog("close");
         }
+    }
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            // Init horizontal and vertical tabs
-            $(".tabs").tabs();
-            $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
-            $(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
+        // Init horizontal and vertical tabs
+        $(".tabs").tabs();
+        $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+        $(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
-            // Set datepickers
-            $(".date").datepicker({
-                changeYear: true,
-                yearRange: "-90:+0"
-            });
-
-            $("#submitting-dialog").dialog({
-                autoOpen: false,
-                modal: true,
-                dialogClass: "no-close"
-            });
-
-            // Create Candidate button click
-            $("#create-candidate-button").click(function () {
-                console.log("starting test");
-                // Show dialog to prevent any further clicking
-                $("#submitting-dialog").dialog("open");
-                testBioData();
-            });
-
+        // Set datepickers
+        // TODO: should also change month?
+        $(".date").datepicker({
+            changeYear: true,
+            yearRange: "-90:+0"
         });
 
-    </script>
+        // Init dialog for candidate submittal
+        $("#submitting-dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: "no-close"
+        });
+
+        // Create Candidate button click
+        $("#create-candidate-button").click(function () {
+            console.log("starting test");
+            // Show dialog to prevent any further clicking
+            $("#submitting-dialog").dialog("open");
+            // Start testing chain
+            testBioData();
+        });
+
+    }); // End document ready
+
+</script>
 }

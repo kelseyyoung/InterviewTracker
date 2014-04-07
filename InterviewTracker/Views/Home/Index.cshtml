@@ -71,21 +71,13 @@
         $(document).ready(function () {
             /*
             var obj = {
-                "FName": "Test",
-                "LName": "Test",
-                "MName": "Test",
-                "DOB": "03/25/2014",
-                "Sex": "M",
-                "FYG": 2014,
-                "EthnicityID": 1,
-                "SourcesID": 1,
-                "SubSourcesID": 1,
-                "SSN": "123-45-6789"
+                "SchoolValue": "UNIVERSITY OF WASHINGTON",
+                "SomethingElse": "blah"
             };
             console.log($.param(obj));
             
             $.ajax({
-                url: "http://localhost:50741/api/BioData/Post?" + $.param(obj),
+                url: baseURL + "/api/School/GetOrCreate?" + $.param(obj),
                 type: "Post",
                 success: function (data) {
                     console.log("success");
@@ -98,6 +90,7 @@
                 }
             });
             */
+            
             
         });
     </script>

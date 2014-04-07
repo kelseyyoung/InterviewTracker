@@ -1,0 +1,240 @@
+﻿@{
+    ViewBag.title = "Interview Comments";
+}
+
+@section AddToTextCss {
+    #checkbox-table {
+        width: 100%;
+    }
+}
+
+<div class="row-fluid">
+    <div class="span10 offset1 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Enter Interview Comments</h2>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" id="interview-form">
+                <input type="hidden" id="InterviewID" name="InterviewID" value="@ViewBag.interview.InterviewID" />
+                <input type="hidden" id="StartTime" name="StartTime" value="@ViewBag.interview.StartTime" />
+                <input type="hidden" id="EndTime" name="EndTime" value="@ViewBag.interview.EndTime" />
+                <input type="hidden" id="Date" name="Date" value="@ViewBag.interview.Date" />
+                <input type="hidden" id="Location" name="Location" value="@ViewBag.interview.Location" />
+                <input type="hidden" id="Duration" name="Duration" value="@ViewBag.interview.Duration" />
+                <input type="hidden" id="BioDataID" name="BioDataID" value="@ViewBag.interview.BioDataID" />
+                <input type="hidden" id="InterviewerID" name="InterviewerID" value="@ViewBag.interview.InterviewerID" />
+                <input type="hidden" id="Status" name="Status" value="Entered" />
+                <h3>Interview Details</h3>
+                <p><b>Interview Date:</b> <span id="interview-date"></span></p>
+                <p><b>Interview Time:</b> <span id="interview-start-time"></span> - <span id="interview-end-time"></span></p>
+                <p><b>Candidate:</b> @ViewBag.interview.BioData.FName @ViewBag.interview.BioData.LName</p>
+                <hr />
+                <h3>@ViewBag.interview.InterviewerUser.LoginID's Comments</h3>
+                <textarea class="span12" rows="5" id="Comments" name="Comments">@ViewBag.interview.Comments</textarea>
+                <table id="checkbox-table">
+                    <thead>
+                        <tr>
+                            <th>NR</th>
+                            <th>INST</th>
+                            <th>NPS</th>
+                            <th>PXO</th>
+                            <th>EDO</th>
+                            <th>ENLTECH</th>
+                            <th>NR1</th>
+                            <th>SUPPLY</th>
+                            <th>EOOW</th>
+                            <th>DOE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input id="NR-yes" type="checkbox" @if(ViewBag.interview.NR == true) { <text>checked</text> } /> Yes <br />
+                                <input id="NR-no" type="checkbox" @if(ViewBag.interview.NR == false) { <text>checked</text> } /> No
+                                <input type="hidden" name="NR" id="NR" value="@ViewBag.interview.NR" />
+                            </td>
+                            <td>
+                                <input id="INST-yes" type="checkbox" @if(ViewBag.interview.INST == true) { <text>checked</text> } /> Yes <br />
+                                <input id="INST-no" type="checkbox" @if(ViewBag.interview.INST == false) { <text>checked</text> } /> No
+                                <input type="hidden" name="INST" id="INST" value="@ViewBag.interview.INST" />
+                            </td>
+                            <td>
+                                <input id="NPS-yes" type="checkbox" @if(ViewBag.interview.NPS == true) { <text>checked</text> } /> Yes <br />
+                                <input id="NPS-no" type="checkbox" @if(ViewBag.interview.NPS == false) { <text>checked</text> } /> No
+                                <input type="hidden" name="NPS" id="NPS" value="@ViewBag.interview.NPS" />
+                            </td>
+                            <td>
+                                <input id="PXO-yes" type="checkbox" @if(ViewBag.interview.PXO == true) { <text> checked </text>  } /> Yes <br />
+                                <input id="PXO-no" type="checkbox" @if(ViewBag.interview.PXO == false) { <text> checked </text>  } /> No
+                                <input type="hidden" name="PXO" id="PXO" value="@ViewBag.interview.PXO" />
+                            </td>
+                            <td>
+                                <input id="EDO-yes" type="checkbox" @if(ViewBag.interview.EDO == true) { <text> checked </text> } /> Yes <br />
+                                <input id="EDO-no" type="checkbox" @if(ViewBag.interview.EDO == false) { <text> checked </text> } /> No
+                                <input type="hidden" name="EDO" id="EDO" value="@ViewBag.interview.EDO" />
+                            </td>
+                            <td>
+                                <input id="ENLTECH-yes" type="checkbox" @if(ViewBag.interview.ENLTECH == true) { <text> checked </text> } /> Yes <br />
+                                <input id="ENLTECH-no" type="checkbox" @if(ViewBag.interview.ENLTECH == false) { <text> checked </text> } /> No
+                                <input type="hidden" name="ENLTECH" id="ENLTECH" value="@ViewBag.interview.ENLTECH" />
+                            </td>
+                            <td>
+                                <input id="NR1-yes" type="checkbox" @if(ViewBag.interview.NR1 == true) { <text> checked </text> } /> Yes <br />
+                                <input id="NR1-no" type="checkbox" @if(ViewBag.interview.NR1 == false) { <text> checked </text> } /> No
+                                <input type="hidden" name="NR1" id="NR1" value="@ViewBag.interview.NR1" />
+                            </td>
+                            <td>
+                                <input id="SUPPLY-yes" type="checkbox" @if(ViewBag.interview.SUPPLY == true) { <text> checked </text> } /> Yes <br />
+                                <input id="SUPPLY-no" type="checkbox" @if(ViewBag.interview.SUPPLY == false) { <text> checked </text> } /> No
+                                <input type="hidden" name="SUPPLY" id="SUPPLY" value="@ViewBag.interview.SUPPLY" />
+                            </td>
+                            <td>
+                                <input id="EOOW-yes" type="checkbox" @if(ViewBag.interview.EOOW == true) { <text> checked </text> } /> Yes <br />
+                                <input id="EOOW-no" type="checkbox" @if(ViewBag.interview.EOOW == false) { <text> checked </text> } /> No
+                                <input type="hidden" name="EOOW" id="EOOW" value="@ViewBag.interview.EOOW" />
+                            </td>
+                            <td>
+                                <input id="DOE-yes" type="checkbox" @if(ViewBag.interview.DOE == true) { <text> checked </text> } /> Yes <br />
+                                <input id="DOE-no" type="checkbox" @if(ViewBag.interview.DOE == false) { <text> checked </text> } /> No
+                                <input type="hidden" name="DOE" id="DOE" value="@ViewBag.interview.DOE" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- If user is interview coordinator and is not also the interviewer: -->
+                <!-- Put in edited comments if they exist -->
+                <!-- Otherwise put in comments -->
+                <h3>Edit Comment</h3>
+                <textarea class="span12" rows="5" id="EditedComments" name="EditedComments"></textarea>
+                <hr />
+                <!-- End if -->
+                <h3>Previous Comments</h3>
+                <div id="prev-comments"></div>
+                <hr />
+                <div class="row-fluid">
+                    <div id="interview-errors" class="alert hide alert-error span10 offset1">
+                        <p></p>
+                    </div>
+                </div>
+                <button type="button" class="btn-ignore btn-success pull-right" id="submit">Submit Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section AddToScripts {
+<script type="text/javascript">
+
+    var checkboxes = [
+            "NR", "INST", "NPS", "PXO", "EDO", "ENLTECH",
+            "NR1", "SUPPLY", "EOOW", "DOE"
+    ];
+
+
+    $(document).ready(function () {
+
+        var id = "@ViewBag.interview.InterviewID";
+        var bdID = "@ViewBag.interview.BioDataID";
+        // Set dates and times with formatting
+        var iDate = moment("@ViewBag.interview.Date");
+        var startTime = moment("@ViewBag.interview.StartTime");
+        var endTime = moment("@ViewBag.interview.EndTime");
+
+        $("#interview-date").text(iDate.format("MMM Do, YYYY"));
+        $("#interview-start-time").text(startTime.format("HH:mm"));
+        $("#interview-end-time").text(endTime.format("HH:mm"));
+
+        // Get other interviews
+        var start = new moment(iDate.year() + " " + (iDate.month() + 1) + " " + iDate.date());
+        var end = new moment(start.toISOString());
+        end.hour(24);
+
+        var obj = {
+            "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
+                end.toISOString() + "' and BioDataID eq " + bdID
+        }
+
+        $.ajax({
+            url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
+            type: "Get",
+            success: function (data) {
+                console.log("success");
+                for (var i = 0; i < data.length; i++) {
+                    var interview = data[i];
+                    console.log(interview.InterviewID);
+                    if (interview.InterviewID != id) {
+                        $("#prev-comments").append(
+                            "<p>" + interview.Interviewer.LoginID + "'s Comments<br/>" +
+                            interview.Comments + "</p>"
+                        );
+                    }
+                }
+            },
+            error: function (data) {
+                console.log("error");
+                console.log(data);
+                console.log(data.responseText);
+            }
+        });
+
+        // TODO: Set CurrentlyEditingID
+
+        // Submit interview
+        $("#submit").click(function () {
+            // Set checkbox values
+            for (var i = 0; i < checkboxes.length; i++) {
+                var c = checkboxes[i];
+                if ($("#" + c + "-yes").is(":checked")) {
+                    $("#" + c).val("true");
+                } else if ($("#" + c + "-no").is(":checked")) {
+                    $("#" + c).val("false");
+                } else {
+                    $("#" + c).val("");
+                }
+            }
+            // TODO: If edited comments are there, change status
+            var interview = $("#interview-form").serialize();
+            console.log(interview);
+            // Test
+            $.ajax({
+                url: baseURL + "/api/Interview/Test?" + interview,
+                type: "Post",
+                success: function (data) {
+                    console.log(data);
+                    // Submit (Put) interview
+                    $.ajax({
+                        url: baseURL + "/api/Interview/Put/" + id + "?" + interview,
+                        type: "Put",
+                        success: function (data) {
+                            console.log("success");
+                            console.log(data);
+                            //TODO: unset CurrentlyEditingID
+
+                            // Redirect to Calendar/Index
+                            window.location.href = "@Url.Action("Index", "Calendar")";
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                        }
+                    });
+                },
+                error: function (data) {
+                    // Show errors
+                    console.log(data);
+                    var errors = "";
+                    var response = $.parseJSON(data.responseText).ModelState;
+                    $.each(response, function (key, value) {
+                        for (var i = 0; i < value.length; i++) {
+                            errors += value[i] + "<br/>";
+                        }
+                    });
+                    $("#interview-errors > p").html(errors);
+                    $("#interview-errors").removeClass("hide");
+                }
+            });
+        });
+    });
+
+</script>
+}

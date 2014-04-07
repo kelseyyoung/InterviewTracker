@@ -123,6 +123,8 @@ $(document).ready(function () {
             $(yearContent).attr("id", "year-content-" + (i + 1));
             $(yearContent).find("input").addClass("ui-corner-all");
             $(yearContent).find("textarea").addClass("ui-corner-all");
+            // Set school-name for later submit
+            $(yearContent).find("#school-name").val(schoolName);
             // Set YearTaken and Year of Record
             $(yearContent).find("#YearTaken").val((i + 1));
             $(yearContent).find("#YearOfRecord").val((i + 1));
@@ -207,6 +209,7 @@ $(document).ready(function () {
                 changeYear: true,
                 yearRange: "-90:+0"
             });
+        $(content).find("#BioDataID").val(1);
         $(content).attr("id", "waiver-content-" + waiverCounter);
         $("#waiver-tabs > ul").prepend(li);
         $("#waiver-tabs > ul").after(content);
@@ -231,6 +234,7 @@ $(document).ready(function () {
                 changeYear: true,
                 yearRange: "-90:+0"
             });
+        $(content).find("#BioDataID").val(1);
         $(content).attr("id", "screen-content-" + screenCounter);
         $("#screen-tabs > ul").prepend(li);
         $("#screen-tabs > ul").after(content);
@@ -255,6 +259,7 @@ $(document).ready(function () {
                 changeYear: true,
                 yearRange: "-90:+0"
             });
+        $(content).find("#BioDataID").val(1);
         $(content).attr("id", "rd-content-" + rdCounter);
         $("#rd-tabs > ul").prepend(li);
         $("#rd-tabs > ul").after(content);

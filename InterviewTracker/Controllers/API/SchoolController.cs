@@ -128,6 +128,24 @@ namespace InterviewTracker.Controllers.API
             return db.School.AsQueryable();
         }
 
+        [ActionName("GetOrCreate")]
+        [HttpPost]
+        public HttpResponseMessage GetOrCreate(string SchoolValue)
+        {
+            School school = db.School.Where(x => x.SchoolValue == SchoolValue).FirstOrDefault();
+            if (school == null)
+            {
+                school = new School { SchoolValue = SchoolValue };
+                db.School.Add(school);
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK, school);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, school);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

@@ -14,8 +14,8 @@ namespace InterviewTracker.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewBag.interview = db.Interview.Find(id);
-            ViewBag.otherInterviews = "";
+            var interview = db.Interview.Find(id);
+            ViewBag.interview = interview;
             return View();
         }
     }
