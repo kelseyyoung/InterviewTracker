@@ -173,7 +173,27 @@
                                 <input type="text" name="sat-end" id="sat-end" />
                             </div>
                         </div>
-                        <button type="button" class="pull-right">Generate</button>
+                        <button type="button" id="generate-SAT-ACT-report"class="pull-right">Generate</button>
+                    </form>
+                </div>
+            </div>
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">School Report</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span3" for="school-school">School</label>
+                            <div class="span9">
+                                <select id="school-school">
+                                    <option value=1>University Of Arizona</option>
+                                    <option value=2>University Of Texas</option>
+                                    <option value=3>Wisconsin University</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="pull-right" id="generate-school">Generate</button>
                     </form>
                 </div>
             </div>
@@ -183,23 +203,6 @@
 
 @section AddToScripts {
     <script type="text/javascript">
-        $.download = function (url, data, method) {
-            //url and data options required
-            if (url && data) {
-                //data can be string of parameters or array/object
-                data = typeof data == 'string' ? data : jQuery.param(data);
-                //split params into form inputs
-                var inputs = '';
-                jQuery.each(data.split('&'), function () {
-                    var pair = this.split('=');
-                    inputs += '<input type="hidden" name="' + pair[0] + '" value="' + pair[1] + '" />';
-                });
-                //send request
-                jQuery('<form action="' + url + '" method="' + (method || 'post') + '">' + inputs + '</form>')
-                .appendTo('body').submit().remove();
-            };
-        };
-
         $(document).ready(function () {
             // Set datepickers
             $(".date").datepicker({
@@ -210,23 +213,85 @@
             $("#generate-fy-year").click(function () {
                 var fyear = $("#fy-year option:selected").text();
 
-               // $.ajax({ url: "Reports/generateInterviewResults", success: function () { } });
-
-                $.ajax({ url: "Reports/generateFYReport", data: {year:fyear}, dataType: 'json', success: function () { } });
-               // location.href = '@Url.Action("GenerateFYReport", "Reports", new { year =  "2010"})';
+                var FYReportElem = document.createElement("iframe");
+                FYReportElem.src = "Reports/generateFYReport?year=" + fyear;
+                FYReportElem.style.display = "none";
+                document.body.appendChild(FYReportElem);
             });
 
             $("#generate-interview-report").click(function () {
                 var reportDate = $("#interview-date").datepicker("getDate");
                 console.log(reportDate);
-                $.ajax({ url: "Reports/generateInterviewResults", data: {date:reportDate}, dataType: 'json', success: function () { } });
+                if (reportDate) {
+                    //Generate this general report regardless of options selected
+                    var ILReport = document.createElement("iframe");
+                    ILReport.src = "Reports/generateInterviewResults?date=" + reportDate;
+                    ILReport.style.display = "none";
+                    document.body.appendChild(ILReport);
+                    if (document.getElementById("interview-labels").checked) {
+                        //TO DO: generate labels
+                    }
+                    if (document.getElementById("interview-alpha").checked) {
+                        //TO DO: generate alpha report
+                    }
+                    if (document.getElementById("interview-chron").checked) {
+                        //TO DO: generate chron report
+                    }
+                    if (document.getElementById("interview-packet").checked) {
+                        //TO DO: generate packets
+                    }
+                    if (document.getElementById("interview-cards").checked) {
+                        //TO DO: generate cards
+                    }
+                    if (document.getElementById("interview-eod-letter").checked) {
+                        //TO DO: generate eod letter
+                    }
+                    if (document.getElementById("interview-usna-letter").checked) {
+                        //TO DO: generate usna letter
+                    }
+
+                }
+                else
+                    alert("Select a date")
+            });
+
+            $("#generate-SAT-ACT-report").click(function () {
+                var startYear = $("#sat-begin").val();
+                var endYear = $("#sat-end").val();
+         
+                if (!endYear) endYear = (new Date).getFullYear();
+                if (!startYear) startYear = endYear;
+
+                if (isNaN(parseInt(startYear)) || isNaN(parseInt(endYear))) {
+                    alert("Please specify integer values for FYGs");
+                    return;
+                }
+                
+                var SATACTReport = document.createElement("iframe");
+                SATACTReport.src = "Reports/generateSATACTReport?startFYG=" + startYear + "&endFYG=" + endYear;
+                SATACTReport.style.display = "none";
+                document.body.appendChild(SATACTReport);
             });
 
             $("#generate-candidate").click(function () {
-                $.ajax({ url: "Reports/generateCandidateReport", success: function () { } });
+                //TO DO: pull id from select2 (?)
+                var id = 1;
+                var candidateReportElem = document.createElement("iframe");
+                candidateReportElem.src = "Reports/generateCandidateReport?id=" + id;
+                candidateReportElem.style.display = "none";
+                document.body.appendChild(candidateReportElem);
+            });
+
+            $("#generate-school").clicke(function () {
+                //TO DO: pull id from select2 (?)
+                var id = 1;
+                var schoolReportElem = document.createElement("iframe");
+                schoolReportElem.src = "Reports/generateSchoolReport?id=" + id;
+                schoolReportElem.style.display = "none";
+                document.body.appendChild(schoolReportElem);
             });
         });
 
-        
+
     </script>
 }
