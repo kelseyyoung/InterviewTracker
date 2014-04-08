@@ -117,7 +117,7 @@ namespace InterviewTracker.Controllers
                         schoolInfo = schoolInfo + ";\n";
                     }
                     schoolInfo = schoolInfo + sa.School.SchoolValue;
-                    foreach(Degree d in sa.Degree.ToList())
+                    foreach(Degree d in sa.Degrees.ToList())
                     {
                         if (!degreeInfo.Equals(""))
                         {

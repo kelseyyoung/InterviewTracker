@@ -15,6 +15,7 @@ $(document).ready(function () {
 
     // HTML clones for dynamic adding/removing of tabs
     // Remove everything after cloning it
+    
     var schoolTabClone = $("#school-tabs > ul").children().first().clone().removeClass("hide");
     $("#school-tabs > ul").children().first().remove();
     var schoolContentClone = $("#school-content-1").clone().removeClass("hide");
@@ -43,6 +44,7 @@ $(document).ready(function () {
     $("#rd-tabs > ul").children().first().remove();
     var rdContentClone = $("#rd-content-1").clone().removeClass("hide");
     $("#rd-content-1").remove();
+    
 
     //List of schools that are currently added
     var schoolList = [];

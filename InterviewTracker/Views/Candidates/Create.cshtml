@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Candidates";
+    ViewBag.Title = "Create Candidate";
 }
 
 @section AddToTextCSS {
@@ -64,7 +64,7 @@
     }
 
     /* Hides top of dialog */
-    .no-close .ui-dialog-titlebar-close {display: none }
+    .no-close .ui-dialog-titlebar-close {display: none; }
 }
 
 <!--Basic Information Block-->
@@ -350,7 +350,7 @@
             <div class="hide" id="class-content-1">
                 <div id="year-tabs" class="tabs-vertical">
                     <ul>
-                        <li id="year-tab-1"><a href=""></a></li>
+                        <li id="year-tab-1"><a href="#year-content-1"></a></li>
                     </ul>
                     <div id="year-content-1">
                         <form class="form-horizontal class-form">
@@ -936,7 +936,7 @@
     }
 
     $(document).ready(function () {
-
+        
         // Init horizontal and vertical tabs
         $(".tabs").tabs();
         $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
@@ -964,7 +964,7 @@
             // Start testing chain
             testBioData();
         });
-
+        
     }); // End document ready
 
 </script>
