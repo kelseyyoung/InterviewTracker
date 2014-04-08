@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using InterviewTracker.Models;
 using InterviewTracker.DAL;
+using System.Web.Http.ModelBinding;
 
 namespace InterviewTracker.Controllers.API
 {
@@ -127,6 +128,41 @@ namespace InterviewTracker.Controllers.API
         public IQueryable<Screen> GetBy()
         {
             return db.Screen.AsQueryable();
+        }
+
+        [ActionName("SetPrograms")]
+        [HttpPost]
+        public HttpResponseMessage SetPrograms(int id, [ModelBinder] List<string> ScreenPrograms)
+        {
+            Screen screen = db.Screen.Find(id);
+
+            if (screen == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            // Clear out programs
+            screen.ProgramsAppliedFor.Clear();
+
+            // Add new programs
+            foreach (string pid in ScreenPrograms)
+            {
+                Program p = db.Program.Find(Convert.ToInt32(pid));
+                screen.ProgramsAppliedFor.Add(p);
+            }
+
+            db.Entry(screen).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Created, screen);
         }
 
         protected override void Dispose(bool disposing)

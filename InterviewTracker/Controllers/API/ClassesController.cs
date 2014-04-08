@@ -128,6 +128,25 @@ namespace InterviewTracker.Controllers.API
             return db.Classes.AsQueryable();
         }
 
+        [ActionName("GetOrCreate")]
+        [HttpPost]
+        public HttpResponseMessage GetOrCreate(string Subject, string Code, string Name, string Technical)
+        {
+            Classes classes = db.Classes.Where(x => x.Subject == Subject)
+                .Where(x => x.Code == Code).FirstOrDefault();
+            if (classes == null)
+            {
+                classes = new Classes { Subject = Subject, Code = Code, Name = Name, Technical = Convert.ToBoolean(Technical) };
+                db.Classes.Add(classes);
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK, classes);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, classes);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

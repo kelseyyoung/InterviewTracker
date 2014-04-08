@@ -123,7 +123,7 @@ namespace InterviewTracker.Controllers
                 string degreeInfo = "";
                 if (school.Graduated == true)
                 {
-                    foreach (Degree degree in school.Degree.ToList())
+                    foreach (Degree degree in school.Degrees.ToList())
                     {
                         if (!degreeInfo.Equals("")) degreeInfo = degreeInfo + "; ";
                         degreeInfo = degreeInfo + degree.DegreeType.DegreeTypeValue + " " + degree.Major.MajorValue;
@@ -222,7 +222,8 @@ namespace InterviewTracker.Controllers
                         schoolInfo = schoolInfo + ";\n";
                     }
                     schoolInfo = schoolInfo + sa.School.SchoolValue;
-                    foreach (Degree d in sa.Degree.ToList())
+
+                    foreach(Degree d in sa.Degrees.ToList())
                     {
                         if (!degreeInfo.Equals(""))
                         {

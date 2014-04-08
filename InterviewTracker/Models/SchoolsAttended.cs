@@ -27,6 +27,6 @@ namespace InterviewTracker.Models
 
         public virtual ICollection<SchoolStandings> SchoolStandings { get; set; } // Associated SchoolStandings
         public virtual ICollection<ClassesAttended> ClassesAttended { get; set; } //The classes attended at this school
-        public virtual ICollection<Degree> Degree { get; set; } //Associated degree with this school attendance
+        public virtual ICollection<Degree> Degrees { get; set; } //Associated degree with this school attendance
     }
 }

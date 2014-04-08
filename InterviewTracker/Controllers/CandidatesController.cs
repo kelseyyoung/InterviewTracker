@@ -26,6 +26,11 @@ namespace InterviewTracker.Controllers
             return View();
         }
 
+        public ActionResult Success()
+        {
+            return View();
+        }
+
         public ActionResult Create()
         {
             ViewBag.ethnicities = db.Ethnicity.ToList();
@@ -56,8 +61,8 @@ namespace InterviewTracker.Controllers
                 x => new
                 {
                     id = x.SchoolsAttendedID,
-                    major = x.Degree.First().Major.MajorValue,
-                    degreeType = x.Degree.First().DegreeType.DegreeTypeValue,
+                    major = x.Degrees.First().Major.MajorValue,
+                    degreeType = x.Degrees.First().DegreeType.DegreeTypeValue,
                     graduated = x.Graduated
                 }).ToArray();
             return Json(retValue);
@@ -75,7 +80,7 @@ namespace InterviewTracker.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewBag.bioData = db.BioData.Find(id);
+            ViewBag.bioData = db.BioData.Find(id);     
 
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
@@ -99,6 +104,12 @@ namespace InterviewTracker.Controllers
             ViewBag.RDs = ViewBag.bioData.RDs;
             ViewBag.waivers = ViewBag.bioData.Waivers;
             ViewBag.screens = ViewBag.bioData.Screens;
+
+            ViewBag.schoolCount = ViewBag.schoolsAttended.Count;
+            //ViewBag.dutyStationsCount = ViewBag.dutyHistories.DutyStations.Count;
+            ViewBag.waiversCount = ViewBag.waivers.Count;
+            ViewBag.screensCount = ViewBag.screens.Count;
+            ViewBag.rdCount = ViewBag.RDs.Count;
 
             var DHselects = getDHSelectValues(ViewBag.dutyHistories);
             JavaScriptSerializer serializer = new JavaScriptSerializer();

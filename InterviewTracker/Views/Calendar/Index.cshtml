@@ -17,6 +17,28 @@
         </div>
     </div>
     <div class="span4" id="toolbar">
+        <!-- Interview information panel -->
+        <div class="panel panel-primary hide" id="interview-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">Interview Info</h4>
+            </div>
+            <div class="panel-body">
+                <b>Date: </b><span id="interview-info-date"></span><br />
+                <b>Time: </b><span id="interview-info-start"></span> - <span id="interview-info-end"></span><br />
+                <b>Location: </b><span id="interview-info-location"></span><br />
+                <b>Interviewer: </b><span id="interview-info-interviewers"></span><br />
+                <b>Candidate: </b><span id="interview-info-candidates"></span><br />
+                <p class="text-center">
+                    <!-- <a type="button" class="button" href=""><i class="fa fa-edit"></i> Edit</a> -->
+                    <a type="button" class="button" href="#" id="edit-interview"><i class="fa fa-comment"></i> Edit</a>
+                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times"></i> Delete</button>
+                </p>
+                <p class="text-center">
+                    <button type="button" id="hide-interview-info" class="btn-ignore btn-danger">Close Info</button>
+                </p>
+            </div>
+        </div>
+        <!-- Create interview button -->
         <p class="text-center"><button id="createInterview"><i class="fa fa-plus"></i> Create Interview</button></p>
         <!-- Create new interview collapsable panel-->
         <div class="panel panel-primary" style="display:none" id="showCreate">
@@ -39,7 +61,9 @@
                                 @for (var i = ViewBag.startTime; i < ViewBag.endTime; i++)
                                 {
                                     <option value="@i:00">@i:00</option>
+                                    <option value="@i:15">@i:15</option>
                                     <option value="@i:30">@i:30</option>
+                                    <option value="@i:45">@i:45</option>
                                 }
                             </select>
                             <input type="hidden" class="form-control span11" name="StartTime" id="StartTime" />
@@ -50,7 +74,9 @@
                                 @for (var i = ViewBag.startTime; i <= ViewBag.endTime; i++)
                                 {
                                     <option value="@i:00">@i:00</option>
-                                    <option value="@i:30">@i:30</option>
+                                    <option value="@i:15">@i:15</option>                                  
+                                    <option value="@i:30">@i:30</option>                                    <option value="@i:15">@i:15</option>
+                                    <option value="@i:45">@i:45</option> 
                                 }
                             </select>
                             <input type="hidden" class="form-control span11" name="EndTime" id="EndTime" />
@@ -140,27 +166,6 @@
                 </p>
             </div>
         </div>
-        <!-- Interview information panel -->
-        <div class="panel panel-primary hide" id="interview-info">
-            <div class="panel-heading">
-                <h4 class="panel-title">Interview Info</h4>
-            </div>
-            <div class="panel-body">
-                <b>Date: </b><span id="interview-info-date"></span><br />
-                <b>Time: </b><span id="interview-info-start"></span> - <span id="interview-info-end"></span><br />
-                <b>Location: </b><span id="interview-info-location"></span><br />
-                <b>Interviewer: </b><span id="interview-info-interviewers"></span><br />
-                <b>Candidate: </b><span id="interview-info-candidates"></span><br />
-                <p class="text-center">
-                    <button type="button"><i class="fa fa-edit"></i> Edit</button>
-                    <a type="button" class="button" href="@Url.Action("Comments", "Interviews")"><i class="fa fa-comment"></i> Comments</a>
-                    <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times"></i> Delete</button>
-                </p>
-                <p class="text-center">
-                    <button type="button" id="hide-interview-info" class="btn-ignore btn-danger">Close Info</button>
-                </p>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -210,6 +215,9 @@
                             backgroundColor: eventColors[interview.Status.toLowerCase()],
                             borderColor: eventColors[interview.Status.toLowerCase()]
                         };
+                        if (interview.CurrentlyEditingID != null) {
+                            // Set colors to black
+                        }
                         $("#calendar").fullCalendar("renderEvent", event);
                     }
                 },
@@ -272,10 +280,11 @@
         }
 
         function clearForm() {
+            $("#date-holder").val("");
             $("#Location").val("");
             $("#Duration").val("");
-            $("#StartTime").val("");
-            $("#EndTime").val("");
+            $("#start-holder").val("");
+            $("#end-holder").val("");
             $("#InterviewerID").val("");
             $("#BioDataID").val("");
             // Clear quals
@@ -331,6 +340,9 @@
                             $("#interview-info-location").text(data.Location);
                             $("#interview-info-interviewers").text(data.InterviewerUser.LoginID);
                             $("#interview-info-candidates").text(data.BioData.FName + " " + data.BioData.LName);
+                            var link = "@Url.Action("Edit", "Interviews", new { id = "__id__" })";
+                            link = link.replace("__id__", data.InterviewID);
+                            $("#edit-interview").attr("href", link);
 
                             // Show sidebar at end
                             $("#interview-info").removeClass("hide");

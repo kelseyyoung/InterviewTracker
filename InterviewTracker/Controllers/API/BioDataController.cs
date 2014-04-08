@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using InterviewTracker.Models;
 using InterviewTracker.DAL;
+using System.Web.Http.ModelBinding;
 
 namespace InterviewTracker.Controllers.API
 {
@@ -127,6 +128,41 @@ namespace InterviewTracker.Controllers.API
         public IQueryable<BioData> GetBy()
         {
             return db.BioData.AsQueryable();
+        }
+
+        [ActionName("SetPrograms")]
+        [HttpPost]
+        public HttpResponseMessage SetPrograms(int id, [ModelBinder] List<string> BiodataPrograms)
+        {
+            BioData biodata = db.BioData.Find(id);
+
+            if (biodata == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            // Clear out programs
+            biodata.Programs.Clear();
+
+            // Add new programs
+            foreach (string pid in BiodataPrograms)
+            {
+                Program p = db.Program.Find(Convert.ToInt32(pid));
+                biodata.Programs.Add(p);
+            }
+
+            db.Entry(biodata).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.Created, biodata);
         }
 
         protected override void Dispose(bool disposing)
