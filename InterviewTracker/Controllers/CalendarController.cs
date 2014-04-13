@@ -1,4 +1,5 @@
 ﻿using InterviewTracker.DAL;
+using InterviewTracker.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,15 @@ namespace InterviewTracker.Controllers
         //
         // GET: /Calendar/
 
+        [CustomAuth]
         public ActionResult Index()
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
             ViewBag.candidates = db.BioData.ToList();
             ViewBag.interviewers = db.User.ToList();
-            ViewBag.startTime = 0;
-            ViewBag.endTime = 23;
+            ViewBag.startTime = 6;
+            ViewBag.endTime = 18;
             return View();
         }
 

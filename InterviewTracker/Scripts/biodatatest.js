@@ -25,6 +25,8 @@ function test(forms, model, toSet, index) {
         formData += $(forms[i]).serialize();
     }
     var success = function (data) {
+        console.log("success");
+        console.log(data);
         counter++;
     };
     var error = function (data) {
@@ -90,9 +92,17 @@ function testDegrees() {
 
 function testClasses() {
     counter = 0;
-    var classesForms = $(".classes-form");
     var classForms = $(".class-form");
-    var length = classesForms.length;
+    var length = $(".classes-form").length;
+    console.log(length);
+    for (var i = 0; i < classForms.length; i++) {
+        // Get classes-forms that only come after classForms[i];
+        var classesForms = $(classForms[i]).parent().find(".classes-form");
+        for (var j = 0; j < classesForms.length; j++) {
+            test([classesForms[j]], "Classes", "class", i);
+        }
+    }
+    /*
     for (var i = 0; i < length; i++) {
         for (var j = 0; j < classForms.length; j++) {
             if ($(classForms[j]).find(classesForms[i]).length > 0) {
@@ -100,22 +110,26 @@ function testClasses() {
             }
         }
     }
+    */
     waitUntil(function () { return counter == length; }, testClassesAttended);
 }
 
 function testClassesAttended() {
     counter = 0;
     var classForms = $(".class-form");
-    var length = 0;
+    var length = $(".classes-form").length;
     // Figure out how many times for loops will run
+    /*
     for (var i = 0; i < classForms.length; i++) {
         //Get all classes for this year
         var classesForms = $(classForms[i]).find(".classes-form");
         length += classesForms.length;
     }
-    for (var i = 0; i < length; i++) {
+    */
+    console.log(length);
+    for (var i = 0; i < classForms.length; i++) {
         //Get all classes for this year
-        var classesForms = $(classForms[i]).find(".classes-form");
+        var classesForms = $(classForms[i]).parent().find(".classes-form");
         for (var j = 0; j < classesForms.length; j++) {
             test([classForms[i], classesForms[j]], "ClassesAttended", "class", i);
         }

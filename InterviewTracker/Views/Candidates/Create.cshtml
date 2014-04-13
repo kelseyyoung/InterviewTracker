@@ -821,6 +821,9 @@
 </div>
 
 @section AddToScripts {
+<script src="@Url.Content("~/Scripts/tabcontrols.js")"></script>
+<script src="@Url.Content("~/Scripts/biodatatest.js")"></script>
+<script src="@Url.Content("~/Scripts/biodatasubmit.js")"></script>
 <script type="text/javascript">
 
     // Counter to wait for ajax calls
@@ -936,7 +939,7 @@
     }
 
     $(document).ready(function () {
-        
+
         // Init horizontal and vertical tabs
         $(".tabs").tabs();
         $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
@@ -964,7 +967,7 @@
             // Start testing chain
             testBioData();
         });
-        
+
     }); // End document ready
 
 </script>

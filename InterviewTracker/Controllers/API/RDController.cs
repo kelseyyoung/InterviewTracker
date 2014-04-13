@@ -65,7 +65,7 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, rd);
         }
 
         // POST api/RD
