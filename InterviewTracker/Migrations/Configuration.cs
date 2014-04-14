@@ -605,7 +605,7 @@ namespace InterviewTracker.Migrations
             );
 
             // Many interviews
-            for (int j = 0; j < 40; j++)
+            for (int j = 0; j < 10; j++)
             {
                 Interview Interview = new Interview
                 {
@@ -627,6 +627,60 @@ namespace InterviewTracker.Migrations
                     DOE = false,
                     InterviewerUser = Interviewer,
                     BioData = Kelsey
+                };
+                context.Interview.AddOrUpdate(i => i.InterviewID,
+                    Interview
+                );
+            }
+            for (int j = 0; j < 10; j++)
+            {
+                Interview Interview = new Interview
+                {
+                    Date = DateTime.Parse("2014/4/16 12:00:00"),
+                    Status = Status.Final.ToString(),
+                    Location = "Room 700",
+                    StartTime = DateTime.Parse("2014/4/16 11:00:00"),
+                    EndTime = DateTime.Parse("2014/4/16 11:30:00"),
+                    Duration = 30,
+                    NR = true,
+                    INST = true,
+                    NPS = true,
+                    PXO = false,
+                    EDO = false,
+                    ENLTECH = true,
+                    NR1 = false,
+                    SUPPLY = false,
+                    EOOW = false,
+                    DOE = false,
+                    InterviewerUser = Coord,
+                    BioData = Steve
+                };
+                context.Interview.AddOrUpdate(i => i.InterviewID,
+                    Interview
+                );
+            }
+            for (int j = 0; j < 10; j++)
+            {
+                Interview Interview = new Interview
+                {
+                    Date = DateTime.Parse("2014/4/16 12:00:00"),
+                    Status = Status.Final.ToString(),
+                    Location = "Room 700",
+                    StartTime = DateTime.Parse("2014/4/16 11:00:00"),
+                    EndTime = DateTime.Parse("2014/4/16 11:30:00"),
+                    Duration = 30,
+                    NR = true,
+                    INST = true,
+                    NPS = true,
+                    PXO = false,
+                    EDO = false,
+                    ENLTECH = true,
+                    NR1 = false,
+                    SUPPLY = false,
+                    EOOW = false,
+                    DOE = false,
+                    InterviewerUser = Admin,
+                    BioData = John
                 };
                 context.Interview.AddOrUpdate(i => i.InterviewID,
                     Interview

@@ -11,6 +11,9 @@ namespace InterviewTracker.Filters
     {
         public IIdentity Identity { get; private set; }
 
+        public string LoginID { get; set; }
+        public string Role { get; set; }
+
         public bool IsInRole(string role)
         {
             return this.Role == role;
@@ -31,8 +34,5 @@ namespace InterviewTracker.Filters
             this.Role = role;
             this.Identity = new GenericIdentity("");
         }
-
-        public string LoginID { get; set; }
-        public string Role { get; set; }
     }
 }
