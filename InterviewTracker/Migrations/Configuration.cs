@@ -577,7 +577,7 @@ namespace InterviewTracker.Migrations
                 EditedComments = "Gave off a bad impression, did not respond well to questions",
                 StartTime = DateTime.Parse("2014/5/18 11:00:00"),
                 EndTime = DateTime.Parse("2014/5/18 11:30:00"),
-                Duration = 180,
+                Duration = 30,
                 EditTime = DateTime.Parse("2014/5/20 9:30:00"),
                 NR = true,
                 INST = true,
@@ -594,12 +594,41 @@ namespace InterviewTracker.Migrations
                 BioData = Kelsey
             };
 
-            context.Interview.AddOrUpdate(i => i.InterviewerID,
+            context.Interview.AddOrUpdate(i => i.InterviewID,
                 KelseyInterview,
                 JohnInterview,
                 SteveInterview,
                 FinalInterview
             );
+
+            // Many interviews
+            for (int j = 0; j < 40; j++)
+            {
+                Interview Interview = new Interview
+                {
+                    Date = DateTime.Parse("2014/4/16 12:00:00"),
+                    Status = Status.Final.ToString(),
+                    Location = "Room 700",
+                    StartTime = DateTime.Parse("2014/4/16 11:00:00"),
+                    EndTime = DateTime.Parse("2014/4/16 11:30:00"),
+                    Duration = 30,
+                    NR = true,
+                    INST = true,
+                    NPS = true,
+                    PXO = false,
+                    EDO = false,
+                    ENLTECH = true,
+                    NR1 = false,
+                    SUPPLY = false,
+                    EOOW = false,
+                    DOE = false,
+                    InterviewerUser = Interviewer,
+                    BioData = Kelsey
+                };
+                context.Interview.AddOrUpdate(i => i.InterviewID,
+                    Interview
+                );
+            }
             
             // Classes Attended
             ClassesAttended KelseyClassesAttended = new ClassesAttended

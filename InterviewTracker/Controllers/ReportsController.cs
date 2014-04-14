@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using NotesFor.HtmlToOpenXml;
 using InterviewTracker.Models;
 using InterviewTracker.DAL;
+using InterviewTracker.Filters;
 
 namespace InterviewTracker.Controllers
 {
@@ -29,8 +30,11 @@ namespace InterviewTracker.Controllers
         //
         // GET: /Reports/
 
+        [CustomAuth]
         public ActionResult Index()
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
             return View();
         }
 

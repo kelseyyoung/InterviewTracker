@@ -2,6 +2,7 @@
 var numSchools = 0;
 var schoolCounter = 0;
 var classCounter = 0;
+var classesCounter = 0;
 var numDutyStations = 0;
 var dutyStationCounter = 0;
 var numWaivers = 0;
@@ -10,6 +11,9 @@ var numScreens = 0;
 var screenCounter = 0;
 var numRDs = 0;
 var rdCounter = 0;
+
+//List of schools that are currently added
+var schoolList = [];
 
 $(document).ready(function () {
 
@@ -44,10 +48,6 @@ $(document).ready(function () {
     $("#rd-tabs > ul").children().first().remove();
     var rdContentClone = $("#rd-content-1").clone().removeClass("hide");
     $("#rd-content-1").remove();
-    
-
-    //List of schools that are currently added
-    var schoolList = [];
 
     /** Add functionalities **/
 
@@ -140,7 +140,8 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".add-class", function (e) {
-        var table = $(this).parent().parent().find(".classes-table");
+        var form = $(this).parent().parent();
+        var table = $(form).find(".classes-table");
         var name = $(this).parent().parent().find("#Name").val();
         var subject = $(this).parent().parent().find("#Subject").val().toUpperCase();
         var code = $(this).parent().parent().find("#Code").val();
@@ -151,16 +152,25 @@ $(document).ready(function () {
             return;
         }
         var techDisplay = tech == "true" ? "Yes" : "No";
+        classesCounter++;
         // Add to table
         $(table).find("tbody").append("" +
-        "<tr><form class='classes-form'>" +
-        "<td>" + subject + "<input type='hidden' name='Subject' value='" + subject + "'></td>" +
-        "<td>" + code + "<input type='hidden' name='Code' value='" + code + "'></td>" +
-        "<td>" + name + "<input type='hidden' name='Name' value='" + name + "'></td>" +
-        "<td>" + grade + "<input type='hidden' name='Grade' value='" + grade + "'></td>" +
-        "<td>" + techDisplay + "<input type='hidden' name='Technical' value='" + tech + "'></td>" +
-        "<td class='text-center'><button class='btn-ignore btn-danger remove-class' type='button'>Remove</button></td>" +
-        "</form></tr>");
+        "<tr>" +
+        "<td>" + subject + "</td>" +
+        "<td>" + code + "</td>" +
+        "<td>" + name + "</td>" +
+        "<td>" + grade + "</td>" +
+        "<td>" + techDisplay + "</td>" +
+        "<td class='text-center'><button class='btn-ignore btn-danger remove-class' data-remove='classes-form-" + classesCounter + "' type='button'>Remove</button></td>" +
+        "</tr>");
+        // Create classes form and add after .class-form
+        $(form).after("" +
+            "<form class='classes-form' id='classes-form-" + classesCounter + "'>" +
+            "<input type='hidden' name='Subject' value='" + subject + "'>" +
+            "<input type='hidden' name='Code' value='" + code + "'>" +
+            "<input type='hidden' name='Name' value='" + name + "'>" +
+            "<input type='hidden' name='Grade' value='" + grade + "'>" +
+            "<input type='hidden' name='Technical' value='" + tech + "'></form>");
         // Clear out fields
         $(this).parent().parent().find("#Name").val("");
         $(this).parent().parent().find("#Subject").val("");
@@ -298,7 +308,10 @@ $(document).ready(function () {
         var btn = $(this);
         var f = function () {
             console.log("remove class");
+            var formRemove = $(btn).data("remove");
+            console.log(formRemove);
             $(btn).parent().parent().remove();
+            $("#" + formRemove).remove();
         }
         showDialog("Remove Class?", "Are you sure you want to remove this class entry?", false, f);
     });

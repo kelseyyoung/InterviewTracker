@@ -1,4 +1,5 @@
 ﻿using InterviewTracker.DAL;
+using InterviewTracker.Filters;
 using InterviewTracker.Models;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,11 @@ namespace InterviewTracker.Controllers
         //
         // GET: /Candidates/
 
+        [CustomAuth]
         public ActionResult Index()
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
             ViewBag.subsources = db.SubSources.ToList();
@@ -26,13 +30,19 @@ namespace InterviewTracker.Controllers
             return View();
         }
 
+        [CustomAuth]
         public ActionResult Success()
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
             return View();
         }
 
+        [CustomAuth("COORD", "ADMIN")]
         public ActionResult Create()
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
             ViewBag.subsources = db.SubSources.ToList();
@@ -78,8 +88,38 @@ namespace InterviewTracker.Controllers
             return Json(retValue);
         }
 
+        [CustomAuth]
+        public ActionResult View(int id)
+        {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
+            ViewBag.bioData = db.BioData.Find(id);
+
+            ViewBag.ethnicities = db.Ethnicity.ToList();
+            ViewBag.sources = db.Sources.ToList();
+            ViewBag.subsources = db.SubSources.ToList();
+            ViewBag.programs = db.Program.ToList();
+            ViewBag.majors = db.Major.ToList();
+            ViewBag.degreeTypes = db.DegreeType.ToList();
+            ViewBag.schools = db.School.ToList();
+            ViewBag.dutyStations = db.DutyStation.ToList();
+
+            ViewBag.schoolsAttended = ViewBag.bioData.SchoolsAttended;
+
+            ViewBag.dutyHistories = ViewBag.bioData.DutyHistories;
+            ViewBag.classesAttended = ViewBag.bioData.ClassesAttended;
+            ViewBag.RDs = ViewBag.bioData.RDs;
+            ViewBag.waivers = ViewBag.bioData.Waivers;
+            ViewBag.screens = ViewBag.bioData.Screens;
+
+            return View();
+        }
+
+        [CustomAuth("ADMIN", "COORD")]
         public ActionResult Edit(int id)
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
             ViewBag.bioData = db.BioData.Find(id);     
 
             ViewBag.ethnicities = db.Ethnicity.ToList();
@@ -106,7 +146,12 @@ namespace InterviewTracker.Controllers
             ViewBag.screens = ViewBag.bioData.Screens;
 
             ViewBag.schoolCount = ViewBag.schoolsAttended.Count;
-            //ViewBag.dutyStationsCount = ViewBag.dutyHistories.DutyStations.Count;
+            int dsCount = 0;
+            foreach (var dh in ViewBag.dutyHistories)
+            {
+                dsCount += dh.DutyStations.Count;
+            }
+            ViewBag.dutyStationsCount = dsCount;
             ViewBag.waiversCount = ViewBag.waivers.Count;
             ViewBag.screensCount = ViewBag.screens.Count;
             ViewBag.rdCount = ViewBag.RDs.Count;

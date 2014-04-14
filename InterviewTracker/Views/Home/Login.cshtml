@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<div class="row-fluid">
+    <div class="span10 offset1">
+        <form id="login-form" class="form-horizontal" action="@Url.Action("Login", "Home")" method="post">
+            <div class="form-group">
+                <label for="username" class="control-label span3">Username</label>
+                <div class="span9">
+                    <input type="text" name="username" id="username" class="form-control"
+                </div>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
