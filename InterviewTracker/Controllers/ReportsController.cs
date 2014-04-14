@@ -56,7 +56,7 @@ namespace InterviewTracker.Controllers
         public void generateCandidateReport(int id)
         {
             var bioData = db.BioData.Find(id);
-           
+
             string fileName = "CandidateReport_" + bioData.FName + " " + bioData.LName + ".docx";
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
@@ -70,7 +70,7 @@ namespace InterviewTracker.Controllers
             reportBody = reportBody.Replace("fyg", bioData.FYG.Value.ToString());
 
             string programString = "";
-            foreach(Program program in bioData.Programs.ToList())
+            foreach (Program program in bioData.Programs.ToList())
             {
                 if (!programString.Equals("")) programString = programString + ",";
                 programString = programString + program.ProgramValue;
@@ -82,7 +82,7 @@ namespace InterviewTracker.Controllers
             string row;
             string schoolInfo;
             string transcript = "";
-            foreach(SchoolsAttended school in bioData.SchoolsAttended.ToList())
+            foreach (SchoolsAttended school in bioData.SchoolsAttended.ToList())
             {
                 row = System.IO.File.ReadAllText(Server.MapPath("~/Templates/CandidateReportSchoolRow.html"));
                 int numYears;
@@ -98,15 +98,15 @@ namespace InterviewTracker.Controllers
                 transcript = transcript.Replace("schoolInfo", schoolInfo);
                 string classRow;
                 bool foundTechClass;
-                for (int i = 0; i < numYears; ++i )
+                for (int i = 0; i < numYears; ++i)
                 {
                     transcript = transcript + System.IO.File.ReadAllText(Server.MapPath("~/Templates/TranscriptTableRowHeader.html"));
-                    transcript = transcript.Replace("yearAttended", "Year " + (i+1) + ": " + (school.YearStart + i).Value.ToString() + " - " + (school.YearStart + i + 1).Value.ToString());
+                    transcript = transcript.Replace("yearAttended", "Year " + (i + 1) + ": " + (school.YearStart + i).Value.ToString() + " - " + (school.YearStart + i + 1).Value.ToString());
 
                     foundTechClass = false;
-                    foreach(ClassesAttended ca in school.ClassesAttended.ToList())
+                    foreach (ClassesAttended ca in school.ClassesAttended.ToList())
                     {
-                        if(ca.YearTaken == (i+1) && ca.Classes.Technical == true)
+                        if (ca.YearTaken == (i + 1) && ca.Classes.Technical == true)
                         {
                             foundTechClass = true;
                             classRow = System.IO.File.ReadAllText(Server.MapPath("~/Templates/TranscriptTableRow.html"));
@@ -116,7 +116,7 @@ namespace InterviewTracker.Controllers
                             transcript = transcript + classRow;
                         }
                     }
-                    if(!foundTechClass)
+                    if (!foundTechClass)
                     {
                         classRow = "<tr><td><i>No technical classes found for this year</i></td></tr>";
                         transcript = transcript + classRow;
@@ -136,7 +136,7 @@ namespace InterviewTracker.Controllers
                 }
                 reportBody = reportBody + row;
 
-                
+
             }
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
 
@@ -147,9 +147,9 @@ namespace InterviewTracker.Controllers
             {
                 dhEntry = System.IO.File.ReadAllText(Server.MapPath("~/Templates/DutyHistoryTableStart.html"));
 
-                if (dh.NUC == true) 
+                if (dh.NUC == true)
                     dhEntry = dhEntry.Replace("rank", dh.Rank + " (NUC)");
-                else 
+                else
                     dhEntry = dhEntry.Replace("rank", dh.Rank);
 
                 foreach (DutyStation ds in dh.DutyStations.ToList())
@@ -179,7 +179,7 @@ namespace InterviewTracker.Controllers
 
                 dhEntry = dhEntry + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
                 reportBody = reportBody + dhEntry;
-               
+
             }
 
             //Tack on the previously constructed transcript
@@ -196,7 +196,7 @@ namespace InterviewTracker.Controllers
             System.Diagnostics.Debug.WriteLine(date);
             DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-            string fileName = "InterviewResults_" + dt.ToShortDateString().Replace("/", "-")  + ".docx";
+            string fileName = "InterviewResults_" + dt.ToShortDateString().Replace("/", "-") + ".docx";
             System.Diagnostics.Debug.WriteLine(fileName);
 
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
@@ -207,7 +207,7 @@ namespace InterviewTracker.Controllers
 
             string row;
             //TO DO: only put the relevant interviews into list, not all of them
-            foreach(Interview interview in db.Interview.ToList())
+            foreach (Interview interview in db.Interview.ToList())
             {
                 BioData bioData = interview.BioData;
                 row = System.IO.File.ReadAllText(Server.MapPath("~/Templates/InterviewResultsRow.html"));
@@ -219,13 +219,14 @@ namespace InterviewTracker.Controllers
                 //How should this report deal with multiple schools/degrees?
                 string schoolInfo = "";
                 string degreeInfo = "";
-                foreach(SchoolsAttended sa in bioData.SchoolsAttended.ToList())
+                foreach (SchoolsAttended sa in bioData.SchoolsAttended.ToList())
                 {
-                    if(!schoolInfo.Equals(""))
+                    if (!schoolInfo.Equals(""))
                     {
                         schoolInfo = schoolInfo + ";\n";
                     }
                     schoolInfo = schoolInfo + sa.School.SchoolValue;
+
                     foreach(Degree d in sa.Degrees.ToList())
                     {
                         if (!degreeInfo.Equals(""))
@@ -316,6 +317,76 @@ namespace InterviewTracker.Controllers
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportTable.html"));
 
+           // string subTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportTable.html"));
+           // string surfTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportTable.html"));
+           // string nrTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportTable.html"));
+           // string instTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportTable.html"));
+
+            string subTable = reportBody.Replace("title", "SUBMARINE ACCESSIONS");
+            string surfTable = reportBody.Replace("title", "SURFACE WAREFARE OFFICER ACCESSIONS");
+            string nrTable = reportBody.Replace("title", "NR ENGINEER ACCESSIONS");
+            string instTable = reportBody.Replace("title", "INSTRUCTOR ACCESSIONS");
+            reportBody = reportBody.Replace("title", "OVERALL ACCESSIONS");
+
+            int totalGoal;
+            int otherTotalGoal = 0, otherSubGoal = 0, otherSurfGoal = 0, otherNRGoal = 0, otherInstGoal = 0;
+
+            foreach(FYGoals fyGoal in db.FYGoals.Where(goal => goal.FY.Value.ToString().Equals(year)))
+            {
+                if(fyGoal.Source.Equals(FYSource.USNA))
+                {
+                    totalGoal = fyGoal.SUB.Value + fyGoal.SWO.Value + fyGoal.NR.Value + fyGoal.INST.Value;
+                    reportBody = reportBody.Replace("usna goal", totalGoal.ToString());
+                    subTable = subTable.Replace("usna goal", fyGoal.SUB.Value.ToString());
+                    surfTable = surfTable.Replace("usna goal", fyGoal.SWO.Value.ToString());
+                    nrTable = nrTable.Replace("usna goal", fyGoal.NR.Value.ToString());
+                    instTable = instTable.Replace("usna goal", fyGoal.INST.Value.ToString());
+                }
+                else if(fyGoal.Source.Equals(FYSource.NROTC))
+                {
+                    totalGoal = fyGoal.SUB.Value + fyGoal.SWO.Value + fyGoal.NR.Value + fyGoal.INST.Value;
+                    reportBody = reportBody.Replace("nrotc goal", totalGoal.ToString());
+                    subTable = subTable.Replace("nrotc goal", fyGoal.SUB.Value.ToString());
+                    surfTable = surfTable.Replace("nrotc goal", fyGoal.SWO.Value.ToString());
+                    nrTable = nrTable.Replace("nrotc goal", fyGoal.NR.Value.ToString());
+                    instTable = instTable.Replace("nrotc goal", fyGoal.INST.Value.ToString());
+                }
+                else if(fyGoal.Source.Equals(FYSource.NUPOC))
+                {
+                    totalGoal = fyGoal.SUB.Value + fyGoal.SWO.Value + fyGoal.NR.Value + fyGoal.INST.Value;
+                    reportBody = reportBody.Replace("nupoc goal", totalGoal.ToString());
+                    subTable = subTable.Replace("nupoc goal", fyGoal.SUB.Value.ToString());
+                    surfTable = surfTable.Replace("nupoc goal", fyGoal.SWO.Value.ToString());
+                    nrTable = nrTable.Replace("nupoc goal", fyGoal.NR.Value.ToString());
+                    instTable = instTable.Replace("nupoc goal", fyGoal.INST.Value.ToString());
+                }
+                else if(fyGoal.Source.Equals(FYSource.STA21))
+                {
+                    totalGoal = fyGoal.SUB.Value + fyGoal.SWO.Value + fyGoal.NR.Value + fyGoal.INST.Value;
+                    reportBody = reportBody.Replace("sta goal", totalGoal.ToString());
+                    subTable = subTable.Replace("sta goal", fyGoal.SUB.Value.ToString());
+                    surfTable = surfTable.Replace("sta goal", fyGoal.SWO.Value.ToString());
+                    nrTable = nrTable.Replace("sta goal", fyGoal.NR.Value.ToString());
+                    instTable = instTable.Replace("sta goal", fyGoal.INST.Value.ToString());
+                }
+                else
+                {
+                    totalGoal = fyGoal.SUB.Value + fyGoal.SWO.Value + fyGoal.NR.Value + fyGoal.INST.Value;
+                    otherTotalGoal += totalGoal;
+                    otherSubGoal += fyGoal.SUB.Value;
+                    otherSurfGoal += fyGoal.SWO.Value;
+                    otherNRGoal += fyGoal.NR.Value;
+                    otherInstGoal += fyGoal.INST.Value;
+                }
+            }
+
+            reportBody = reportBody.Replace("other goal", otherTotalGoal.ToString());
+            subTable = subTable.Replace("other goal", otherSubGoal.ToString());
+            surfTable = surfTable.Replace("other goal", otherSurfGoal.ToString());
+            nrTable = nrTable.Replace("other goal", otherNRGoal.ToString());
+            instTable = instTable.Replace("other goal", otherInstGoal.ToString());
+
+            reportBody = reportBody + subTable + surfTable + instTable + nrTable;
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, true);
         }
@@ -328,8 +399,8 @@ namespace InterviewTracker.Controllers
             {
                 start = Convert.ToInt32(startFYG);
                 end = Convert.ToInt32(endFYG);
-            } 
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
                 end = DateTime.Today.Year;
                 start = end;
@@ -345,7 +416,7 @@ namespace InterviewTracker.Controllers
             string nonApplicable = "";
 
             string nextEntry;
-            foreach(BioData bioData in db.BioData.Where(data => data.FYG.Value >= start && data.FYG <= end))
+            foreach (BioData bioData in db.BioData.Where(data => data.FYG.Value >= start && data.FYG <= end))
             {
                 nextEntry = System.IO.File.ReadAllText(Server.MapPath("~/Templates/SAT-ACTTable.html"));
                 nextEntry = nextEntry.Replace("ssn", bioData.SSN);
@@ -409,17 +480,17 @@ namespace InterviewTracker.Controllers
                                 Height = (UInt32Value)12240U,
                                 Orient = PageOrientationValues.Landscape
                             };
+                            properties.Append(pageSize);
                             body.Append(properties);
 
-                         /*   SpacingBetweenLines spacing = new SpacingBetweenLines() { Line = "240", LineRule = LineSpacingRuleValues.Auto, Before = "0", After = "0" };
+                            SpacingBetweenLines spacing = new SpacingBetweenLines() { Line = "240", LineRule = LineSpacingRuleValues.Auto, Before = "0", After = "0" };
                             ParagraphProperties paragraphProperties = new ParagraphProperties();
                             Paragraph paragraph = new Paragraph();
 
                             paragraphProperties.Append(spacing);
                             paragraph.Append(paragraphProperties);
                             body.Append(paragraph);
-                          */
-                        }
+                         }
 
                         var paragraphs = converter.Parse(html);
                         for (int i = 0; i < paragraphs.Count; i++)
