@@ -342,6 +342,7 @@ namespace InterviewTracker.Migrations
             // Duty Station
             DutyStation KelseyDutyStation = new DutyStation
             {
+                Name = "KelseyDutyStation",
                 ReportDate = DateTime.Parse("2008-1-1"),
                 DepartDate = DateTime.Parse("2011-1-1"),
                 Duties = "Was an officer",
@@ -355,6 +356,7 @@ namespace InterviewTracker.Migrations
             };
             DutyStation JohnDutyStation = new DutyStation
             {
+                Name = "JohnDutyStation",
                 ReportDate = DateTime.Parse("2008-1-1"),
                 DepartDate = DateTime.Parse("2009-12-31"),
                 Duties = "Cooked meals",
@@ -368,6 +370,7 @@ namespace InterviewTracker.Migrations
             };
             DutyStation SteveDutyStation = new DutyStation
             {
+                Name = "SteveDutyStation",
                 ReportDate = DateTime.Parse("2011-1-1"),
                 DepartDate = DateTime.Parse("2013-1-1"),
                 Duties = "Corporal duties",

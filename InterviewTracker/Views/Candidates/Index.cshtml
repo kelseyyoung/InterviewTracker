@@ -80,6 +80,20 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="CalendarYear" class="control-label span3">CY</label>
+                            <div class="span9">
+                                <input type="text" id="CalendarYear" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="School" class="control-label span3">School</label>
+                            <div class="span9">
+                                <select class="form-control" id="School">
+                                    <option>School1</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="span4">
                         <div class="form-group">
@@ -204,9 +218,23 @@
                 var bd = obj[i];
                 var dob = moment(bd.DOB);
                 dob = dob.format("MM/DD/YYYY");
-                var url = "@Url.Action("Edit", "Candidates", new { id = "__id__"})";
+                var url;
+                var text
+                @if(ViewBag.currUser.Role == "ADMIN") {
+                    <text>
+                    url = "@Url.Action("Edit", "Candidates", new { id = "__id__"})";
+                    text = "Edit";
+                    </text>
+                }
+                else
+                {
+                    <text>
+                    url = "@Url.Action("View", "Candidates", new { id = "__id__"})";
+                    text = "View";
+                    </text>
+                }
                 url = url.replace("__id__", bd.ID);
-                var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button' type='button'>Edit</a>"];
+                var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button' type='button'>" + text + "</a>"];
                 $("#search-results").dataTable().fnAddData(a);
             }
             //Re-init buttons
@@ -247,7 +275,7 @@
                 var form = $("#search-form");
                 var filterStr = buildFilterString($(form).serializeArray());
                 if (filterStr == "") {
-                    // If empty, get all?
+                    // TODO: If empty, get all?
                 } else {
                     // Make call to API
                     var obj = {
@@ -278,22 +306,6 @@
                 }
             });
 
-            //Initial DataTable data is all biodatas
-            $.ajax({
-                url: "http://localhost:50741/api/BioData/GetAll/",
-                type: "Get",
-                success: function (data) {
-                    console.log("success");
-                    console.log(data);
-                    populateTable(data);
-                },
-                error: function (data) {
-                    console.log("error");
-                    console.log(data);
-                    console.log(data.responseText);
-                }
-            });
-
-        });
+        }); // End document ready
     </script>
 }

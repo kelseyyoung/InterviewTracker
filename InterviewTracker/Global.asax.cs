@@ -38,27 +38,25 @@ namespace InterviewTracker
         // Override to register logged in user and set in HttpContext
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
-           HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
 
             // If cookie isn't null or hasn't expired yet
             // TODO: change expiration to certain time
             if (authCookie != null)
             {
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (!authTicket.Expired)
+                if (authTicket.Name == "Logout")
                 {
-                    if (authTicket.Name == "Logout")
-                    {
-                        // Logout the user
-                        HttpContext.Current.User = null;
-                    }
-                    else
-                    {
-                        // Login the user
-                        CustomPrincipal newUser = new CustomPrincipal(authTicket.Name, authTicket.UserData);
-                        HttpContext.Current.User = newUser;
-                    }
+                    // Logout the user
+                    HttpContext.Current.User = null;
                 }
+                else
+                {
+                    // Login the user
+                    CustomPrincipal newUser = new CustomPrincipal(authTicket.Name, authTicket.UserData);
+                    HttpContext.Current.User = newUser;
+                }
+
             }
         }
     }

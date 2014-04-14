@@ -11,6 +11,8 @@ namespace InterviewTracker.Models
     {
         public int DutyStationID { get; set; } // PK for Duty Station table
         [Required]
+        public string Name { get; set; }
+        [Required]
         public DateTime ReportDate { get; set; } // Date reported
         [Required]
         public DateTime DepartDate { get; set; } // Date departed
