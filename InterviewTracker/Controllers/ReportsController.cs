@@ -331,7 +331,7 @@ namespace InterviewTracker.Controllers
             int totalGoal;
             int otherTotalGoal = 0, otherSubGoal = 0, otherSurfGoal = 0, otherNRGoal = 0, otherInstGoal = 0;
 
-            foreach(FYGoals fyGoal in db.FYGoals.Where(goal => goal.FY.Value.ToString().Equals(year)))
+            foreach(FYGoals fyGoal in db.FYGoals.Where(goal => goal.FY.ToString().Equals(year)))
             {
                 if(fyGoal.Source.Equals(FYSource.USNA))
                 {

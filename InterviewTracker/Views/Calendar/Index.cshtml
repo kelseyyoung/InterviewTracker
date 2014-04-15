@@ -13,6 +13,10 @@
     overflow: auto;
     }
 
+    .well-small {
+    width: inherit;
+    }
+
 }
 
 <div class="row-fluid">
@@ -49,182 +53,182 @@
                 <h4 class="panel-title">Interviews</h4>
             </div>
             <div class="panel-body">
-                <div class="well well-small">
-                    <span>Candidate: Kelsey Young</span><br />
-                    <span>Interviewer: adminaa</span><br />
-                    <span>Date/Time: May 4th, 2014 13:00-14:00</span>
-                    <span>Location: Room 202</span>
-                    <div class="text-center">
-                        <button type="button">Edit</button>
-                        <button type="button" class="btn-ignore btn-danger">Delete</button>
+                <div class="well well-small row-fluid">
+                    <div class="span10">
+                        <span>Candidate: Kelsey Young</span><br />
+                        <span>Interviewer: adminaa</span><br />
+                        <span>Date/Time: May 4th, 2014 13:00-14:00</span><br />
+                        <span>Location: Room 202</span><br />
+                        <span>Status: Scheduled</span>
+                    </div>
+                    <div class="span2 text-center">
+                        <button type="button"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i></button>
                     </div>
                 </div>
-                <div class="well well-small">
-                    <span>Candidate: Kelsey Young</span><br />
-                    <span>Interviewer: adminaa</span><br />
-                    <span>Date/Time: May 4th, 2014 13:00-14:00</span>
-                    <span>Location: Room 202</span>
-                    <div class="text-center">
-                        <button type="button">Edit</button>
-                        <button type="button" class="btn-ignore btn-danger">Delete</button>
+                <div class="well well-small row-fluid">
+                    <div class="span10">
+                        <span>Candidate: Kelsey Young</span><br />
+                        <span>Interviewer: adminaa</span><br />
+                        <span>Date/Time: May 4th, 2014 13:00-14:00</span><br />
+                        <span>Location: Room 202</span><br />
+                        <span>Status: Scheduled</span>
+                    </div>
+                    <div class="span2 text-center">
+                        <button type="button"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i></button>
                     </div>
                 </div>
-                <div class="well well-small">
-                    <span>Candidate: Kelsey Young</span><br />
-                    <span>Interviewer: adminaa</span><br />
-                    <span>Date/Time: May 4th, 2014 13:00-14:00</span>
-                    <span>Location: Room 202</span>
-                    <div class="text-center">
-                        <button type="button">Edit</button>
-                        <button type="button" class="btn-ignore btn-danger">Delete</button>
+                <div class="well well-small row-fluid">
+                    <div class="span10">
+                        <span>Candidate: Kelsey Young</span><br />
+                        <span>Interviewer: adminaa</span><br />
+                        <span>Date/Time: May 4th, 2014 13:00-14:00</span><br />
+                        <span>Location: Room 202</span><br />
+                        <span>Status: Scheduled</span>
                     </div>
-                </div>
-                <div class="well well-small">
-                    <span>Candidate: Kelsey Young</span><br />
-                    <span>Interviewer: adminaa</span><br />
-                    <span>Date/Time: May 4th, 2014 13:00-14:00</span>
-                    <span>Location: Room 202</span>
-                    <div class="text-center">
-                        <button type="button">Edit</button>
-                        <button type="button" class="btn-ignore btn-danger">Delete</button>
+                    <div class="span2 text-center">
+                        <button type="button"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i></button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Create interview button -->
-        <!-- Only coord and admins can create -->
-        @if (ViewBag.currUser.Role == "COORD" || ViewBag.currUser.Role == "ADMIN")
-        {
-            <p class="text-center"><button id="createInterview"><i class="fa fa-plus"></i> Create Interview</button></p>
+    </div>
+    <!-- Create interview button -->
+    <!-- Only coord and admins can create -->
+    @if (ViewBag.currUser.Role == "COORD" || ViewBag.currUser.Role == "ADMIN")
+    {
+        <p class="text-center"><button id="createInterview"><i class="fa fa-plus"></i> Create Interview</button></p>
         <!-- Create new interview collapsable panel-->
-            <div class="panel panel-primary" style="display:none" id="showCreate">
-                <div class="panel-heading">
-                    <h4 class="panel-title">Create New Interview</h4>
-                </div>
-                <div class="panel-body">
-                    <form class="form-horizontal" id="interview-form">
-                        <div class="form-group">
-                            <label for="date-holder" class="control-label span3">Date</label>
-                            <div class="span7">
-                                <input type="text" class="form-control span11" id="date-holder" />
-                                <input type="hidden" name="Date" id="Date" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="start-holder" class="control-label span3">Start Time</label>
-                            <div class="span3">
-                                <select id="start-holder">
-                                    @for (var i = ViewBag.startTime; i < ViewBag.endTime; i++)
-                                    {
-                                        <option value="@i:00">@i:00</option>
-                                        <option value="@i:15">@i:15</option>
-                                        <option value="@i:30">@i:30</option>
-                                        <option value="@i:45">@i:45</option>
-                                    }
-                                </select>
-                                <input type="hidden" class="form-control span11" name="StartTime" id="StartTime" />
-                            </div>
-                            <label for="end-holder" class="control-label span3">End Time</label>
-                            <div class="span3">
-                                <select id="end-holder">
-                                    @for (var i = ViewBag.startTime; i <= ViewBag.endTime; i++)
-                                    {
-                                        <option value="@i:00">@i:00</option>
-                                        <option value="@i:15">@i:15</option>
-                                        <option value="@i:30">@i:30</option>
-                                        <option value="@i:15">@i:15</option>
-                                        <option value="@i:45">@i:45</option>
-                                    }
-                                </select>
-                                <input type="hidden" class="form-control span11" name="EndTime" id="EndTime" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="BioDataID" class="control-label span3">Candidate</label>
-                            <div class="span7">
-                                <select class="form-control span11" name="BioDataID" id="BioDataID">
-                                    <option value=""></option>
-                                    @foreach (var c in ViewBag.candidates)
-                                    {
-                                        <option value="@c.ID" data-alt="@c.SSN">@c.FName @c.LName (@c.SSN)</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="checkbox text-center">
-                            <label for="NR">
-                                <input id="NR" name="NR" type="checkbox" />NR
-                            </label>
-                            <label for="INST">
-                                <input id="INST" name="INST" type="checkbox" />INST
-                            </label>
-                            <label for="NPS">
-                                <input id="NPS" name="NPS" type="checkbox" />NPS
-                            </label>
-                            <label for="PXO">
-                                <input id="PXO" name="PXO" type="checkbox" />PXO
-                            </label>
-                            <label for="EDO">
-                                <input id="EDO" name="EDO" type="checkbox" />EDO
-                            </label>
-                        </div>
-                        <div class="checkbox text-center">
-                            <label for="ENLTECH">
-                                <input id="ENLTECH" name="ENLTECH" type="checkbox" />ENLTECH
-                            </label>
-                            <label for="NR1">
-                                <input id="NR1" name="NR1" type="checkbox" />NR1
-                            </label>
-                            <label for="SUPPLY">
-                                <input id="SUPPLY" name="SUPPLY" type="checkbox" />SUPPLY
-                            </label>
-                        </div>
-                        <div class="checkbox text-center">
-                            <label for="EOOW">
-                                <input id="EOOW" name="EOOW" type="checkbox" />EOOW
-                            </label>
-                            <label for="DOE">
-                                <input id="DOE" name="INST" type="checkbox" />DOE
-                            </label>
-                        </div>
-                        <div class="text-center">
-                            <button type="button" id="submit-quals">Filter by Quals</button>
-                        </div>
-                        <hr />
-                        <div class="form-group">
-                            <label for="InterviewerID" class="control-label span3">Interviewer</label>
-                            <div class="span7">
-                                <select class="form-control span11" name="InterviewerID" id="InterviewerID">
-                                    <option value=""></option>
-                                    @foreach (var i in ViewBag.interviewers)
-                                    {
-                                        <option value="@i.UserID">@i.LoginID</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="Location" class="control-label span3">Location</label>
-                            <div class="span7">
-                                <input type="text" class="form-control span11" name="Location" id="Location" />
-                            </div>
-                        </div>
-                        <input type="hidden" name="Status" id="Status" value="@Status.Scheduled.ToString()" />
-                        <input type="hidden" name="Duration" id="Duration" value="" />
-                    </form>
-                    <div class="row-fluid">
-                        <div id="interview-errors" class="alert hide alert-error span10 offset1">
-                            <p></p>
+        <div class="panel panel-primary" style="display:none" id="showCreate">
+            <div class="panel-heading">
+                <h4 class="panel-title">Create New Interview</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" id="interview-form">
+                    <div class="form-group">
+                        <label for="date-holder" class="control-label span3">Date</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" id="date-holder" />
+                            <input type="hidden" name="Date" id="Date" />
                         </div>
                     </div>
-                    <p class="text-center">
-                        <button type="button" class="btn-ignore btn-success" id="schedule-interview"><i class="fa fa-check"></i> Schedule</button>
-                        <button type="button" class="btn-ignore btn-danger" id="cancelInterview"><i class="fa fa-times-circle"></i> Cancel</button>
-                    </p>
+                    <div class="form-group">
+                        <label for="start-holder" class="control-label span3">Start Time</label>
+                        <div class="span3">
+                            <select id="start-holder">
+                                @for (var i = ViewBag.startTime; i < ViewBag.endTime; i++)
+                                {
+                                    <option value="@i:00">@i:00</option>
+                                    <option value="@i:15">@i:15</option>
+                                    <option value="@i:30">@i:30</option>
+                                    <option value="@i:45">@i:45</option>
+                                }
+                            </select>
+                            <input type="hidden" class="form-control span11" name="StartTime" id="StartTime" />
+                        </div>
+                        <label for="end-holder" class="control-label span3">End Time</label>
+                        <div class="span3">
+                            <select id="end-holder">
+                                @for (var i = ViewBag.startTime; i <= ViewBag.endTime; i++)
+                                {
+                                    <option value="@i:00">@i:00</option>
+                                    <option value="@i:15">@i:15</option>
+                                    <option value="@i:30">@i:30</option>
+                                    <option value="@i:15">@i:15</option>
+                                    <option value="@i:45">@i:45</option>
+                                }
+                            </select>
+                            <input type="hidden" class="form-control span11" name="EndTime" id="EndTime" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="BioDataID" class="control-label span3">Candidate</label>
+                        <div class="span7">
+                            <select class="form-control span11" name="BioDataID" id="BioDataID">
+                                <option value=""></option>
+                                @foreach (var c in ViewBag.candidates)
+                                {
+                                    <option value="@c.ID" data-alt="@c.SSN">@c.FName @c.LName (@c.SSN)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="checkbox text-center">
+                        <label for="NR">
+                            <input id="NR" name="NR" type="checkbox" />NR
+                        </label>
+                        <label for="INST">
+                            <input id="INST" name="INST" type="checkbox" />INST
+                        </label>
+                        <label for="NPS">
+                            <input id="NPS" name="NPS" type="checkbox" />NPS
+                        </label>
+                        <label for="PXO">
+                            <input id="PXO" name="PXO" type="checkbox" />PXO
+                        </label>
+                        <label for="EDO">
+                            <input id="EDO" name="EDO" type="checkbox" />EDO
+                        </label>
+                    </div>
+                    <div class="checkbox text-center">
+                        <label for="ENLTECH">
+                            <input id="ENLTECH" name="ENLTECH" type="checkbox" />ENLTECH
+                        </label>
+                        <label for="NR1">
+                            <input id="NR1" name="NR1" type="checkbox" />NR1
+                        </label>
+                        <label for="SUPPLY">
+                            <input id="SUPPLY" name="SUPPLY" type="checkbox" />SUPPLY
+                        </label>
+                    </div>
+                    <div class="checkbox text-center">
+                        <label for="EOOW">
+                            <input id="EOOW" name="EOOW" type="checkbox" />EOOW
+                        </label>
+                        <label for="DOE">
+                            <input id="DOE" name="INST" type="checkbox" />DOE
+                        </label>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" id="submit-quals">Filter by Quals</button>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label for="InterviewerID" class="control-label span3">Interviewer</label>
+                        <div class="span7">
+                            <select class="form-control span11" name="InterviewerID" id="InterviewerID">
+                                <option value=""></option>
+                                @foreach (var i in ViewBag.interviewers)
+                                {
+                                    <option value="@i.UserID">@i.LoginID</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Location" class="control-label span3">Location</label>
+                        <div class="span7">
+                            <input type="text" class="form-control span11" name="Location" id="Location" />
+                        </div>
+                    </div>
+                    <input type="hidden" name="Status" id="Status" value="@Status.Scheduled.ToString()" />
+                    <input type="hidden" name="Duration" id="Duration" value="" />
+                </form>
+                <div class="row-fluid">
+                    <div id="interview-errors" class="alert hide alert-error span10 offset1">
+                        <p></p>
+                    </div>
                 </div>
+                <p class="text-center">
+                    <button type="button" class="btn-ignore btn-success" id="schedule-interview"><i class="fa fa-check"></i> Schedule</button>
+                    <button type="button" class="btn-ignore btn-danger" id="cancelInterview"><i class="fa fa-times-circle"></i> Cancel</button>
+                </p>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
 </div>
 
 @section AddToScripts {
@@ -277,62 +281,62 @@
                         @if (ViewBag.currUser.Role == "INTER")
                         {
                         <text>
-                            var event = {
-                                id: interview.InterviewID,
-                                //TODO: change this title to something else?
-                                title: interview.BioData.FName + " " + interview.BioData.LName,
-                                allDay: false,
-                                start: interview.StartTime,
-                                end: interview.EndTime,
-                                backgroundColor: eventColors[interview.Status.toLowerCase()],
-                                borderColor: eventColors[interview.Status.toLowerCase()]
-                            };
-                            if (interview.CurrentlyEditingID != null) {
-                                // Set colors to black
-                            }
-                            $("#calendar").fullCalendar("renderEvent", event);
+                        var event = {
+                            id: interview.InterviewID,
+                            //TODO: change this title to something else?
+                            title: interview.BioData.FName + " " + interview.BioData.LName,
+                            allDay: false,
+                            start: interview.StartTime,
+                            end: interview.EndTime,
+                            backgroundColor: eventColors[interview.Status.toLowerCase()],
+                            borderColor: eventColors[interview.Status.toLowerCase()]
+                        };
+                        if (interview.CurrentlyEditingID != null) {
+                            // Set colors to black
+                        }
+                        $("#calendar").fullCalendar("renderEvent", event);
                         </text>
                         }
-                        else 
+                        else
                         {
                         <text>
-                            var date = new Date(interview.Date);
-                            date.setHours(12);
-                            var dateString = date.toISOString();
-                            var source = interview.BioData.Sources.SourcesValue;
-                            if (dateString in interviewMapper) {
-                                var sourceMap = interviewMapper[dateString];
-                                if (source in sourceMap) {
-                                    var count = sourceMap[source];
-                                    count++;
-                                    interviewMapper[dateString][source] = count;
-                                } else {
-                                    interviewMapper[dateString][source] = 1;
-                                }
+                        var date = new Date(interview.Date);
+                        date.setHours(12);
+                        var dateString = date.toISOString();
+                        var source = interview.BioData.Sources.SourcesValue;
+                        if (dateString in interviewMapper) {
+                            var sourceMap = interviewMapper[dateString];
+                            if (source in sourceMap) {
+                                var count = sourceMap[source];
+                                count++;
+                                interviewMapper[dateString][source] = count;
                             } else {
-                                interviewMapper[dateString] = {};
                                 interviewMapper[dateString][source] = 1;
                             }
+                        } else {
+                            interviewMapper[dateString] = {};
+                            interviewMapper[dateString][source] = 1;
+                        }
                         </text>
                         }
                     }
                     @if (ViewBag.currUser.Role != "INTER")
                     {
                     <text>
-                        for (var date in interviewMapper) {
-                            for (var source in interviewMapper[date]) {
-                                var event = {
-                                    id: source,
-                                    //TODO: change this title to something else?
-                                    title: source + " (" + interviewMapper[date][source] + ")",
-                                    allDay: true,
-                                    start: date,
-                                    backgroundColor: eventColors["none"],
-                                    borderColor: eventColors["none"]
-                                };
-                                $("#calendar").fullCalendar("renderEvent", event);
-                            }
+                    for (var date in interviewMapper) {
+                        for (var source in interviewMapper[date]) {
+                            var event = {
+                                id: source,
+                                //TODO: change this title to something else?
+                                title: source + " (" + interviewMapper[date][source] + ")",
+                                allDay: true,
+                                start: date,
+                                backgroundColor: eventColors["none"],
+                                borderColor: eventColors["none"]
+                            };
+                            $("#calendar").fullCalendar("renderEvent", event);
                         }
+                    }
                     </text>
                     }
                 },
