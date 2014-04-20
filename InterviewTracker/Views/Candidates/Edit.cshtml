@@ -162,11 +162,11 @@
                             </select>
                         </div>
                     </div>
-                    <!-- TODO: only show subsource if source is NROTC(?) -->
                     <div class="form-group">
                         <label for="SubSourcesID" class="control-label span4">SubSource</label>
                         <div class="span8">
                             <select id="SubSourcesID" name="SubSourcesID">
+                                <option value="">--None--</option>
                                 @foreach (var s in ViewBag.subsources)
                                 {
                                 <option value="@s.SubSourcesID"
@@ -1578,7 +1578,20 @@
             }
 
             // Set BioDataID
-            bioDataId = @ViewBag.bioData.ID + 0;
+            bioDataId = @ViewBag.bioData.ID +0;
+
+            // School Select2
+            $("#SchoolValue").select2({
+                placeholder: "Select School"
+            }).parent().find('.select2-with-searchbox')
+            .prepend('<div class="createLink"><a href="#">Add New School</a></div>')
+            .on('click', '.createLink', function (e) {
+                e.preventDefault();
+                var name = $(this).parent().find(".select2-search input").val().toUpperCase();
+                addSchool(1, name);
+                // Close dropdown
+                $("#SchoolValue").select2("close");
+            });
 
         }); // End document ready
 

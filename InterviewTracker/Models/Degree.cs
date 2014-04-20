@@ -10,7 +10,7 @@ namespace InterviewTracker.Models
     public class Degree
     {
         public int DegreeID { get; set; } // PK for Degree table
-        [Required]
+        [Required(ErrorMessage="The Degree Date field is required")]
         public DateTime DegreeDate { get; set; } // DateTime degree received, also grad date if 'graduated'
 
         [ForeignKey("SchoolsAttended")]

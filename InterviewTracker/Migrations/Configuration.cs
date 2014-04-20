@@ -252,6 +252,7 @@ namespace InterviewTracker.Migrations
                 DOE = false,
                 UserGroup = UserGroup.COORD.ToString()
             };
+            // 3 Different interviewers
             User Interviewer = new User
             {
                 LName = "interviewer",
@@ -259,23 +260,63 @@ namespace InterviewTracker.Migrations
                 LoginID = "interviewercc",
                 Password = "interviewer",
                 Code = "08C",
-                NR = false,
+                NR = true,
                 INST = true,
                 NPS = true,
                 PXO = true,
-                EDO = false,
-                ENLTECH = false,
-                NR1 = false,
-                SUPPLY = false,
-                EOOW = false,
-                DOE = false,
+                EDO = true,
+                ENLTECH = true,
+                NR1 = true,
+                SUPPLY = true,
+                EOOW = true,
+                DOE = true,
+                UserGroup = UserGroup.INTER.ToString()
+            };
+            User Interviewer2 = new User
+            {
+                LName = "interviewer2",
+                Initials = "cc",
+                LoginID = "interviewer2cc",
+                Password = "interviewer2",
+                Code = "08C",
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = true,
+                NR1 = true,
+                SUPPLY = true,
+                EOOW = true,
+                DOE = true,
+                UserGroup = UserGroup.INTER.ToString()
+            };
+            User Interviewer3 = new User
+            {
+                LName = "interviewer3",
+                Initials = "cc",
+                LoginID = "interviewer3cc",
+                Password = "interviewer3",
+                Code = "08C",
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = true,
+                NR1 = true,
+                SUPPLY = true,
+                EOOW = true,
+                DOE = true,
                 UserGroup = UserGroup.INTER.ToString()
             };
 
             context.User.AddOrUpdate(i => i.UserID,
                 Admin,
                 Coord,
-                Interviewer
+                Interviewer,
+                Interviewer2,
+                Interviewer3
             );
 
             // Classes
@@ -458,6 +499,7 @@ namespace InterviewTracker.Migrations
             );
             
             // School Standings
+            // 4 Years for Kelsey
             SchoolStandings KelseySchoolStandings = new SchoolStandings
             {
                 YearOfRecord = 1,
@@ -470,7 +512,56 @@ namespace InterviewTracker.Migrations
                 InMajorTot = 200,
                 SchoolsAttended = KelseySchoolsAttended
             };
+            SchoolStandings KelseySchoolStandings2 = new SchoolStandings
+            {
+                YearOfRecord = 2,
+                GPA = 3.2,
+                AOMVal = 30,
+                AOMTot = 300,
+                OOMVal = 20,
+                OOMTot = 300,
+                InMajorVal = 20,
+                InMajorTot = 200,
+                SchoolsAttended = KelseySchoolsAttended
+            };
+            SchoolStandings KelseySchoolStandings3 = new SchoolStandings
+            {
+                YearOfRecord = 3,
+                GPA = 3.2,
+                AOMVal = 30,
+                AOMTot = 300,
+                OOMVal = 20,
+                OOMTot = 300,
+                InMajorVal = 20,
+                InMajorTot = 200,
+                SchoolsAttended = KelseySchoolsAttended
+            };
+            SchoolStandings KelseySchoolStandings4 = new SchoolStandings
+            {
+                YearOfRecord = 4,
+                GPA = 3.2,
+                AOMVal = 30,
+                AOMTot = 300,
+                OOMVal = 20,
+                OOMTot = 300,
+                InMajorVal = 20,
+                InMajorTot = 200,
+                SchoolsAttended = KelseySchoolsAttended
+            };
+            // 3 Years for John
             SchoolStandings JohnSchoolStandings = new SchoolStandings
+            {
+                YearOfRecord = 1,
+                GPA = 2.3,
+                AOMVal = 10,
+                AOMTot = 600,
+                OOMVal = 500,
+                OOMTot = 500,
+                InMajorVal = 87,
+                InMajorTot = 500,
+                SchoolsAttended = JohnSchoolsAttended
+            };
+            SchoolStandings JohnSchoolStandings2 = new SchoolStandings
             {
                 YearOfRecord = 2,
                 GPA = 2.3,
@@ -482,9 +573,58 @@ namespace InterviewTracker.Migrations
                 InMajorTot = 500,
                 SchoolsAttended = JohnSchoolsAttended
             };
-            SchoolStandings SteveSchoolStandings = new SchoolStandings
+            SchoolStandings JohnSchoolStandings3 = new SchoolStandings
             {
                 YearOfRecord = 3,
+                GPA = 2.3,
+                AOMVal = 10,
+                AOMTot = 600,
+                OOMVal = 500,
+                OOMTot = 500,
+                InMajorVal = 87,
+                InMajorTot = 500,
+                SchoolsAttended = JohnSchoolsAttended
+            };
+            // 4 Years for Stever
+            SchoolStandings SteveSchoolStandings = new SchoolStandings
+            {
+                YearOfRecord = 1,
+                GPA = 3.9,
+                AOMVal = 2,
+                AOMTot = 80,
+                OOMVal = 1,
+                OOMTot = 50,
+                InMajorVal = 2,
+                InMajorTot = 90,
+                SchoolsAttended = SteveSchoolsAttended
+            };
+            SchoolStandings SteveSchoolStandings2 = new SchoolStandings
+            {
+                YearOfRecord = 2,
+                GPA = 3.9,
+                AOMVal = 2,
+                AOMTot = 80,
+                OOMVal = 1,
+                OOMTot = 50,
+                InMajorVal = 2,
+                InMajorTot = 90,
+                SchoolsAttended = SteveSchoolsAttended
+            };
+            SchoolStandings SteveSchoolStandings3 = new SchoolStandings
+            {
+                YearOfRecord = 3,
+                GPA = 3.9,
+                AOMVal = 2,
+                AOMTot = 80,
+                OOMVal = 1,
+                OOMTot = 50,
+                InMajorVal = 2,
+                InMajorTot = 90,
+                SchoolsAttended = SteveSchoolsAttended
+            };
+            SchoolStandings SteveSchoolStandings4 = new SchoolStandings
+            {
+                YearOfRecord = 4,
                 GPA = 3.9,
                 AOMVal = 2,
                 AOMTot = 80,
@@ -497,8 +637,16 @@ namespace InterviewTracker.Migrations
 
             context.SchoolStandings.AddOrUpdate(i => i.SchoolStandingsID,
                 KelseySchoolStandings,
+                KelseySchoolStandings2,
+                KelseySchoolStandings3,
+                KelseySchoolStandings4,
                 JohnSchoolStandings,
-                SteveSchoolStandings
+                JohnSchoolStandings2,
+                JohnSchoolStandings3,
+                SteveSchoolStandings,
+                SteveSchoolStandings2,
+                SteveSchoolStandings3,
+                SteveSchoolStandings4
             );
             
             // Interviews
@@ -507,20 +655,32 @@ namespace InterviewTracker.Migrations
                 Date = DateTime.Parse("2014/5/13 12:00:00"),
                 Status = Status.Scheduled.ToString(),
                 Location = "Room 203",
-                StartTime = DateTime.Parse("2014/5/13 15:00:00"),
-                EndTime = DateTime.Parse("2014/5/13 16:00:00"),
+                StartTime = DateTime.Parse("2014/5/13 11:00:00"),
+                EndTime = DateTime.Parse("2014/5/13 12:00:00"),
                 Duration = 60,
-                NR = false,
-                INST = false,
-                NPS = false,
-                PXO = true,
-                EDO = true,
-                ENLTECH = false,
-                NR1 = true,
-                SUPPLY = true,
-                EOOW = false,
-                DOE = false,
                 InterviewerUser = Interviewer,
+                BioData = Kelsey
+            };
+            Interview KelseyInterview2 = new Interview
+            {
+                Date = DateTime.Parse("2014/5/13 12:00:00"),
+                Status = Status.Scheduled.ToString(),
+                Location = "Room 203",
+                StartTime = DateTime.Parse("2014/5/13 12:00:00"),
+                EndTime = DateTime.Parse("2014/5/13 13:00:00"),
+                Duration = 60,
+                InterviewerUser = Interviewer2,
+                BioData = Kelsey
+            };
+            Interview KelseyInterview3 = new Interview
+            {
+                Date = DateTime.Parse("2014/5/13 12:00:00"),
+                Status = Status.Scheduled.ToString(),
+                Location = "Room 203",
+                StartTime = DateTime.Parse("2014/5/13 13:00:00"),
+                EndTime = DateTime.Parse("2014/5/13 14:00:00"),
+                Duration = 60,
+                InterviewerUser = Interviewer3,
                 BioData = Kelsey
             };
             Interview JohnInterview = new Interview
@@ -530,17 +690,10 @@ namespace InterviewTracker.Migrations
                 Location = "Room 155",
                 Comments = "Seemed like a good worker",
                 StartTime = DateTime.Parse("2014/1/20 9:00:00"),
-                EndTime = DateTime.Parse("2014/1/20 11:00:00"),
-                Duration = 120,
+                EndTime = DateTime.Parse("2014/1/20 9:30:00"),
+                Duration = 3,
                 NR = true,
-                INST = false,
-                NPS = true,
-                PXO = true,
-                EDO = false,
                 ENLTECH = false,
-                NR1 = true,
-                SUPPLY = false,
-                EOOW = false,
                 DOE = true,
                 InterviewerUser = Interviewer,
                 BioData = John
@@ -553,22 +706,14 @@ namespace InterviewTracker.Migrations
                 Comments = "Gave off a bad impression",
                 EditedComments = "Gave off a bad impression, did not respond well to questions",
                 StartTime = DateTime.Parse("2014/2/2 11:00:00"),
-                EndTime = DateTime.Parse("2014/2/2 14:00:00"),
-                Duration = 180,
+                EndTime = DateTime.Parse("2014/2/2 12:30:00"),
+                Duration = 90,
                 EditTime = DateTime.Parse("2014/2/5 11:30:00"),
-                NR = true,
-                INST = true,
                 NPS = true,
                 PXO = false,
-                EDO = false,
-                ENLTECH = true,
-                NR1 = false,
-                SUPPLY = false,
-                EOOW = false,
-                DOE = false,
                 CurrentlyEditingUser = Coord,
                 InterviewerUser = Interviewer,
-                BioData = John
+                BioData = Steve
             };
 
             Interview FinalInterview = new Interview
@@ -584,14 +729,6 @@ namespace InterviewTracker.Migrations
                 EditTime = DateTime.Parse("2014/5/20 9:30:00"),
                 NR = true,
                 INST = true,
-                NPS = true,
-                PXO = false,
-                EDO = false,
-                ENLTECH = true,
-                NR1 = false,
-                SUPPLY = false,
-                EOOW = false,
-                DOE = false,
                 CurrentlyEditingUser = Coord,
                 InterviewerUser = Interviewer,
                 BioData = Kelsey
@@ -599,32 +736,49 @@ namespace InterviewTracker.Migrations
 
             context.Interview.AddOrUpdate(i => i.InterviewID,
                 KelseyInterview,
+                KelseyInterview2,
+                KelseyInterview3,
                 JohnInterview,
                 SteveInterview,
                 FinalInterview
             );
 
-            // Many interviews
-            for (int j = 0; j < 10; j++)
+            // Admiral for FinalInterview
+            Admiral FinalInterviewAdmiral = new Admiral
+            {
+                Decision = true,
+                Accepted = true,
+                Comments = "Great person",
+                NP500 = false,
+                NSTC = true,
+                SelfStudy = true,
+                PreSchool = false,
+                Letter = false,
+                LetterReceived = false,
+                AdmiralNotes = "Welcome aboard",
+                InviteBack = false,
+                SERVSEL = "what is this",
+                BioData = Kelsey,
+                Interview = FinalInterview
+            };
+
+            context.Admiral.AddOrUpdate(i => i.AdmiralID,
+                FinalInterviewAdmiral
+            );
+
+            // Many interviews for coord view
+            for (int j = 0; j < 4; j++)
             {
                 Interview Interview = new Interview
                 {
                     Date = DateTime.Parse("2014/4/16 12:00:00"),
-                    Status = Status.Final.ToString(),
+                    Status = Status.Scheduled.ToString(),
                     Location = "Room 700",
                     StartTime = DateTime.Parse("2014/4/16 11:00:00"),
                     EndTime = DateTime.Parse("2014/4/16 11:30:00"),
                     Duration = 30,
                     NR = true,
                     INST = true,
-                    NPS = true,
-                    PXO = false,
-                    EDO = false,
-                    ENLTECH = true,
-                    NR1 = false,
-                    SUPPLY = false,
-                    EOOW = false,
-                    DOE = false,
                     InterviewerUser = Interviewer,
                     BioData = Kelsey
                 };
@@ -632,54 +786,39 @@ namespace InterviewTracker.Migrations
                     Interview
                 );
             }
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 4; j++)
             {
                 Interview Interview = new Interview
                 {
                     Date = DateTime.Parse("2014/4/16 12:00:00"),
-                    Status = Status.Final.ToString(),
+                    Status = Status.Scheduled.ToString(),
                     Location = "Room 700",
                     StartTime = DateTime.Parse("2014/4/16 11:00:00"),
                     EndTime = DateTime.Parse("2014/4/16 11:30:00"),
                     Duration = 30,
-                    NR = true,
-                    INST = true,
                     NPS = true,
                     PXO = false,
-                    EDO = false,
-                    ENLTECH = true,
-                    NR1 = false,
-                    SUPPLY = false,
-                    EOOW = false,
-                    DOE = false,
-                    InterviewerUser = Coord,
+                    InterviewerUser = Interviewer2,
                     BioData = Steve
                 };
                 context.Interview.AddOrUpdate(i => i.InterviewID,
                     Interview
                 );
             }
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 4; j++)
             {
                 Interview Interview = new Interview
                 {
                     Date = DateTime.Parse("2014/4/16 12:00:00"),
-                    Status = Status.Final.ToString(),
+                    Status = Status.Scheduled.ToString(),
                     Location = "Room 700",
                     StartTime = DateTime.Parse("2014/4/16 11:00:00"),
                     EndTime = DateTime.Parse("2014/4/16 11:30:00"),
                     Duration = 30,
                     NR = true,
-                    INST = true,
-                    NPS = true,
-                    PXO = false,
-                    EDO = false,
-                    ENLTECH = true,
-                    NR1 = false,
-                    SUPPLY = false,
-                    EOOW = false,
-                    DOE = false,
-                    InterviewerUser = Admin,
+                    ENLTECH = false,
+                    DOE = true,
+                    InterviewerUser = Interviewer3,
                     BioData = John
                 };
                 context.Interview.AddOrUpdate(i => i.InterviewID,
@@ -688,26 +827,38 @@ namespace InterviewTracker.Migrations
             }
             
             // Classes Attended
+            // 2 for Kelsey
             ClassesAttended KelseyClassesAttended = new ClassesAttended
             {
-                YearTaken = 2012,
+                YearTaken = 1,
                 Grade = "B",
                 SchoolsAttended = KelseySchoolsAttended,
                 BioData = Kelsey,
                 Classes = MATH109
 
             };
+            ClassesAttended KelseyClassesAttended2 = new ClassesAttended
+            {
+                YearTaken = 2,
+                Grade = "C-",
+                SchoolsAttended = KelseySchoolsAttended,
+                BioData = Kelsey,
+                Classes = ENGL266
+
+            };
+            // 1 For John
             ClassesAttended JohnClassesAttended = new ClassesAttended
             {
-                YearTaken = 2010,
+                YearTaken = 2,
                 Grade = "C+",
                 SchoolsAttended = JohnSchoolsAttended,
                 BioData = John,
                 Classes = PHYS418
             };
+            // 1 For Steve
             ClassesAttended SteveClassesAttended = new ClassesAttended
             {
-                YearTaken = 2013,
+                YearTaken = 3,
                 Grade = "A-",
                 SchoolsAttended = SteveSchoolsAttended,
                 BioData = Steve,
@@ -716,11 +867,12 @@ namespace InterviewTracker.Migrations
 
             context.ClassesAttended.AddOrUpdate(i => i.ClassesAttendedID,
                 KelseyClassesAttended,
+                KelseyClassesAttended2,
                 JohnClassesAttended,
                 SteveClassesAttended
             );
 
-            // Degree
+            // Degrees
             Degree KelseyDegree = new Degree
             {
                 DegreeDate = DateTime.Parse("2012-5-20"),
@@ -762,51 +914,21 @@ namespace InterviewTracker.Migrations
                 JohnRD
             );
 
-            /*
-            // Screen
-            Screen KelseyScreen = new Screen
-            {
-
-            };
+            
+            // Screens
             Screen JohnScreen = new Screen
             {
-
+                Screener = "Dorothy Gale",
+                Location = "U of A Career Fair",
+                ScreenDate = DateTime.Parse("2009-1-1"),
+                NRStatus = ScreenStatus.Maybe.ToString(),
+                INSTStatus = ScreenStatus.No.ToString(),
+                NPSStatus = ScreenStatus.Yes.ToString(),
+                BioData = John
             };
-            Screen SteveScreen = new Screen
-            {
-
-            };
-            
 
             context.Screen.AddOrUpdate(i => i.ScreenID,
-                KelseyScreen,
-                JohnScreen,
-                SteveScreen
-            );
-            */
-            
-
-            // Admiral
-            Admiral SteveAdmiral = new Admiral
-            {
-                Decision = true,
-                Accepted = true,
-                Comments = "Great person",
-                NP500 = false,
-                NSTC = true,
-                SelfStudy = true,
-                PreSchool = false,
-                Letter = false,
-                LetterReceived = false,
-                AdmiralNotes = "Welcome aboard",
-                InviteBack = false,
-                SERVSEL = "what is this",
-                BioData = Steve,
-                Interview = SteveInterview
-            };
-
-            context.Admiral.AddOrUpdate(i => i.AdmiralID,
-                SteveAdmiral
+                JohnScreen
             );
 
             // Waiver

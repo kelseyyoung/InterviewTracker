@@ -14,9 +14,7 @@ namespace InterviewTracker.Models
         public string Type { get; set; } // Type of Waiver
         [Required]
         public DateTime? Date { get; set; } // Date of waiver issue
-        [Required]
         public string Comments { get; set; } // Comments on Waiver
-        //TODO: rename this to reason?
 
         [ForeignKey("BioData")]
         public virtual int BioDataID { get; set; } // FK to BioData table

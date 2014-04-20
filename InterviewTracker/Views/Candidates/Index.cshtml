@@ -28,7 +28,6 @@
     }
 }
 <div class="row-fluid">
-    <!--Searching-->
     <div class="span12 panel panel-primary">
         <div class="panel-heading">
             <h2 class="panel-title">Candidate Search Parameters</h2>
@@ -90,7 +89,11 @@
                             <label for="School" class="control-label span3">School</label>
                             <div class="span9">
                                 <select class="form-control" id="School">
-                                    <option>School1</option>
+                                    <option value="">--None--</option>
+                                    @foreach (var s in ViewBag.schools)
+                                    {
+                                        <option value="@s.SchoolID">@s.SchoolValue</option>
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -126,6 +129,14 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="checkbox text-center">
+                            <label for="Waivers">
+                                <input id="Waivers" type="checkbox" />Has Waivers
+                            </label>
+                            <label for="Screens">
+                                <input id="Screens" type="checkbox" />Has Screens
+                            </label>
+                        </div>
                     </div>
                     <div class="span4">
                         <div class="form-group">
@@ -141,14 +152,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="Programs" class="control-label span3">Program</label>
+                            <label for="Programs" class="control-label span3">Programs</label>
                             <div class="span9">
-                                <select class="form-control" name="Programs" id="Programs" multiple>
+                                <select class="form-control" id="Programs" multiple>
                                     @foreach (var p in ViewBag.programs)
                                     {
                                         <option value="@p.ProgramValue">@p.ProgramValue</option>
                                     }
                                 </select>
+                                <button type="button" id="unselect-programs">Unselect All</button>
                             </div>
                         </div>
                     </div>
@@ -202,6 +214,7 @@
                     }
                 }
             }
+            console.log(ret);
             return ret;
         }
 
@@ -220,18 +233,18 @@
                 dob = dob.format("MM/DD/YYYY");
                 var url;
                 var text
-                @if(ViewBag.currUser.Role == "ADMIN") {
+                @if(ViewBag.currUser.Role != "INTER") {
                     <text>
-                    url = "@Url.Action("Edit", "Candidates", new { id = "__id__"})";
-                    text = "Edit";
-                    </text>
+                url = "@Url.Action("Edit", "Candidates", new { id = "__id__"})";
+                text = "Edit";
+                </text>
                 }
                 else
                 {
                     <text>
-                    url = "@Url.Action("View", "Candidates", new { id = "__id__"})";
-                    text = "View";
-                    </text>
+                url = "@Url.Action("View", "Candidates", new { id = "__id__"})";
+                text = "View";
+                </text>
                 }
                 url = url.replace("__id__", bd.ID);
                 var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button' type='button'>" + text + "</a>"];
@@ -240,6 +253,75 @@
             //Re-init buttons
             $("#search-results button:not(.btn-ignore)").button();
             $("#search-results a.button").button();
+        }
+
+        function filterAgain(data) {
+            // Filter further by school, programs, waivers, and screens
+            // School Filter
+            var schoolID = $("#School").val();
+            if (schoolID != "") {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    var schoolsAttended = bd.SchoolsAttended;
+                    var grad = false;
+                    for (var j = 0; j < schoolsAttended.length; j++) {
+                        var sa = schoolsAttended[j];
+                        if (sa.SchoolID == schoolID) {
+                            grad = true;
+                        }
+                    }
+                    if (grad == false) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            // Waivers Filter
+            var wChecked = $("#Waivers").is(":checked");
+            if (wChecked) {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    if (bd.Waivers.length < 1) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            // Screens Filter
+            var sChecked = $("#Screens").is(":checked");
+            if (sChecked) {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    if (bd.Screens.length < 1) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            // Programs Filter
+            // Needs to only be in one or more of the selected programs
+            var programs = $("#Programs").val();
+            if (programs != null) {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    var bdPrograms = bd.Programs;
+                    var remove = true;
+                    for (var j = 0; j < bdPrograms.length; j++) {
+                        if ($.inArray(bdPrograms[j].ProgramValue, programs) != -1) {
+                            remove = false;
+                        }
+                    }
+                    if (remove) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            return data; // Return when done
         }
 
         $(document).ready(function () {
@@ -275,19 +357,46 @@
                 var form = $("#search-form");
                 var filterStr = buildFilterString($(form).serializeArray());
                 if (filterStr == "") {
-                    // TODO: If empty, get all?
+                    // If school, waivers, screens, or programs are selected
+                    // Get all biodata, then filter by those params
+                    var schoolID = $("#School").val();
+                    var wChecked = $("#Waivers").is(":checked");
+                    var sChecked = $("#Screens").is(":checked");
+                    var programs = $("#Programs").val();
+                    if (schoolID != "" || wChecked || sChecked || programs != null) {
+                        $.ajax({
+                            url: baseURL + "/api/BioData/GetAll",
+                            type: "Get",
+                            success: function (data) {
+                                console.log("success");
+                                console.log(data);
+                                // Populate table
+                                populateTable(filterAgain(data));
+                            },
+                            error: function (data) {
+                                console.log("error");
+                                console.log(data);
+                                console.log(data.responseText);
+                            }
+                        })
+                    } else {
+                        // If nothing to search on, essentially clear table
+                        // by populating with empty data
+                        populateTable([]);
+                    }
                 } else {
                     // Make call to API
                     var obj = {
                         "$filter": filterStr
                     };
                     $.ajax({
-                        url: "http://localhost:50741/api/BioData/GetBy?" + $.param(obj),
+                        url: baseURL + "/api/BioData/GetBy?" + $.param(obj),
                         type: "Get",
                         success: function (data) {
                             console.log("success");
                             console.log(data);
-                            populateTable(data);
+                            // Populate table
+                            populateTable(filterAgain(data));
                         },
                         error: function (data) {
                             console.log("error");
@@ -295,6 +404,7 @@
                             console.log(data.responseText);
                         }
                     });
+
                 }
             });
 
@@ -304,6 +414,12 @@
                 for (var i = 0; i < formArray.length; i++) {
                     $("#" + formArray[i]["name"]).val("");
                 }
+            });
+
+            $("#School").select2();
+
+            $("#unselect-programs").click(function () {
+                $("#Programs option").removeAttr("selected");
             });
 
         }); // End document ready

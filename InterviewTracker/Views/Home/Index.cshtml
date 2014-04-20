@@ -2,86 +2,181 @@
     ViewBag.Title = "Home";
 }
 
+@section AddToTextCss {
+
+    #interview-list {
+    max-height: 90%;
+    overflow: auto;
+    }
+
+    .well-small {
+    width: inherit;
+    }
+
+}
+
 <div class="row-fluid">
-    <div class="span6">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h2 class="panel-title">Recent Activity</h2>
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    11/14/2013 14:00:00 - Candidate "John Doe" added
-                    <span class="text-center faux-p">
-                        <button>View</button>
-                    </span>
-                </li>
-                <li class="list-group-item">
-                    11/12/2013 12:50:00 - Interview Scheduled for "Jane Doe"
-                    <span class="text-center faux-p">
-                        <button>View</button>
-                    </span>
-                </li>
-                <li class="list-group-item">
-                    11/12/2013 12:50:00 - Interview Scheduled for "Jane Doe"
-                    <span class="text-center faux-p">
-                        <button>View</button>
-                    </span>
-                </li>
-                <li class="list-group-item">
-                    11/12/2013 12:50:00 - Interview Scheduled for "Jane Doe"
-                    <span class="text-center faux-p">
-                        <button>View</button>
-                    </span>
-                </li>
-                @foreach ( var candidate in ViewBag.candidates )
-                {
-                    <li class="list-group-item">
-                        @candidate.FName
-                    </li>
-                }
-            </ul>
+    <div class="span8">
+        <div id="calendar">
+            <!--Full Calendar gets entered here-->
         </div>
     </div>
-    <div class="span6">
-        <div class="panel panel-primary">
+    <div class="span4" id="toolbar">
+        <div class="panel panel-primary" id="interview-list">
             <div class="panel-heading">
-                <h2 class="panel-title">Your Interviews</h2>
+                <h4 class="panel-title">@if(ViewBag.currUser.Role == "INTER") { <text>Your </text> }Interviews Today</h4>
             </div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    Jane Doe - 11/20/13 15:00:00
-                    <span class="text-center faux-p">
-                        <button>View</button>
-                    </span>
-                </li>
-                <li class="list-group-item">
-                    John Doe - 11/20/13 15:00:00
-                    <span class="text-center faux-p">
-                        <button>View</button>
-                    </span>
-                </li>
-            </ul>
+            <div class="panel-body">
+                <p class="text-center">No interviews today</p>
+            </div>
         </div>
     </div>
+</div>
+<div id="dialog" title="Fetching Interviews">
+    <p>Fetching Interviews...</p>
 </div>
 
 @section AddToScripts {
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            /*
+        var eventColors = {
+            "none": "#000",
+            "scheduled": "#DB2C38",
+            "entered": "#CCBF33",
+            "edited": "#17599D",
+            "final": "#39C72A"
+        };
+
+        var interviewMapper = {};
+
+        // Init dialog for fetching interview
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: "no-close"
+        });
+
+        function updateCalendar(view) {
+            // Show dialog to prevent any further clicking
+            $("#submitting-dialog").dialog("open");
+            console.log("update calendar");
+            var start = view.start;
+            console.log(start.toISOString());
+            var end = view.end;
+            console.log(end.toISOString());
+            interviewMapper = {};
+            //Fetch events from API
+            var append = "";
+            @if (ViewBag.currUser.Role == "INTER")
+            {
+                // If interviewer, only get interviews they're assigned to
+                <text>append = " and InterviewerID eq " + @ViewBag.userModel.UserID + "";</text>
+            }
+            console.log(append);
             var obj = {
-                "SchoolValue": "UNIVERSITY OF WASHINGTON",
-                "SomethingElse": "blah"
+                "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
+                    end.toISOString() + "'" + append
             };
-            console.log($.param(obj));
-            
             $.ajax({
-                url: baseURL + "/api/School/GetOrCreate?" + $.param(obj),
-                type: "Post",
+                url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
+                type: "Get",
                 success: function (data) {
                     console.log("success");
-                    console.log(data);
+                    //Remove all events
+                    $("#calendar").fullCalendar("removeEvents");
+                    console.log(data.length);
+                    for (var i = 0; i < data.length; i++) {
+                        var interview = data[i];
+                        @if (ViewBag.currUser.Role == "INTER")
+                        {
+                        <text>
+                        var event = {
+                            id: interview.InterviewID,
+                            //TODO: change this title to something else?
+                            title: interview.BioData.FName + " " + interview.BioData.LName,
+                            allDay: false,
+                            start: interview.StartTime,
+                            end: interview.EndTime,
+                            backgroundColor: eventColors[interview.Status.toLowerCase()],
+                            borderColor: eventColors[interview.Status.toLowerCase()]
+                        };
+                        if (interview.CurrentlyEditingID != null) {
+                            // Set colors to TODO: something
+                        }
+                        $("#calendar").fullCalendar("renderEvent", event);
+                        </text>
+                        }
+                        else
+                        {
+                        <text>
+                        var date = new Date(interview.Date);
+                        date.setHours(12);
+                        var dateString = date.toISOString();
+                        var source = interview.BioData.Sources.SourcesValue;
+                        if (dateString in interviewMapper) {
+                            var sourceMap = interviewMapper[dateString];
+                            if (source in sourceMap) {
+                                var count = sourceMap[source];
+                                count++;
+                                interviewMapper[dateString][source] = count;
+                            } else {
+                                interviewMapper[dateString][source] = 1;
+                            }
+                        } else {
+                            interviewMapper[dateString] = {};
+                            interviewMapper[dateString][source] = 1;
+                        }
+                        </text>
+                        }
+
+                        // Populate interview-list with today's interviews
+                        var today = new Date();
+                        today.setHours(12);
+                        today.setMinutes(0);
+                        today.setSeconds(0);
+                        today.setMilliseconds(0);
+                        console.log(today);
+                        var date = new Date(interview.Date);
+                        date.setHours(12);
+                        if (today.getTime() === date.getTime()) {
+                            console.log("add to interview-list");
+                            var date = moment(interview.Date);
+                            var startTime = moment(interview.StartTime);
+                            var endTime = moment(interview.EndTime);
+                            $("#edit-interview").attr("href", link);
+                            $("#interview-list .panel-body").append(
+                                '<div class="well well-small row-fluid">' +
+                                    '<div class="span10">' +
+                                        '<div>Candidate: ' + interview.BioData.FName + ' ' + interview.BioData.LName + '</div>' +
+                                        '<div>Interviewer: ' + interview.InterviewerUser.LoginID + '</div>' +
+                                        '<div>Date/Time: ' + date.format("M/D/YYYY") + ' ' + startTime.format("HH:mm") + '-' + endTime.format("HH:mm") + '</div>' +
+                                        '<div>Location: ' + interview.Location + '</div>' +
+                                        '<div>Status: ' + interview.Status + '</div>' +
+                                        '<div>Type: ' + interview.BioData.Sources.SourcesValue + '</div>' +
+                                    '</div>' +
+                                '</div>'
+                            );
+                        }
+                    }
+                    @if (ViewBag.currUser.Role != "INTER")
+                    {
+                    <text>
+                    for (var date in interviewMapper) {
+                        for (var source in interviewMapper[date]) {
+                            var event = {
+                                id: source, //TODO: ID has to hold info for clicking
+                                title: source + " (" + interviewMapper[date][source] + ")",
+                                allDay: true,
+                                start: date,
+                                backgroundColor: eventColors["none"],
+                                borderColor: eventColors["none"]
+                            };
+                            $("#calendar").fullCalendar("renderEvent", event);
+                        }
+                    }
+                    </text>
+                    }
+                    $("#dialog").dialog("close");
                 },
                 error: function (data) {
                     console.log("error");
@@ -89,10 +184,39 @@
                     console.log(data.responseText);
                 }
             });
-            */
-            
-            
+        }
+
+        $(document).ready(function () {
+
+            $("#calendar").fullCalendar({
+                header: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: "month,agendaWeek,agendaDay"
+                },
+                weekMode: "liquid",
+                buttonText: {
+                    today: "Today",
+                    month: "Month",
+                    week: "Week",
+                    day: "Day"
+                },
+                selectable: true,
+                eventColor: "#17599D",
+                viewRender: function (view, element) {
+                    updateCalendar(view);
+                },
+                dayClick: function (date, allDay, jsEvent, view) {
+                    var myDate = $("#calendar").fullCalendar('getDate');
+                    //console.log("The current date of the calendar is " + myDate);
+                }
+            });
+
+            // Update calendar every minute
+            setInterval(function () {
+                updateCalendar($("#calendar").fullCalendar("getView"));
+            }, 60000);
+
         });
     </script>
-
 }

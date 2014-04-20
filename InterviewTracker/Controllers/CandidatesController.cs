@@ -27,6 +27,7 @@ namespace InterviewTracker.Controllers
             ViewBag.sources = db.Sources.ToList();
             ViewBag.subsources = db.SubSources.ToList();
             ViewBag.programs = db.Program.ToList();
+            ViewBag.schools = db.School.ToList();
             return View();
         }
 
@@ -50,6 +51,12 @@ namespace InterviewTracker.Controllers
             ViewBag.majors = db.Major.ToList();
             ViewBag.degreeTypes = db.DegreeType.ToList();
             ViewBag.schools = db.School.ToList();
+            return View();
+        }
+
+        [CustomAuth("ADMIN")]
+        public ActionResult Delete()
+        {
             return View();
         }
 

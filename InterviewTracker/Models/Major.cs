@@ -9,7 +9,7 @@ namespace InterviewTracker.Models
     public class Major
     {
         public int MajorID { get; set; } // PK for Major table
-        [Required]
+        [Required(ErrorMessage="The Major field is required")]
         public string MajorValue { get; set; } // Major type (Physics, Engineering, etc)
     }
 }
