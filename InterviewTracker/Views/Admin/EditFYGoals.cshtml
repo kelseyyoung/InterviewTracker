@@ -1,5 +1,60 @@
 ﻿@{
-    ViewBag.Title = "EditFYGoals";
+    ViewBag.Title = "Edit FY Goals";
 }
 
-<h2>EditFYGoals</h2>
+<div class="row-fluid">
+    <div class="span8 offset2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Edit Fiscal Year Goals</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" id="fy-form">
+                    <div class="form-group">
+                        <label for="FY" class="control-label span2">Fiscal Year</label>
+                        <div class="span2">
+                            <select id="FY" class="form-control">
+                                <option value="">FY1</option>
+                            </select>
+                        </div>
+                        <label for="Source" class="control-label span2">Source</label>
+                        <div class="span2">
+                            <select id="Source" class="form-control">
+                                @foreach (var s in ViewBag.sources)
+                                {
+                                    <option value="@s.SourcesID">@s.SourcesValue</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="span4 text-center">
+                            <button type="button">Get Goals</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SUB" class="control-label span2">SUB Goal</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="SUB" name="SUB" />
+                        </div>
+                        <label for="SWO" class="control-label span2">SWO Goal</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="SWO" name="SWO" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="NR" class="control-label span2">NR Goal</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="NR" name="NR" />
+                        </div>
+                        <label for="INST" class="control-label span2">INST Goal</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="INST" name="INST" />
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="button">Submit Goals</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

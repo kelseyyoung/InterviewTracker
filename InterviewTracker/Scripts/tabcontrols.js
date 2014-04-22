@@ -221,7 +221,7 @@ $(document).ready(function () {
             showDialog("Empty Fields", "Please enter values in all of the fields", true, function () { });
             return;
         }
-        var techDisplay = tech == "true" ? "Yes" : "No";
+        var techDisplay = tech == "true" ? "True" : "False";
         classesCounter++;
         // Add to table
         $(table).find("tbody").append("" +

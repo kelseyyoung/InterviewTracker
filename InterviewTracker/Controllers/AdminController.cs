@@ -23,6 +23,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth("COORD", "ADMIN")]
         public ActionResult EditFYGoals()
         {
+            ViewBag.sources = db.Sources.ToList();
             return View();
         }
     }

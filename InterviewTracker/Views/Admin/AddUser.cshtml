@@ -1,5 +1,46 @@
 ﻿@{
-    ViewBag.Title = "AddUser";
+    ViewBag.Title = "Add User";
 }
 
-<h2>AddUser</h2>
+div class="row-fluid">
+<div class="span8 offset2">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Add User</h4>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" id="add-user-form">
+                <div class="form-group">
+                    <label for="LName" class="control-label span2">Last Name</label>
+                    <div class="span4">
+                        <input type="text" class="form-control" id="LName" name="LName" />
+                    </div>
+                    <label for="Initials" class="control-label span2">Initials</label>
+                    <div class="span4">
+                        <input type="text" class="form-control" id="Initials" name="Initials" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="LoginID" class="control-label span2">Login ID</label>
+                    <div class="span4">
+                        <input type="text" class="form-control" id="LoginID" name="LoginID" />
+                    </div>
+                    <label for="Password" class="control-label span2">Password</label>
+                    <div class="span4">
+                        <input type="text" class="form-control" id="Password" name="Password" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Code" class="control-label span2">Code</label>
+                    <div class="span4">
+                        <input type="text" class="form-control" id="Code" name="Code" />
+                    </div>
+                    <label for="UserGroup" class="control-label span2">User Group</label>
+                    <div class="span4">
+                        <input type="text" class="form-control" id="UserGroup" name="UserGroup" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

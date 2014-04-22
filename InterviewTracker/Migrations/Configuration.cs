@@ -839,6 +839,15 @@ namespace InterviewTracker.Migrations
             };
             ClassesAttended KelseyClassesAttended2 = new ClassesAttended
             {
+                YearTaken = 1,
+                Grade = "F",
+                SchoolsAttended = KelseySchoolsAttended,
+                BioData = Kelsey,
+                Classes = ENGL266
+
+            };
+            ClassesAttended KelseyClassesAttended3 = new ClassesAttended
+            {
                 YearTaken = 2,
                 Grade = "C-",
                 SchoolsAttended = KelseySchoolsAttended,
@@ -846,6 +855,7 @@ namespace InterviewTracker.Migrations
                 Classes = ENGL266
 
             };
+
             // 1 For John
             ClassesAttended JohnClassesAttended = new ClassesAttended
             {
@@ -868,6 +878,7 @@ namespace InterviewTracker.Migrations
             context.ClassesAttended.AddOrUpdate(i => i.ClassesAttendedID,
                 KelseyClassesAttended,
                 KelseyClassesAttended2,
+                KelseyClassesAttended3,
                 JohnClassesAttended,
                 SteveClassesAttended
             );
