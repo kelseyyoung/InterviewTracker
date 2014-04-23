@@ -57,6 +57,13 @@ namespace InterviewTracker.Controllers
         [CustomAuth("ADMIN")]
         public ActionResult Delete()
         {
+            ViewBag.currUser = System.Web.HttpContext.Current.User;
+
+            ViewBag.ethnicities = db.Ethnicity.ToList();
+            ViewBag.sources = db.Sources.ToList();
+            ViewBag.subsources = db.SubSources.ToList();
+            ViewBag.programs = db.Program.ToList();
+            ViewBag.schools = db.School.ToList();
             return View();
         }
 

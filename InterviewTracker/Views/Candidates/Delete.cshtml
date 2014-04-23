@@ -234,7 +234,7 @@
                 var text = "Delete";
                 var url = "#";
                 url = url.replace("__id__", bd.ID);
-                var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button' type='button'>" + text + "</a>"];
+                var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button delete-button' data-id='" + bd.ID + "' type='button'>" + text + "</a>"];
                 $("#search-results").dataTable().fnAddData(a);
             }
             //Re-init buttons
@@ -407,6 +407,12 @@
 
             $("#unselect-programs").click(function () {
                 $("#Programs option").removeAttr("selected");
+            });
+
+            $(document).on("click", ".delete-button", function (e) {
+                e.preventDefault();
+                console.log($(this).data("id"));
+                var id = $(this).data("id");
             });
 
         }); // End document ready

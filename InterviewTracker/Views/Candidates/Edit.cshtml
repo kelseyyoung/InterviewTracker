@@ -67,6 +67,18 @@
     .no-close .ui-dialog-titlebar-close {
     display: none;
     }
+
+    .createLink {
+    padding: 8px;
+    border-top: 1px solid #ccc;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    text-align: center;
+    }
+
+    #course-catalog-table {
+    width: 100%;
+    }
 }
 
 <!--Basic Information Block-->
@@ -566,14 +578,15 @@
                                         <label for="Technical" class="control-label span1">Tech?</label>
                                         <div class="span1">
                                             <select id="Technical" class="span11">
-                                                <option value="true">Yes</option>
-                                                <option value="false">No</option>
+                                                <option value="true">T</option>
+                                                <option value="false">F</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row-fluid">
+                                <button class="pull-right course-catalog-trigger btn-ignore btn-success" type="button">Course Catalog</button>
                                 <button class="pull-right btn-ignore btn-success add-class" type="button"><i class="fa fa-plus"></i> Add Class</button>
                             </div>
                             <!-- Fake SchoolsAttendedID, BioDataID, and ClassesID -->
@@ -608,6 +621,7 @@
                         {
                             <div id="year-content-@j">
                                 <form class="form-horizontal class-form">
+                                    <input type="hidden" id="school-name" value="@sa.School.SchoolValue" />
                                     <div class="row-fluid">
                                         <div class="span12 panel-body">
                                             @foreach (var ss in sa.SchoolStandings)
@@ -714,14 +728,15 @@
                                                 <label for="Technical" class="control-label span1">Tech?</label>
                                                 <div class="span1">
                                                     <select id="Technical" class="span11">
-                                                        <option value="true">Yes</option>
-                                                        <option value="false">No</option>
+                                                        <option value="true">T</option>
+                                                        <option value="false">F</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row-fluid">
+                                        <button class="pull-right course-catalog-trigger btn-ignore btn-success" type="button">Course Catalog</button>
                                         <button class="pull-right btn-ignore btn-success add-class" type="button"><i class="fa fa-plus"></i> Add Class</button>
                                     </div>
                                     <!-- SchoolsAttendedID, BioDataID, and ClassesID -->
@@ -1270,9 +1285,17 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="ScreenPrograms" class="control-label span2">Programs Applied For</label>
+                        <div class="span2">
+                            <select id="ScreenPrograms" name="ScreenPrograms" multiple>
+                                @foreach (var p in ViewBag.programs) {
+                                    <option value="@p.ProgramID" @if (s.ProgramsAppliedFor.Contains(p)) { <text> selected </text> }>@p.ProgramValue</option>
+                                }
+                            </select>
+                        </div>
                         <label for="Notes" class="control-label span2">Notes</label>
-                        <div class="span10">
-                            <textarea class="form-control span12" name="Notes" id="Notes">@s.Notes</textarea>
+                        <div class="span6">
+                            <textarea rows="5" class="form-control span12" name="Notes" id="Notes">@s.Notes</textarea>
                         </div>
                     </div>
                     <div class="row-fluid">
@@ -1415,6 +1438,21 @@
 <div id="submitting-dialog" title="Submitting Candidate">
     <p>Submitting Candidate...</p>
 </div>
+<div id="course-catalog-modal" title="Course Catalog">
+    <h2 class="text-center"><span id="school-name-catalog"></span> Courses</h2>
+    <table id="course-catalog-table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Tech</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
 @section AddToScripts {
 <script src="@Url.Content("~/Scripts/tabcontrols.js")"></script>
@@ -1424,6 +1462,8 @@
 
         // Counter to wait for ajax calls
         var counter = 0;
+        var catalogForm;
+        var catalogSchool;
 
         /**
          * Function to show and set data/callbacks for a confirmation dialog
@@ -1554,6 +1594,90 @@
                 dialogClass: "no-close"
             });
 
+            $("#course-catalog-modal").dialog({
+                autoOpen: false,
+                model: true,
+                width: $(window).width() * .30,
+                height: $(window).height() * 1,
+                position: {
+                    my: "left",
+                    at: "left",
+                    of: window
+                }
+            });
+
+            $(document).on("click", ".course-catalog-trigger", function () {
+                console.log("open");
+                catalogForm = $(this).parent().parent();
+                console.log(catalogForm);
+                catalogTable = $(catalogForm).find(".classes-table");
+                console.log(catalogTable);
+                catalogSchool = $(catalogForm).find("#school-name").val();
+                console.log(catalogSchool);
+                $("#school-name-catalog").text(catalogSchool);
+                var obj = { "School": catalogSchool };
+                // Get courses
+                $.ajax({
+                    url: baseURL + "/api/ClassesAttended/GetCourseCatalog?" + $.param(obj),
+                    type: "Get",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                        // Clear out table
+                        $("#course-catalog-table tbody").empty();
+                        if (data.length == 0) {
+                            $("#course-catalog-table tbody").append(
+                                "<p class='text-center'>No classes for this school</p>"
+                            );
+                        }
+                        for (var i = 0; i < data.length; i++) {
+                            var c = data[i].classes;
+                            var tech = "" + c.Technical;
+                            $("#course-catalog-table tbody").append(
+                                "<tr>" +
+                                    "<td>" + c.Subject + "</td>" +
+                                    "<td>" + c.Code + "</td>" +
+                                    "<td>" + c.Name + "</td>" +
+                                    "<td>" + tech.charAt(0).toUpperCase() + tech.slice(1) + "</td>" +
+                                    "<td><button class='add-class-catalog' type='button' data-id='" + c.ClassesID + "'><i class='fa fa-plus'></i></button></td>" +
+                                "</tr>"
+                            );
+                        }
+                        // Re-init buttons
+                        $("#course-catalog-table button").button();
+                        // Open modal
+                        $("#course-catalog-modal").dialog("open");
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+
+            });
+
+            $(document).on("click", ".add-class-catalog", function () {
+                var classID = $(this).data("id");
+                // Get class data
+                $.ajax({
+                    url: baseURL + "/api/Classes/Get/" + classID,
+                    type: "Get",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                        // Populate correct classes table
+                        $(catalogForm).find("#Subject").val(data.Subject);
+                        $(catalogForm).find("#Code").val(data.Code);
+                        $(catalogForm).find("#Name").val(data.Name);
+                        $(catalogForm).find("#Technical").val("" + data.Technical);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                })
+            });
+
             // Create Candidate button click
             $("#create-candidate-button").click(function () {
                 console.log("starting test");
@@ -1588,7 +1712,9 @@
             .on('click', '.createLink', function (e) {
                 e.preventDefault();
                 var name = $(this).parent().find(".select2-search input").val().toUpperCase();
-                addSchool(1, name);
+                if (name != "") {
+                    addSchool(1, name);
+                }
                 // Close dropdown
                 $("#SchoolValue").select2("close");
             });

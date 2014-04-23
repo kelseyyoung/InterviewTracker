@@ -14,24 +14,33 @@ namespace InterviewTracker.Models
         public string LName { get; set; } // Last name
         [Required]
         public string Initials { get; set; } // Initials
-        [Required]
+        [Required(ErrorMessage="The Login ID field is required")]
         public string LoginID { get; set; } // NR Login ID
-        [Required]
-        public string Password { get; set; } // Password for application
-        // TODO: this shouldn't be just a string
+        //[Required]
+        //public string Password { get; set; } // Password for application
         [Required]
         public string Code { get; set; } // Division/section code
         // Quals
-        public bool NR { get; set; } // Can interview for NR duty
-        public bool INST { get; set; } // Can interview for Instructor duty
-        public bool NPS { get; set; } // Can interview for Nuclear Power school duty
-        public bool PXO { get; set; } // Can interview for Prospective XO
-        public bool EDO { get; set; } // Can interview for Engineering Duty Officer
-        public bool ENLTECH { get; set; } // Can interview for Enlisted Tech
-        public bool NR1 { get; set; } // Can interview for NR-1 duty
-        public bool SUPPLY { get; set; } // Can interview for NR duty (supply)
-        public bool EOOW { get; set; } // Can interview for Engineering Officer of the Watch
-        public bool DOE { get; set; } // Can interview for Field Office
+        [Required(ErrorMessage="The NR qual is required")]
+        public bool? NR { get; set; } // Can interview for NR duty
+        [Required(ErrorMessage="The INST qual is required")]
+        public bool? INST { get; set; } // Can interview for Instructor duty
+        [Required(ErrorMessage="The NPS qual is required")]
+        public bool? NPS { get; set; } // Can interview for Nuclear Power school duty
+        [Required(ErrorMessage="The PXO qual is required")]
+        public bool? PXO { get; set; } // Can interview for Prospective XO
+        [Required(ErrorMessage="The EDO qual is required")]
+        public bool? EDO { get; set; } // Can interview for Engineering Duty Officer
+        [Required(ErrorMessage="The ENLTECH qual is required")]
+        public bool? ENLTECH { get; set; } // Can interview for Enlisted Tech
+        [Required(ErrorMessage="The NR1 qual is required")]
+        public bool? NR1 { get; set; } // Can interview for NR-1 duty
+        [Required(ErrorMessage="The SUPPLY qual is required")]
+        public bool? SUPPLY { get; set; } // Can interview for NR duty (supply)
+        [Required(ErrorMessage="The EOOW qual is required")]
+        public bool? EOOW { get; set; } // Can interview for Engineering Officer of the Watch
+        [Required(ErrorMessage="The DOE qual is required")]
+        public bool? DOE { get; set; } // Can interview for Field Office
         [Required(ErrorMessage="The User Group field is required")]
         public string UserGroup { get; set; } // Type of user
     }
