@@ -75,6 +75,8 @@ namespace InterviewTracker.Migrations
             Program NR = new Program { ProgramValue = "NR" };
             Program INST = new Program { ProgramValue = "INST" };
             Program NPS = new Program { ProgramValue = "NPS" };
+            Program SWO = new Program { ProgramValue = "SWO" };
+            Program SUB = new Program { ProgramValue = "SUB" };
             Program PXO = new Program { ProgramValue = "PXO" };
             Program EDO = new Program { ProgramValue = "EDO" };
             Program NR1 = new Program { ProgramValue = "NR1" };
@@ -87,6 +89,8 @@ namespace InterviewTracker.Migrations
                 NR,
                 INST,
                 NPS,
+                SWO,
+                SUB,
                 PXO,
                 EDO,
                 NR1,
@@ -192,7 +196,7 @@ namespace InterviewTracker.Migrations
                     Sources = NROTC,
                     SubSources = ECP
                 };
-            List<Program> StevePrograms = new List<Program> { NPS, PXO };
+            List<Program> StevePrograms = new List<Program> { SUB, PXO };
             BioData Steve = new BioData
                 {
                     SSN = "323-45-6789",
@@ -754,7 +758,7 @@ namespace InterviewTracker.Migrations
                 InviteBack = false,
                 SERVSEL = "what is this",
                 BioData = Kelsey,
-                Interview = FinalInterview
+                Program = NR
             };
 
             context.Admiral.AddOrUpdate(i => i.AdmiralID,

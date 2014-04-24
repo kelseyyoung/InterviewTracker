@@ -21,7 +21,7 @@ namespace InterviewTracker.Controllers.API
         [ActionName("GetAll")]
         public IEnumerable<Admiral> GetAdmirals()
         {
-            var admiral = db.Admiral.Include(a => a.BioData).Include(a => a.Interview);
+            var admiral = db.Admiral.Include(a => a.BioData).Include(a => a.Program);
             return admiral.AsEnumerable();
         }
 

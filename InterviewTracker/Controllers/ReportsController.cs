@@ -566,7 +566,7 @@ namespace InterviewTracker.Controllers
             //Filter down to the only candidates of the relevant FYG
             var FYGAccepted = allAccepted.Where(accepted => accepted.BioData.FYG == intYear);
             //Filter down to interviews that have occurred before or on the date specified
-            var acceptedCandidates = FYGAccepted.Where(y => y.Interview.Date.Value.CompareTo(date) <= 0);
+            var acceptedCandidates = FYGAccepted.Where(y => y.BioData.Interviews.OrderByDescending(z => z.Date).First().Date.Value.CompareTo(date) <= 0);
 
             IQueryable<Admiral> monthlyList;
             IQueryable<Admiral> sourceList;
@@ -596,15 +596,18 @@ namespace InterviewTracker.Controllers
                 yearOfMonth = date.Year - 1;
             }
 
-            var priorCandidates = acceptedCandidates.Where(x => (x.Interview.Date.Value.Month < month && x.Interview.Date.Value.Year == yearOfMonth) || x.Interview.Date.Value.Year < yearOfMonth);
+            var priorCandidates = acceptedCandidates.Where(x =>
+                (x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Month < month
+                && x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Year == yearOfMonth)
+                || x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Year < yearOfMonth);
 
             //Calculate total prior candidates for each table
             reportBody = reportBody.Replace("total" + " " + "prior", priorCandidates.Count().ToString());
             //TO DO: sub/surf sub categories
-            subTable = subTable.Replace("total" + " " + "prior", priorCandidates.Where(x=>x.Interview.NPS == true).Count().ToString());
-            surfTable = surfTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Interview.NPS == true).Count().ToString());
-            nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Interview.NR == true).Count().ToString());
-            instTable = instTable.Replace("totol" + " " + "prior", priorCandidates.Where(x => x.Interview.INST == true).Count().ToString());
+            subTable = subTable.Replace("total" + " " + "prior", priorCandidates.Where(x=>x.BioData.Interviews.OrderByDescending(z=>z.Date).First().NPS == true).Count().ToString());
+            surfTable = surfTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).First().NPS == true).Count().ToString());
+            nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).First().NR == true).Count().ToString());
+            instTable = instTable.Replace("totol" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).First().INST == true).Count().ToString());
 
             //Loop for sorting prior candidates by source
             for (int j = 0; j < mainSources.Length + 1; ++j)
@@ -628,10 +631,10 @@ namespace InterviewTracker.Controllers
                 }
 
                 //TO DO: sub/surf sub categories 
-                var subList = sourceList.Where(z => z.Interview.NPS == true);
-                var surfList = sourceList.Where(z => z.Interview.NPS == true);
-                var nrList = sourceList.Where(z => z.Interview.NR == true);
-                var instrList = sourceList.Where(z => z.Interview.INST == true);
+                var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
+                var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
+                var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NR == true);
+                var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().INST == true);
 
                 if (j < mainSources.Length) //looking at one the main sources
                 {
@@ -661,7 +664,7 @@ namespace InterviewTracker.Controllers
                     yearOfMonth = yearOfMonth + 1;
                 }
                 //Get the list of accepted candidates from each month
-                monthlyList = acceptedCandidates.Where(x => x.Interview.Date.Value.Month == (month) && x.Interview.Date.Value.Year == yearOfMonth);
+                monthlyList = acceptedCandidates.Where(x => x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Month == (month) && x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Year == yearOfMonth);
 
                 //Clear out totals
                 cumulativeSourceCounts[0, totalsIndex] = 0;
@@ -692,10 +695,10 @@ namespace InterviewTracker.Controllers
                     }
 
                     //TO DO: sub/surf sub categories
-                    var subList = sourceList.Where(z => z.Interview.NPS == true);
-                    var surfList = sourceList.Where(z => z.Interview.NPS == true);
-                    var nrList = sourceList.Where(z => z.Interview.NR == true);
-                    var instrList = sourceList.Where(z => z.Interview.INST == true);
+                    var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
+                    var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
+                    var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NR == true);
+                    var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().INST == true);
 
                     cumulativeSourceCounts[0, j] += sourceList.Count(); //table index 0 is for overall
                     cumulativeSourceCounts[1, j] += subList.Count(); //table index 1 is for submarine
