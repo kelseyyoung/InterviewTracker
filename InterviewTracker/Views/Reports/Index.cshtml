@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label class="control-label span2" for="cy-year">Year</label>
                             <div class="span10">
-                                <select name="cy-year" id="fc-year">
+                                <select name="cy-year" id="cy-year">
                                     <option value="2010">2010</option>
                                     <option value="2010">2011</option>
                                     <option value="2010">2012</option>
@@ -212,9 +212,20 @@
 
             $("#generate-fy-year").click(function () {
                 var fyear = $("#fy-year option:selected").text();
+                var date = $("#fy-date").datepicker("getDate");
 
                 var FYReportElem = document.createElement("iframe");
-                FYReportElem.src = "Reports/generateFYReport?year=" + fyear;
+                FYReportElem.src = "Reports/generateFYReport?year=" + fyear  + "&dateString=" + date + "&byFY=true";
+                FYReportElem.style.display = "none";
+                document.body.appendChild(FYReportElem);
+            });
+
+            $("#generate-cy-year").click(function () {
+                var fyear = $("#cy-year option:selected").text();
+                var date = $("#cy-date").datepicker("getDate");
+
+                var FYReportElem = document.createElement("iframe");
+                FYReportElem.src = "Reports/generateFYReport?year=" + fyear + "&dateString=" + date + "&byFY=false";
                 FYReportElem.style.display = "none";
                 document.body.appendChild(FYReportElem);
             });

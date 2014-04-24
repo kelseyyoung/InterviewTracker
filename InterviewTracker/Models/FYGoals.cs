@@ -9,7 +9,9 @@ namespace InterviewTracker.Models
     public class FYGoals
     {
         [Key]
-        public int FY { get; set; } // PK for FYGoals table
+        public int FYID { get; set; } // PK for FYGoals table
+        [Required]
+        public int FY { get; set; } // FYG this entry belongs to
         [Required]
         public string Source { get; set; } // Commissioning source
         [Required]
