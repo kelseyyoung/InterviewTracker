@@ -28,7 +28,8 @@ namespace InterviewTracker.Controllers
         {
             ViewBag.currUser = System.Web.HttpContext.Current.User;
 
-            ViewBag.sources = db.Sources.ToList();
+            ViewBag.fys = db.FYGoals.OrderByDescending(x => x.FY).Select(
+                x => x.FY).Distinct();
             return View();
         }
     }

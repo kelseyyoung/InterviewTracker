@@ -89,6 +89,7 @@
                             </select>
                         </div>
                     </div>
+                    <input type="hidden" id="UserID" />
                 </form>
                 <div class="checkbox text-center">
                     <label for="NR">
@@ -147,6 +148,11 @@
 
         $(document).ready(function () {
 
+            // If anything changes, assume it's a new user
+            // And unset UserID
+            $("#FY, #Source").on("change", function () {
+            });
+
             $(document).on("click", ".edit-user", function () {
                 var userID = $(this).data("id");
                 $.ajax({
@@ -157,6 +163,9 @@
                         console.log(data);
                         var form = $("#add-user-form").serializeArray();
                         console.log(form);
+                        // Set UserID
+                        $("#UserID").attr("name", "UserID");
+                        $("#UserID").val(data.UserID);
                         // Populate
                         for (var i = 0; i < form.length; i++) {
                             console.log(data[form[i]["name"]]);
@@ -185,6 +194,7 @@
                     }
                 }
                 console.log(formData);
+                $("#user-errors").addClass("hide");
                 // Test
                 $.ajax({
                     url: baseURL + "/api/User/Test?" + formData,
@@ -192,12 +202,21 @@
                     success: function (data) {
                         console.log("success");
                         console.log(data);
+                        // Figure out type (Post or Put)
+                        var type = "Post";
+                        var append = "";
+                        if ($("#UserID").val() != "") {
+                            type = "Put";
+                            append = "/" + $("#UserID").val();
+                        }
+                        console.log(type);
+                        console.log(append);
                         // Submit
                         $.ajax({
-                            url: baseURL + "/api/User/Post?" + formData,
-                            type: "Post",
+                            url: baseURL + "/api/User/" + type + append + "?" + formData,
+                            type: type,
                             success: function (data) {
-                                window.location.href = baseURL + "/Admin/AddUser";
+                                window.location.href = baseURL + "@Url.Action("AddUser", "Admin")";
                             },
                             error: function (data) {
                                 console.log("error");
@@ -231,6 +250,9 @@
                 }
                 // Hide errors
                 $("#user-errors").addClass("hide");
+                // Unset UserID
+                $("#UserID").val("");
+                $("#UserID").removeAttr("name");
             });
 
         }); // End document ready

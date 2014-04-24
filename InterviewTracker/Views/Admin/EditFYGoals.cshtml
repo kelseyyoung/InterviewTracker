@@ -2,6 +2,24 @@
     ViewBag.Title = "Edit FY Goals";
 }
 
+@section AddToTextCSS {
+    .createLink {
+    padding: 8px;
+    border-top: 1px solid #ccc;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    text-align: center;
+    }
+
+    #fy-errors {
+    margin-top: 10px;
+    }
+
+    .expand {
+    
+    }
+}
+
 <div class="row-fluid">
     <div class="span8 offset2">
         <div class="panel panel-primary">
@@ -13,21 +31,25 @@
                     <div class="form-group">
                         <label for="FY" class="control-label span2">Fiscal Year</label>
                         <div class="span2">
-                            <select id="FY" class="form-control">
-                                <option value="">FY1</option>
+                            <select id="FY" name="FY" class="form-control">
+                                @foreach (var fy in ViewBag.fys)
+                                {
+                                    <option value="@fy">@fy</option>
+                                }
                             </select>
                         </div>
                         <label for="Source" class="control-label span2">Source</label>
                         <div class="span2">
-                            <select id="Source" class="form-control">
-                                @foreach (var s in ViewBag.sources)
-                                {
-                                    <option value="@s.SourcesID">@s.SourcesValue</option>
-                                }
+                            <select id="Source" name="Source" class="form-control">
+                                <option value="USNA">USNA</option>
+                                <option value="NROTC">NROTC</option>
+                                <option value="NUPOC">NUPOC</option>
+                                <option value="STA21">STA21</option>
+                                <option value="OTHER">OTHER</option>
                             </select>
                         </div>
                         <div class="span4 text-center">
-                            <button type="button">Get Goals</button>
+                            <button type="button" id="get-goals">Get Goals</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -50,11 +72,138 @@
                             <input type="text" class="form-control" id="INST" name="INST" />
                         </div>
                     </div>
-                    <div class="text-center">
-                        <button type="button">Submit Goals</button>
-                    </div>
+                    <input type="hidden" id="FYID" />
                 </form>
+                <div class="text-center">
+                    <button type="button" id="submit-goals">Submit Goals</button>
+                </div>
+                <div id="fy-errors" class="alert alert-error hide">
+                    <p></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // If FY or Source changes, assume it's a new FYG
+            // And unset FYID
+            $("#FY, #Source").on("change", function () {
+                $("#FYID").val("");
+                $("#FYID").removeAttr("name");
+            });
+
+            $("#get-goals").click(function () {
+                $("#fy-errors").addClass("hide");
+                var formData = $("#fy-form").serialize();
+                console.log(formData);
+                $.ajax({
+                    url: baseURL + "/api/FYGoals/GetByYearAndSource/?" + formData,
+                    type: "Get",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                        if (data == null) {
+                            // No FY Goal exists
+                            $("#fy-errors > p").html("No FY Goal for that source");
+                            $("#fy-errors").removeClass("hide");
+                            // Unset FYID
+                            $("#FYID").val("");
+                            $("#FYID").removeAttr("name");
+                        } else {
+                            // Populate form
+                            $("#FY").val(data.FY);
+                            $("#FYID").val(data.FYID);
+                            // Add name attribute
+                            $("#FYID").attr("name", "FYID");
+                            $("#Source").val(data.Source);
+                            $("#SUB").val(data.SUB);
+                            $("#SWO").val(data.SWO);
+                            $("#NR").val(data.NR);
+                            $("#INST").val(data.INST);
+                        }
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                })
+            });
+
+            $("#submit-goals").click(function () {
+                var formData = $("#fy-form").serialize();
+                console.log(formData);
+                $("#fy-errors").addClass("hide");
+                // Test
+                $.ajax({
+                    url: baseURL + "/api/FYGoals/Test?" + formData,
+                    type: "Post",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                        // Figure out type (Post or Put)
+                        var type = "Post";
+                        var append = "";
+                        if ($("#FYID").val() != "") {
+                            type = "Put";
+                            append = "/" + $("#FYID").val();
+                        }
+                        console.log(type);
+                        console.log(append);
+                        // Submit
+                        $.ajax({
+                            url: baseURL + "/api/FYGoals/" + type + append + "?" + formData,
+                            type: type,
+                            success: function (data) {
+                                console.log("success");
+                                console.log(data);
+                                // Refresh page
+                                window.location.href = baseURL + "@Url.Action("EditFYGoals", "Admin")";
+                            },
+                            error: function (data) {
+                                console.log("error");
+                                console.log(data);
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                        // Show errors
+                        var errors = "";
+                        var response = $.parseJSON(data.responseText).ModelState;
+                        $.each(response, function (key, value) {
+                            for (var i = 0; i < value.length; i++) {
+                                errors += value[i] + "<br/>";
+                            }
+                        });
+                        $("#fy-errors > p").html(errors);
+                        $("#fy-errors").removeClass("hide");
+                    }
+                })
+            });
+
+            // FY Select2
+            $("#FY").select2({
+                placeholder: "Select Fiscal Year",
+                dropdownCssClass: "expand"
+            }).parent().find('.select2-with-searchbox')
+            .prepend('<div class="createLink"><a href="#">Add New FY</a></div>')
+            .on('click', '.createLink', function (e) {
+                e.preventDefault();
+                var name = $(this).parent().find(".select2-search input").val();
+                $("#FY").append(
+                    "<option value='" + name + "'>" + name + "</option>"
+                );
+                $("#FY").select2("val", name);
+                $("#FY").select2("close");
+            });
+
+        }); // End document ready
+
+    </script>
+}

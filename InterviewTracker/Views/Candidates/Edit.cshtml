@@ -336,6 +336,7 @@
                         <div class="span12">
                             <input type="hidden" id="school-name" />
                             <button type="button" class="btn-success pull-left btn-ignore generate-classes">Generate Classes Tab</button>
+                            <button type="button" class="btn-inverse pull-left btn-ignore edit-school-name">Edit School Name</button>
                             <button type="button" class="btn-danger pull-left btn-ignore remove-school">Remove</button>
                         </div>
                     </div>
@@ -434,6 +435,7 @@
                         <div class="span12">
                             <input type="hidden" id="school-name" value="@sa.School.SchoolValue" />
                             <button type="button" class="btn-success pull-left btn-ignore generate-classes">Generate Classes Tab</button>
+                            <button type="button" class="btn-inverse pull-left btn-ignore edit-school-name">Edit School Name</button>
                             <button type="button" class="btn-danger pull-left btn-ignore remove-school">Remove</button>
                         </div>
                     </div>
@@ -1453,6 +1455,10 @@
         <tbody></tbody>
     </table>
 </div>
+<div id="change-school-name-modal" title="Change School Name">
+    <label for="new-school-name">Name</label>
+    <input type="text" id="new-school-name" />
+</div>
 
 @section AddToScripts {
 <script src="@Url.Content("~/Scripts/tabcontrols.js")"></script>
@@ -1717,6 +1723,44 @@
                 }
                 // Close dropdown
                 $("#SchoolValue").select2("close");
+            });
+
+            $(document).on("click", ".edit-school-name", function (e) {
+                var btn = this;
+                var schoolName = $(this).parent().find("#school-name").val();
+                $("#change-school-name-modal #new-school-name").val(schoolName);
+                $("#change-school-name-modal").dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function () {
+                            // Set new school name
+                            var newName = $("#change-school-name-modal #new-school-name").val().toUpperCase();
+                            console.log(newName);
+                            // Set school-name
+                            $(btn).parent().find("#school-name").val(newName);
+                            // Set school tab name
+                            $("#school-tabs ul li:contains('" + schoolName + "') a").text(newName);
+                            // Set class tab info if there is one
+                            if ($("#class-tabs ul li:contains('" + schoolName + "')").length > 0) {
+                                // Set school-name in each class-form
+                                console.log($("#class-tabs ul li:contains('" + schoolName + "') a"));
+                                var href = $("#class-tabs ul li:contains('" + schoolName + "') a").attr("href");
+                                // Set class tab name
+                                $("#class-tabs ul li:contains('" + schoolName + "') a").text(newName);
+                                console.log(href);
+                                var classForms = $(href).find(".class-form");
+                                console.log(classForms);
+                                for (var i = 0; i < classForms.length; i++) {
+                                    $(classForms[i]).find("#school-name").val(newName);
+                                }
+                            }
+                            $(this).dialog("close");
+                        },
+                        Close: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
             });
 
         }); // End document ready

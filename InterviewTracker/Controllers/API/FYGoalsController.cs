@@ -46,7 +46,7 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            if (id != fygoals.FY)
+            if (id != fygoals.FYID)
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
@@ -75,7 +75,7 @@ namespace InterviewTracker.Controllers.API
                 db.SaveChanges();
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, fygoals);
-                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = fygoals.FY }));
+                response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = fygoals.FYID }));
                 return response;
             }
             else
@@ -126,6 +126,13 @@ namespace InterviewTracker.Controllers.API
         public IQueryable<FYGoals> GetBy()
         {
             return db.FYGoals.AsQueryable();
+        }
+
+        [ActionName("GetByYearAndSource")]
+        [HttpGet]
+        public FYGoals GetByYearAndSource(int FY, string Source)
+        {
+            return db.FYGoals.Where(y => y.FY == FY).Where(x => x.Source == Source).FirstOrDefault();
         }
 
         protected override void Dispose(bool disposing)
