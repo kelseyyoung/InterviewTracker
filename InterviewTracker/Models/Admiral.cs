@@ -36,9 +36,9 @@ namespace InterviewTracker.Models
         [ForeignKey("BioData")]
         public virtual int BioDataID { get; set; }
         public virtual BioData BioData { get; set; }
-        [ForeignKey("Interview")]
-        public virtual int InterviewID { get; set; }
-        public virtual Interview Interview { get; set; }
+        [ForeignKey("Program")]
+        public virtual int ProgramID { get; set; }
+        public virtual Program Program { get; set; }
 
     }
 }
