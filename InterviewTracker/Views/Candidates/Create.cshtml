@@ -318,6 +318,7 @@
                         <div class="span12">
                             <input type="hidden" id="school-name" />
                             <button type="button" class="btn-success pull-left btn-ignore generate-classes">Generate Classes Tab</button>
+                            <button type="button" class="btn-inverse pull-left btn-ignore edit-school-name">Edit School Name</button>
                             <button type="button" class="btn-danger pull-left btn-ignore remove-school">Remove</button>
                         </div>
                     </div>
@@ -333,7 +334,6 @@
                     <div class="form-group">
                         <label for="SchoolValue" class="control-label span5">School Name</label>
                         <div class="span7">
-                            <!--TODO: this will be a select2-->
                             <select id="SchoolValue" name="SchoolValue">
                                 @foreach (var s in ViewBag.schools)
                                 {
@@ -462,7 +462,7 @@
                                 </div>
                             </div>
                             <div class="row-fluid">
-                                <button class="pull-right course-catalog-trigger btn-ignore btn-success" type="button">Course Catalog</button>
+                                <button class="pull-right course-catalog-trigger btn-ignore btn-inverse" type="button">Course Catalog</button>
                                 <button class="pull-right btn-ignore btn-success add-class" type="button"><i class="fa fa-plus"></i> Add Class</button>
                             </div>
                             <!-- Fake SchoolsAttendedID, BioDataID, and ClassesID -->
@@ -1112,6 +1112,11 @@
                 // Close dropdown
                 $("#SchoolValue").select2("close");
             });
+
+            $(document).on("click", ".edit-school-name", function (e) {
+                var schoolName = $(this).parent().find("#school-name").val();
+            });
+
 
         }); // End document ready
 

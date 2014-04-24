@@ -614,6 +614,40 @@
         background-color: #942a25 \9;
     }
 
+.btn-inverse {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    background-color: #363636;
+    *background-color: #333333;
+    background-image: -moz-linear-gradient(top, #555555, #333333);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555555), to(#333333));
+    background-image: -webkit-linear-gradient(top, #555555, #333333);
+    background-image: -o-linear-gradient(top, #555555, #333333);
+    background-image: linear-gradient(to bottom, #555555, #333333);
+    background-repeat: repeat-x;
+    border-color: #222222 #222222 #000000;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff555555', endColorstr='#ff333333', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+    .btn-inverse:hover,
+    .btn-inverse:focus,
+    .btn-inverse:active,
+    .btn-inverse.active,
+    .btn-inverse.disabled,
+    .btn-inverse[disabled] {
+        color: #ffffff;
+        background-color: #222222;
+        *background-color: #151515;
+    }
+
+    .btn-inverse:active,
+    .btn-inverse.active {
+        background-color: #080808 \9;
+    }
+
+
 /* Class to ignore jQuery default button coloring, but still get look and feel */
 .btn-ignore {
     font-weight: bold;
@@ -632,45 +666,45 @@
 }
 
 .alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
 
-.alert > p,
-.alert > ul {
-  margin-bottom: 0;
-  margin-top: 0;
-}
+    .alert > p,
+    .alert > ul {
+        margin-bottom: 0;
+        margin-top: 0;
+    }
 
-.alert > p + p {
-  margin-top: 5px;
-}
+        .alert > p + p {
+            margin-top: 5px;
+        }
 
 .alert-error {
-  color: white;
-  background-color: #BD362F;
-  border-color: #BD362F;
+    color: white;
+    background-color: #BD362F;
+    border-color: #BD362F;
 }
 
 .well {
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 .well-small {
-  padding: 9px;
-  -webkit-border-radius: 3px;
-     -moz-border-radius: 3px;
-          border-radius: 3px;
+    padding: 9px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
