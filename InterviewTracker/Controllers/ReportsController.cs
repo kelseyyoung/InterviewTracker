@@ -46,7 +46,7 @@ namespace InterviewTracker.Controllers
 
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
-            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/CandidateReportStart.html"));
+            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/SchoolReport.html"));
 
             //Compile and generate report
             string reportHtml = header + reportBody + footer;
@@ -443,14 +443,19 @@ namespace InterviewTracker.Controllers
                 date = DateTime.Today;
             }
     
-            string fileName = year + "_FYReport.docx";
+            string fileName = year + "_FYReport.docx"; //TO DO: add pull/latest interview date to title?
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
 
             string statusFinal = Status.Final.ToString();
             IQueryable<Interview> completedInterviews = db.Interview.Where(x => (x.Date.Value.CompareTo(date)) <= 0 && (x.Status == statusFinal));
-            var mostRecentInterview = completedInterviews.OrderByDescending(z => z.Date).First();
-            date = (DateTime)(mostRecentInterview.Date);
+            Interview mostRecentInterview;
+            if (completedInterviews.Count() > 0)
+            {
+                mostRecentInterview = completedInterviews.OrderByDescending(z => z.Date).FirstOrDefault();
+                date = (DateTime)(mostRecentInterview.Date);
+            }
+     
 
             header = header + System.IO.File.ReadAllText(Server.MapPath("~/Templates/titleTemplate.html"));
             string dateToDisplay = date.ToString("dd MMMM yyyy");
@@ -461,6 +466,7 @@ namespace InterviewTracker.Controllers
             //If doing a CY report, shuffle months around appropriately
             if(!byFY)
             {
+                fileName = date.Year.ToString() + "_CYReport_forFYG"+ year +".docx"; //TO DO: is that a good title?
                 reportBody = reportBody.Replace("Oct", "octOld");
                 reportBody = reportBody.Replace("Nov", "novOld");
                 reportBody = reportBody.Replace("Dec", "decOld");
@@ -566,7 +572,7 @@ namespace InterviewTracker.Controllers
             //Filter down to the only candidates of the relevant FYG
             var FYGAccepted = allAccepted.Where(accepted => accepted.BioData.FYG == intYear);
             //Filter down to interviews that have occurred before or on the date specified
-            var acceptedCandidates = FYGAccepted.Where(y => y.BioData.Interviews.OrderByDescending(z => z.Date).First().Date.Value.CompareTo(date) <= 0);
+            var acceptedCandidates = FYGAccepted.Where(y => y.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().Date.Value.CompareTo(date) <= 0);
 
             IQueryable<Admiral> monthlyList;
             IQueryable<Admiral> sourceList;
@@ -597,17 +603,17 @@ namespace InterviewTracker.Controllers
             }
 
             var priorCandidates = acceptedCandidates.Where(x =>
-                (x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Month < month
-                && x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Year == yearOfMonth)
-                || x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Year < yearOfMonth);
+                (x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Month < month
+                && x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Year == yearOfMonth)
+                || x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Year < yearOfMonth);
 
             //Calculate total prior candidates for each table
             reportBody = reportBody.Replace("total" + " " + "prior", priorCandidates.Count().ToString());
             //TO DO: sub/surf sub categories
-            subTable = subTable.Replace("total" + " " + "prior", priorCandidates.Where(x=>x.BioData.Interviews.OrderByDescending(z=>z.Date).First().NPS == true).Count().ToString());
-            surfTable = surfTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).First().NPS == true).Count().ToString());
-            nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).First().NR == true).Count().ToString());
-            instTable = instTable.Replace("totol" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).First().INST == true).Count().ToString());
+            subTable = subTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().NPS == true).Count().ToString());
+            surfTable = surfTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().NPS == true).Count().ToString());
+            nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().NR == true).Count().ToString());
+            instTable = instTable.Replace("totol" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().INST == true).Count().ToString());
 
             //Loop for sorting prior candidates by source
             for (int j = 0; j < mainSources.Length + 1; ++j)
@@ -631,10 +637,10 @@ namespace InterviewTracker.Controllers
                 }
 
                 //TO DO: sub/surf sub categories 
-                var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
-                var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
-                var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NR == true);
-                var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().INST == true);
+                var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
+                var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
+                var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NR == true);
+                var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().INST == true);
 
                 if (j < mainSources.Length) //looking at one the main sources
                 {
@@ -664,7 +670,7 @@ namespace InterviewTracker.Controllers
                     yearOfMonth = yearOfMonth + 1;
                 }
                 //Get the list of accepted candidates from each month
-                monthlyList = acceptedCandidates.Where(x => x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Month == (month) && x.BioData.Interviews.OrderByDescending(y => y.Date).First().Date.Value.Year == yearOfMonth);
+                monthlyList = acceptedCandidates.Where(x => x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Month == (month) && x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Year == yearOfMonth);
 
                 //Clear out totals
                 cumulativeSourceCounts[0, totalsIndex] = 0;
@@ -695,10 +701,10 @@ namespace InterviewTracker.Controllers
                     }
 
                     //TO DO: sub/surf sub categories
-                    var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
-                    var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NPS == true);
-                    var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().NR == true);
-                    var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).First().INST == true);
+                    var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
+                    var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
+                    var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NR == true);
+                    var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().INST == true);
 
                     cumulativeSourceCounts[0, j] += sourceList.Count(); //table index 0 is for overall
                     cumulativeSourceCounts[1, j] += subList.Count(); //table index 1 is for submarine
@@ -864,6 +870,18 @@ namespace InterviewTracker.Controllers
                             body.Append(paragraphs[i]);
                         }
 
+                        var tables = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
+                        var last = tables.LastOrDefault();
+                        foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
+                        {
+                            if (table != last)
+                            {
+                                table.InsertAfterSelf
+                                    (new Paragraph(
+                                        new Run(
+                                            new Break() { Type = BreakValues.Page })));
+                            }
+                        }
                         mainPart.Document.Save();
                     }
 
@@ -892,6 +910,21 @@ namespace InterviewTracker.Controllers
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
+
+        static void AppendPageBreaks(WordprocessingDocument myDoc)
+        {
+            MainDocumentPart mainPart = myDoc.MainDocumentPart;
+            var tables = myDoc.MainDocumentPart.Document
+                .Body
+                .Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
+            foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
+            {
+                table.InsertAfterSelf
+                    ( new Paragraph(
+                        new Run(
+                            new Break() { Type = BreakValues.Page })));
             }
         }
     }

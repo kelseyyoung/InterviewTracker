@@ -210,6 +210,15 @@
                 yearRange: "-90:+0"
             });
 
+            $("#generate-school").click(function() {
+                var schoolID = 1;
+
+                var schoolReportElem = document.createElement("iframe");
+                schoolReportElem.src = "Reports/generateSchool?id=" + schoolID;
+                schoolReportElem.style.display = "none";
+                document.body.appendChild(schoolReportElem);
+            });
+
             $("#generate-fy-year").click(function () {
                 var fyear = $("#fy-year option:selected").text();
                 var date = $("#fy-date").datepicker("getDate");
