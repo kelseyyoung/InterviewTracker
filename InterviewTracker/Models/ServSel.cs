@@ -9,7 +9,7 @@ namespace InterviewTracker.Models
     public class ServSel
     {
         public int ServSelID { get; set; } // PK for ServSel table
-        [Required]
+        [Required(ErrorMessage="The ServSel field is required")]
         public string ServSelValue { get; set; } // ServSel value
     }
 }

@@ -23,91 +23,68 @@
                 <input type="hidden" id="Duration" name="Duration" value="@ViewBag.interview.Duration" />
                 <input type="hidden" id="BioDataID" name="BioDataID" value="@ViewBag.interview.BioDataID" />
                 <input type="hidden" id="InterviewerID" name="InterviewerID" value="@ViewBag.interview.InterviewerID" />
-                <input type="hidden" id="Status" name="Status" value="Entered" />
+                <input type="hidden" id="CurrentlyEditingID" name="CurrentlyEditingID" value="" />
+                @if (ViewBag.userModel.UserID == ViewBag.interview.InterviewerID) {
+                    <input type="hidden" id="Status" name="Status" value="Entered" />
+                }
+                else if (ViewBag.currUser.Role != "INTER")
+                {
+                    <input type="hidden" id="Status" name="Status" value="Edited" />
+                }
+                else if (false)
+                {
+                    <!--TODO: how to tell if user is admiral?-->
+                    <input type="hidden" id="Status" name="Status" value="Final" />
+                }
                 <h3>Interview Details</h3>
                 <p><b>Interview Date:</b> <span id="interview-date"></span></p>
                 <p><b>Interview Time:</b> <span id="interview-start-time"></span> - <span id="interview-end-time"></span></p>
                 <p><b>Candidate:</b> @ViewBag.interview.BioData.FName @ViewBag.interview.BioData.LName</p>
                 <hr />
-                <h3>@ViewBag.interview.InterviewerUser.LoginID's Comments</h3>
-                <textarea class="span12" rows="5" id="Comments" name="Comments">@ViewBag.interview.Comments</textarea>
                 <table id="checkbox-table">
                     <thead>
                         <tr>
-                            <th>NR</th>
-                            <th>INST</th>
-                            <th>NPS</th>
-                            <th>PXO</th>
-                            <th>EDO</th>
-                            <th>ENLTECH</th>
-                            <th>NR1</th>
-                            <th>SUPPLY</th>
-                            <th>EOOW</th>
-                            <th>DOE</th>
+                            @foreach (var p in ViewBag.interview.BioData.Programs)
+                            {
+                                <th>@p.ProgramValue</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                                <input id="NR-yes" type="checkbox" @if(ViewBag.interview.NR == true) { <text>checked</text> } /> Yes <br />
-                                <input id="NR-no" type="checkbox" @if(ViewBag.interview.NR == false) { <text>checked</text> } /> No
-                                <input type="hidden" name="NR" id="NR" value="@ViewBag.interview.NR" />
-                            </td>
-                            <td>
-                                <input id="INST-yes" type="checkbox" @if(ViewBag.interview.INST == true) { <text>checked</text> } /> Yes <br />
-                                <input id="INST-no" type="checkbox" @if(ViewBag.interview.INST == false) { <text>checked</text> } /> No
-                                <input type="hidden" name="INST" id="INST" value="@ViewBag.interview.INST" />
-                            </td>
-                            <td>
-                                <input id="NPS-yes" type="checkbox" @if(ViewBag.interview.NPS == true) { <text>checked</text> } /> Yes <br />
-                                <input id="NPS-no" type="checkbox" @if(ViewBag.interview.NPS == false) { <text>checked</text> } /> No
-                                <input type="hidden" name="NPS" id="NPS" value="@ViewBag.interview.NPS" />
-                            </td>
-                            <td>
-                                <input id="PXO-yes" type="checkbox" @if(ViewBag.interview.PXO == true) { <text> checked </text>  } /> Yes <br />
-                                <input id="PXO-no" type="checkbox" @if(ViewBag.interview.PXO == false) { <text> checked </text>  } /> No
-                                <input type="hidden" name="PXO" id="PXO" value="@ViewBag.interview.PXO" />
-                            </td>
-                            <td>
-                                <input id="EDO-yes" type="checkbox" @if(ViewBag.interview.EDO == true) { <text> checked </text> } /> Yes <br />
-                                <input id="EDO-no" type="checkbox" @if(ViewBag.interview.EDO == false) { <text> checked </text> } /> No
-                                <input type="hidden" name="EDO" id="EDO" value="@ViewBag.interview.EDO" />
-                            </td>
-                            <td>
-                                <input id="ENLTECH-yes" type="checkbox" @if(ViewBag.interview.ENLTECH == true) { <text> checked </text> } /> Yes <br />
-                                <input id="ENLTECH-no" type="checkbox" @if(ViewBag.interview.ENLTECH == false) { <text> checked </text> } /> No
-                                <input type="hidden" name="ENLTECH" id="ENLTECH" value="@ViewBag.interview.ENLTECH" />
-                            </td>
-                            <td>
-                                <input id="NR1-yes" type="checkbox" @if(ViewBag.interview.NR1 == true) { <text> checked </text> } /> Yes <br />
-                                <input id="NR1-no" type="checkbox" @if(ViewBag.interview.NR1 == false) { <text> checked </text> } /> No
-                                <input type="hidden" name="NR1" id="NR1" value="@ViewBag.interview.NR1" />
-                            </td>
-                            <td>
-                                <input id="SUPPLY-yes" type="checkbox" @if(ViewBag.interview.SUPPLY == true) { <text> checked </text> } /> Yes <br />
-                                <input id="SUPPLY-no" type="checkbox" @if(ViewBag.interview.SUPPLY == false) { <text> checked </text> } /> No
-                                <input type="hidden" name="SUPPLY" id="SUPPLY" value="@ViewBag.interview.SUPPLY" />
-                            </td>
-                            <td>
-                                <input id="EOOW-yes" type="checkbox" @if(ViewBag.interview.EOOW == true) { <text> checked </text> } /> Yes <br />
-                                <input id="EOOW-no" type="checkbox" @if(ViewBag.interview.EOOW == false) { <text> checked </text> } /> No
-                                <input type="hidden" name="EOOW" id="EOOW" value="@ViewBag.interview.EOOW" />
-                            </td>
-                            <td>
-                                <input id="DOE-yes" type="checkbox" @if(ViewBag.interview.DOE == true) { <text> checked </text> } /> Yes <br />
-                                <input id="DOE-no" type="checkbox" @if(ViewBag.interview.DOE == false) { <text> checked </text> } /> No
-                                <input type="hidden" name="DOE" id="DOE" value="@ViewBag.interview.DOE" />
-                            </td>
+                            @foreach (var p in ViewBag.interview.BioData.Programs)
+                            {
+                                <td>
+                                    <input id="@p.ProgramValue-yes" type="checkbox" @if (ViewBag.interview.NR == true) { <text> checked </text>   } /> Yes <br />
+                                    <input id="@p.ProgramValue-no" type="checkbox" @if (ViewBag.interview.NR == false) { <text> checked </text>   } /> No
+                                    <input type="hidden" name="@p.ProgramValue" id="@p.ProgramValue" value="@ViewBag.interview.NR" />
+                                </td>
+                            }
                         </tr>
                     </tbody>
                 </table>
-                <!-- If user is interview coordinator and is not also the interviewer: -->
-                <!-- Put in edited comments if they exist -->
-                <!-- Otherwise put in comments -->
-                <h3>Edit Comment</h3>
-                <textarea class="span12" rows="5" id="EditedComments" name="EditedComments"></textarea>
-                <hr />
-                <!-- End if -->
+                @if (ViewBag.interview.InterviewerID != ViewBag.userModel.UserID) {
+                    <h3>@ViewBag.interview.InterviewerUser.LoginID's Comments</h3>
+                }
+                else
+                {
+                    <h3>Your Comments</h3>
+
+                }
+                <textarea class="span12" rows="5" id="Comments" name="Comments" @if(ViewBag.interview.InterviewerID != ViewBag.userModel.UserID) { <text>disabled</text> }>@ViewBag.interview.Comments</textarea>
+                @if (ViewBag.currUser.Role != "INTER" && ViewBag.interview.InterviewerID != ViewBag.userModel.UserID) {
+                    <h3>Edit Comment</h3>
+                    <textarea class="span12" rows="5" id="EditedComments" name="EditedComments">
+                        @if (ViewBag.interview.EditedComments != null) {
+                            @ViewBag.interview.EditedComments
+                        }
+                        else
+                        {
+                            @ViewBag.interview.Comments
+                        }
+                    </textarea>
+                    <hr />
+                }
                 <h3>Previous Comments</h3>
                 <div id="prev-comments"></div>
                 <hr />
@@ -126,8 +103,10 @@
 <script type="text/javascript">
 
     var checkboxes = [
-            "NR", "INST", "NPS", "PXO", "EDO", "ENLTECH",
-            "NR1", "SUPPLY", "EOOW", "DOE"
+        @foreach (var p in ViewBag.interview.BioData.Programs)
+        {
+            <text>"@p.ProgramValue",</text>
+        }
     ];
 
 
@@ -177,8 +156,6 @@
             }
         });
 
-        // TODO: Set CurrentlyEditingID
-
         // Submit interview
         $("#submit").click(function () {
             // Set checkbox values
@@ -192,7 +169,6 @@
                     $("#" + c).val("");
                 }
             }
-            // TODO: If edited comments are there, change status
             var interview = $("#interview-form").serialize();
             console.log(interview);
             // Test
@@ -208,7 +184,6 @@
                         success: function (data) {
                             console.log("success");
                             console.log(data);
-                            //TODO: unset CurrentlyEditingID
 
                             // Redirect to Calendar/Index
                             window.location.href = "@Url.Action("Index", "Calendar")";
@@ -234,7 +209,10 @@
                 }
             });
         });
-    });
+
+        // TODO: before leaving page, unset CurrentlyEditingUser
+
+    }); // End document ready
 
 </script>
 }

@@ -28,7 +28,6 @@
             border-color: #BD362F;
         }
 
-
         #navbar .ui-state-active a:hover, #navbar .ui-state-active a:link:hover {
             color: white;
         }
@@ -45,6 +44,11 @@
             padding-top: 10px;
             height: 130px;
             width: 130px;
+        }
+
+        #user-space > p {
+            margin-top: 55%;
+            font-size: 12px;
         }
 
     @if (IsSectionDefined("AddToTextCss"))
@@ -65,10 +69,10 @@
             <div class="span8 text-center">
                 <h1>NRIT - Naval Reactors Interview Tracker</h1>
             </div>
-            <div class="span2">
+            <div class="span2 text-center" id="user-space">
                 @if (ViewBag.currUser != null)
                 {
-                    <p>Logged in as @ViewBag.currUser.LoginID</p>
+                    <p>Logged in as <b>@ViewBag.currUser.LoginID</b></p>
                 }
             </div>
         </div>
@@ -88,6 +92,10 @@
                     @if (ViewBag.currUser != null)
                     {
                         <li class="pull-right"><a href="@Url.Action("Logout", "Home")">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li class="pull-right"><a href="@Url.Action("Login", "Home")">Login</a></li>
                     }
                 </ul>
             </div>

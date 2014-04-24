@@ -10,7 +10,7 @@ namespace InterviewTracker.Models
     public class ClassesAttended
     {
         public int ClassesAttendedID { get; set; } // PK for ClassesAttended table
-        [Required]
+        [Required(ErrorMessage="The Year Taken field is required")]
         public int? YearTaken { get; set; } // Year class was taken in int (year 1, 2, 3, etc)
         [Required]
         public string Grade { get; set; } // Grade received

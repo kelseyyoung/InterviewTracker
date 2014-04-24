@@ -65,6 +65,14 @@
 
     /* Hides top of dialog */
     .no-close .ui-dialog-titlebar-close {display: none; }
+
+    .createLink {
+    padding: 8px;
+    border-top: 1px solid #ccc;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    text-align: center;
+    }
 }
 
 <!--Basic Information Block-->
@@ -137,7 +145,7 @@
                             <select id="EthnicityID" name="EthnicityID">
                                 @foreach (var e in ViewBag.ethnicities)
                                 {
-                                <option value="@e.EthnicityID">@e.EthnicityValue</option>
+                                    <option value="@e.EthnicityID">@e.EthnicityValue</option>
                                 }
                             </select>
                         </div>
@@ -148,19 +156,19 @@
                             <select id="SourcesID" name="SourcesID">
                                 @foreach (var s in ViewBag.sources)
                                 {
-                                <option value="@s.SourcesID">@s.SourcesValue</option>
+                                    <option value="@s.SourcesID">@s.SourcesValue</option>
                                 }
                             </select>
                         </div>
                     </div>
-                    <!-- TODO: only show subsource if source is NROTC(?) -->
                     <div class="form-group">
                         <label for="SubSources" class="control-label span4">SubSource</label>
                         <div class="span8">
                             <select id="SubSourcesID" name="SubSourcesID">
+                                <option value="">--None--</option>
                                 @foreach (var s in ViewBag.subsources)
                                 {
-                                <option value="@s.SubSourcesID">@s.SubSourcesValue</option>
+                                    <option value="@s.SubSourcesID">@s.SubSourcesValue</option>
                                 }
                             </select>
                         </div>
@@ -171,7 +179,7 @@
                             <select id="BiodataPrograms" name="BiodataPrograms" multiple>
                                 @foreach (var p in ViewBag.programs)
                                 {
-                                <option value="@p.ProgramID">@p.ProgramValue</option>
+                                    <option value="@p.ProgramID">@p.ProgramValue</option>
                                 }
                             </select>
                         </div>
@@ -265,7 +273,7 @@
                                             <select id="MajorValue" name="MajorValue" class="span10">
                                                 @foreach (var m in ViewBag.majors)
                                                 {
-                                                <option value="@m.MajorValue">@m.MajorValue</option>
+                                                    <option value="@m.MajorValue">@m.MajorValue</option>
                                                 }
                                             </select>
                                             <!-- Holder value, gets set on submit -->
@@ -276,7 +284,7 @@
                                             <select id="DegreeTypeID" name="DegreeTypeID" class="span12">
                                                 @foreach (var d in ViewBag.degreeTypes)
                                                 {
-                                                <option value="@d.DegreeTypeID">@d.DegreeTypeValue</option>
+                                                    <option value="@d.DegreeTypeID">@d.DegreeTypeValue</option>
                                                 }
                                             </select>
                                         </div>
@@ -324,7 +332,7 @@
                             <select id="SchoolValue" name="SchoolValue">
                                 @foreach (var s in ViewBag.schools)
                                 {
-                                <option value="@s.SchoolID">@s.SchoolValue</option>
+                                    <option value="@s.SchoolID">@s.SchoolValue</option>
                                 }
                             </select>
                         </div>
@@ -527,6 +535,12 @@
                     <div class="row-fluid">
                         <div class="span12 panel-body">
                             <div class="span6">
+                                <div class="form-group">
+                                    <label for="Name" class="control-label span2">Name</label>
+                                    <div class="span10">
+                                        <input type="text" class="form-control span6" name="Name" id="Name" />
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="GPA" class="control-label span2">GPA/Fitrep</label>
                                     <div class="span10">
@@ -821,154 +835,167 @@
 </div>
 
 @section AddToScripts {
-<script src="@Url.Content("~/Scripts/tabcontrols.js")"></script>
-<script src="@Url.Content("~/Scripts/biodatatest.js")"></script>
-<script src="@Url.Content("~/Scripts/biodatasubmit.js")"></script>
-<script type="text/javascript">
+    <script src="@Url.Content("~/Scripts/tabcontrols.js")"></script>
+    <script src="@Url.Content("~/Scripts/biodatatest.js")"></script>
+    <script src="@Url.Content("~/Scripts/biodatasubmit.js")"></script>
+    <script type="text/javascript">
 
-    // Counter to wait for ajax calls
-    var counter = 0;
+        // Counter to wait for ajax calls
+        var counter = 0;
 
-    /**
-     * Function to show and set data/callbacks for a confirmation dialog
-     * Params:
-     *  title - (String) Title for the new dialog
-     *  message - (String) Message for the new dialog
-     *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
-     *  okFunction - (Function) Callback function on OK press
-     */
-    function showDialog(title, message, okOnly, okFunction) {
-        $("#dialog-confirm > p").html(message);
-        var buttons;
-        if (okOnly) {
-            buttons = {
-                Ok: function () {
-                    okFunction();
-                    $(this).dialog("close");
+        /**
+         * Function to show and set data/callbacks for a confirmation dialog
+         * Params:
+         *  title - (String) Title for the new dialog
+         *  message - (String) Message for the new dialog
+         *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
+         *  okFunction - (Function) Callback function on OK press
+         */
+        function showDialog(title, message, okOnly, okFunction) {
+            $("#dialog-confirm > p").html(message);
+            var buttons;
+            if (okOnly) {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        $(this).dialog("close");
+                    }
                 }
-            }
-        } else {
-            buttons = {
-                Ok: function () {
-                    okFunction();
-                    $(this).dialog("close");
-                },
-                Close: function () {
-                    $(this).dialog("close");
-                }
-            }
-        }
-
-        $("#dialog-confirm").dialog({
-            title: title,
-            modal: true,
-            buttons: buttons
-        });
-    }
-
-    /**
-     * Sets an interval to wait for a certain condition to be true
-     * Params:
-     *  check - (Function) Function to run that returns T/F
-     *  onComplete - (Function) Function to run when check returns true
-     */
-    function waitUntil(check, onComplete) {
-        // if the check returns true, execute onComplete immediately
-        if (check()) {
-            onComplete();
-            return;
-        }
-        var timeoutPointer;
-        var intervalPointer = setInterval(function () {
-            if (!check()) return;
-
-            clearInterval(intervalPointer);
-            if (timeoutPointer) clearTimeout(timeoutPointer);
-            onComplete();
-        }, 100);
-    }
-
-    /**
-     * Checks if any errors existed after testing. If so, show the errors. Else, start
-     *      submittal chain.
-     */
-    function checkErrors() {
-        var allPass = true;
-        //Clear all errors
-        $(".alert").addClass("hide");
-        $(".alert > p").html("");
-        for (var key in passDict) {
-            var errors = passDict[key];
-            $("#" + key + "-panel").removeClass("panel-error");
-            if (Object.keys(errors).length > 0) {
-                allPass = false;
-                //Show errors in correct place
-                $("#" + key + "-panel").addClass("panel-error");
-                if (key == "biodata" || key == "duty-history") {
-                    $("#" + key + "-errors > p").html(errors[0]);
-                    $("#" + key + "-errors").removeClass("hide");
-                } else {
-                    //Get forms
-                    var forms = $("." + key + "-form");
-                    for (var i in errors) {
-                        $(forms[i]).find("." + key + "-errors > p").html(errors[i]);
-                        $(forms[i]).find("." + key + "-errors").removeClass("hide");
+            } else {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        $(this).dialog("close");
+                    },
+                    Close: function () {
+                        $(this).dialog("close");
                     }
                 }
             }
+
+            $("#dialog-confirm").dialog({
+                title: title,
+                modal: true,
+                buttons: buttons
+            });
         }
-        //Clear out dict
-        passDict = {
-            "biodata": {},
-            "schools": {},
-            "class": {},
-            "duty-history": {},
-            "duty-stations": {},
-            "waivers": {},
-            "screens": {},
-            "rds": {}
-        };
-        if (allPass == true) {
-            // No errors, start submittal chain
-            console.log("passed testing");
-            submit();
-        } else {
-            //Close dialog at end
-            $("#submitting-dialog").dialog("close");
+
+        /**
+         * Sets an interval to wait for a certain condition to be true
+         * Params:
+         *  check - (Function) Function to run that returns T/F
+         *  onComplete - (Function) Function to run when check returns true
+         */
+        function waitUntil(check, onComplete) {
+            // if the check returns true, execute onComplete immediately
+            if (check()) {
+                onComplete();
+                return;
+            }
+            var timeoutPointer;
+            var intervalPointer = setInterval(function () {
+                if (!check()) return;
+
+                clearInterval(intervalPointer);
+                if (timeoutPointer) clearTimeout(timeoutPointer);
+                onComplete();
+            }, 100);
         }
-    }
 
-    $(document).ready(function () {
+        /**
+         * Checks if any errors existed after testing. If so, show the errors. Else, start
+         *      submittal chain.
+         */
+        function checkErrors() {
+            var allPass = true;
+            //Clear all errors
+            $(".alert").addClass("hide");
+            $(".alert > p").html("");
+            for (var key in passDict) {
+                var errors = passDict[key];
+                $("#" + key + "-panel").removeClass("panel-error");
+                if (Object.keys(errors).length > 0) {
+                    allPass = false;
+                    //Show errors in correct place
+                    $("#" + key + "-panel").addClass("panel-error");
+                    if (key == "biodata" || key == "duty-history") {
+                        $("#" + key + "-errors > p").html(errors[0]);
+                        $("#" + key + "-errors").removeClass("hide");
+                    } else {
+                        //Get forms
+                        var forms = $("." + key + "-form");
+                        for (var i in errors) {
+                            $(forms[i]).find("." + key + "-errors > p").html(errors[i]);
+                            $(forms[i]).find("." + key + "-errors").removeClass("hide");
+                        }
+                    }
+                }
+            }
+            //Clear out dict
+            passDict = {
+                "biodata": {},
+                "schools": {},
+                "class": {},
+                "duty-history": {},
+                "duty-stations": {},
+                "waivers": {},
+                "screens": {},
+                "rds": {}
+            };
+            if (allPass == true) {
+                // No errors, start submittal chain
+                console.log("passed testing");
+                submit();
+            } else {
+                //Close dialog at end
+                $("#submitting-dialog").dialog("close");
+            }
+        }
 
-        // Init horizontal and vertical tabs
-        $(".tabs").tabs();
-        $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
-        $(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
+        $(document).ready(function () {
 
-        // Set datepickers
-        // TODO: should also change month?
-        $(".date").datepicker({
-            changeYear: true,
-            yearRange: "-90:+0"
-        });
+            // Init horizontal and vertical tabs
+            $(".tabs").tabs();
+            $(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+            $(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
-        // Init dialog for candidate submittal
-        $("#submitting-dialog").dialog({
-            autoOpen: false,
-            modal: true,
-            dialogClass: "no-close"
-        });
+            // Set datepickers
+            // TODO: should also change month?
+            $(".date").datepicker({
+                changeYear: true,
+                yearRange: "-90:+0"
+            });
 
-        // Create Candidate button click
-        $("#create-candidate-button").click(function () {
-            console.log("starting test");
-            // Show dialog to prevent any further clicking
-            $("#submitting-dialog").dialog("open");
-            // Start testing chain
-            testBioData();
-        });
+            // Init dialog for candidate submittal
+            $("#submitting-dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                dialogClass: "no-close"
+            });
 
-    }); // End document ready
+            // Create Candidate button click
+            $("#create-candidate-button").click(function () {
+                console.log("starting test");
+                // Show dialog to prevent any further clicking
+                $("#submitting-dialog").dialog("open");
+                // Start testing chain
+                testBioData();
+            });
 
-</script>
+            // School Select2
+            $("#SchoolValue").select2({
+                placeholder: "Select School"
+            }).parent().find('.select2-with-searchbox')
+            .prepend('<div class="createLink"><a href="#">Add New School</a></div>')
+            .on('click', '.createLink', function (e) {
+                e.preventDefault();
+                var name = $(this).parent().find(".select2-search input").val().toUpperCase();
+                addSchool(1, name);
+                // Close dropdown
+                $("#SchoolValue").select2("close");
+            });
+
+        }); // End document ready
+
+    </script>
 }

@@ -9,7 +9,7 @@ namespace InterviewTracker.Models
     public class School
     {
         public int SchoolID { get; set; } // PK for School table
-        [Required]
+        [Required(ErrorMessage="The School field is required")]
         public string SchoolValue { get; set; } // School name (all caps to avoid duplicates)
     }
 }

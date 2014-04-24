@@ -15,14 +15,69 @@ var rdCounter = 0;
 //List of schools that are currently added
 var schoolList = [];
 
+var schoolTabClone;
+var schoolContentClone;
+
+function addSchool(id, name) {
+    var schoolID = id; 
+    var schoolName = name;
+    if (schoolList.indexOf(schoolName) != -1) {
+        showDialog("School Exists", "This school has already been added", true, function () { });
+        return;
+    }
+    numSchools++;
+    schoolCounter++;
+    schoolList.push(schoolName);
+    // Clone and add content
+    var li = $(schoolTabClone).clone();
+    $(li).children().first().attr("href", "#school-content-" + schoolCounter);
+    // Put school name in link
+    $(li).children().first().html(schoolName);
+    var content = $(schoolContentClone).clone();
+    $(content).find("input").addClass("ui-corner-all");
+    $(content).find("textarea").addClass("ui-corner-all");
+    $(content).find(".date").attr("id", "")
+        .removeClass("hasDatepicker")
+        .removeData("datepicker")
+        .unbind()
+        .datepicker({
+            changeYear: true,
+            yearRange: "-90:+0"
+        });
+    $(content).find("#MajorValue").select2({
+        placeholder: "Select Major"
+    }).parent().find(".select2-with-searchbox")
+        .prepend('<div class="createLink"><a href="#">Add New Major</a></div>')
+        .on('click', '.createLink', function (e) {
+            e.preventDefault();
+            var name = $(this).parent().find(".select2-search input").val().toUpperCase();
+            console.log(name);
+            $(content).find("#MajorValue").append(
+                "<option value='" + name + "'>" + name + "</option>"
+            );
+            console.log($(content).find("#MajorValue"));
+            $(content).find("#MajorValue").select2("val", name);
+            $(content).find("#MajorValue").select2("close");
+        });
+    $(content).attr("id", "school-content-" + schoolCounter);
+    // Put school name in hidden input
+    $(content).find("#school-name").val(schoolName);
+    // Put school id in #SchoolID
+    $(content).find("#SchoolID").val(schoolID);
+    $("#school-tabs > ul").prepend(li);
+    $("#school-tabs > ul").after(content);
+    // Re-init tabs
+    $("#school-tabs").tabs("refresh");
+}
+
 $(document).ready(function () {
 
     // HTML clones for dynamic adding/removing of tabs
     // Remove everything after cloning it
     
-    var schoolTabClone = $("#school-tabs > ul").children().first().clone().removeClass("hide");
+    schoolTabClone = $("#school-tabs > ul").children().first().clone().removeClass("hide");
     $("#school-tabs > ul").children().first().remove();
-    var schoolContentClone = $("#school-content-1").clone().removeClass("hide");
+    schoolContentClone = $("#school-content-1").clone().removeClass("hide");
     $("#school-content-1").remove();
     var yearTabClone = $("#year-tab-1").clone();
     $("#year-tab-1").remove();
@@ -77,6 +132,21 @@ $(document).ready(function () {
                 changeYear: true,
                 yearRange: "-90:+0"
             });
+        $(content).find("#MajorValue").select2({
+            placeholder: "Select Major"
+        }).parent().find(".select2-with-searchbox")
+        .prepend('<div class="createLink"><a href="#">Add New Major</a></div>')
+        .on('click', '.createLink', function (e) {
+            e.preventDefault();
+            var name = $(this).parent().find(".select2-search input").val().toUpperCase();
+            console.log(name);
+            $(content).find("#MajorValue").append(
+                "<option value='" + name + "'>" + name + "</option>"
+            );
+            console.log($(content).find("#MajorValue"));
+            $(content).find("#MajorValue").select2("val", name);
+            $(content).find("#MajorValue").select2("close");
+        });
         $(content).attr("id", "school-content-" + schoolCounter);
         // Put school name in hidden input
         $(content).find("#school-name").val(schoolName);

@@ -488,6 +488,7 @@ namespace InterviewTracker.Controllers
 
             int totalGoal;
             int otherTotalGoal = 0, otherSubGoal = 0, otherSurfGoal = 0, otherNRGoal = 0, otherInstGoal = 0;
+
             int subTotalGoal = 0, surfTotalGoal = 0, nrTotalGoal = 0, instTotalGoal = 0, overallTotalGoal = 0;
             var intYear = Int32.Parse(year);
             foreach (FYGoals fyGoal in db.FYGoals.Where(goal => goal.FY == intYear))

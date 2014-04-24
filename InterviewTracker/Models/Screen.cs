@@ -20,14 +20,13 @@ namespace InterviewTracker.Models
         public string Location { get; set; } // Location screened
         // TODO: should this be a source?
         [Required]
-        public DateTime? ScreenDate { get; set; } // Date of screening
+        public DateTime ScreenDate { get; set; } // Date of screening
         [Required]
         public string NRStatus { get; set; } // Status of NR
         [Required]
         public string INSTStatus { get; set; } // Status of INST
         [Required]
         public string NPSStatus { get; set; } // Status of NPS
-        [Required]
         public string Notes { get; set; } // Notes on screen
 
         [ForeignKey("BioData")]

@@ -10,7 +10,7 @@ namespace InterviewTracker.Models
     public class Program
     {
         public int ProgramID { get; set; } // PK for Program table
-        [Required]
+        [Required(ErrorMessage="The Program field is required")]
         public string ProgramValue { get; set; } // Type of program
         [JsonIgnore]
         public virtual ICollection<BioData> BioDatas { get; set; }

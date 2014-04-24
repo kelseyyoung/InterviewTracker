@@ -18,7 +18,8 @@ namespace InterviewTracker.Controllers
         public ActionResult Index()
         {
             ViewBag.currUser = System.Web.HttpContext.Current.User;
-            ViewBag.candidates = db.BioData.ToList();
+            CustomPrincipal u = ViewBag.currUser;
+            ViewBag.userModel = db.User.Where(x => x.LoginID == u.LoginID).FirstOrDefault();
             return View();
         }
 
@@ -34,6 +35,7 @@ namespace InterviewTracker.Controllers
             User u = db.User.Where(x => x.LoginID == username).FirstOrDefault();
             if (u == null)
             {
+                // User does not exist
                 return RedirectToAction("Unauthorized", "Home");
             }
             // User exists in DB
@@ -41,7 +43,7 @@ namespace InterviewTracker.Controllers
             FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,
              u.LoginID,
              DateTime.Now,
-             DateTime.Now.AddMinutes(5), //TODO: set to actual minutes?
+             DateTime.Now.AddMinutes(100), //TODO: set to actual minutes?
              false,
              u.UserGroup);
             string encTicket = FormsAuthentication.Encrypt(authTicket);

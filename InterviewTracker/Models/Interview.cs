@@ -18,10 +18,10 @@ namespace InterviewTracker.Models
         public string Location { get; set; }
         public string Comments { get; set; } // Comments from interviewer
         public string EditedComments { get; set; } // Edited comments from interview coordinator
-        [Required]
+        [Required(ErrorMessage="The Start Time field is required")]
         public DateTime? StartTime { get; set; } // Start time
         //TODO: How to make these just Time?
-        [Required]
+        [Required(ErrorMessage="The End Time field is required")]
         public DateTime? EndTime { get; set; } // End time
         //TODO: How to make these just Time?
         [Required]

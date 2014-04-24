@@ -10,9 +10,9 @@ namespace InterviewTracker.Models
     public class SchoolsAttended
     {
         public int SchoolsAttendedID { get; set; } // PK For Schools Attended table
-        [Required]
+        [Required(ErrorMessage="The Start Year field is required")]
         public int? YearStart { get; set; } // Year started school
-        [Required]
+        [Required(ErrorMessage="The End Year field is required")]
         public int? YearEnd { get; set; } // Year finished school
         [Required]
         public bool? Graduated { get; set; } // T/F if graduated
