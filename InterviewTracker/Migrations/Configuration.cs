@@ -454,7 +454,7 @@ namespace InterviewTracker.Migrations
                 INST = 29
             };
 
-            context.FYGoals.AddOrUpdate(i => i.FY,
+            context.FYGoals.AddOrUpdate(i => i.FYID,
                 FY2012,
                 FY2013,
                 FY2014
