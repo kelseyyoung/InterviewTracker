@@ -17,13 +17,13 @@ namespace InterviewTracker.Models
         [RegularExpression(@"^\d\d\d-\d\d-\d\d\d\d$", ErrorMessage="SSN must be in the form 000-00-0000")]
         public string SSN { get; set; } // Social Security #
         [Required(ErrorMessage="The Last Name field is required")]
-        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage="Last Name must start with a capital letter")]
+        [RegularExpression(@"^[A-Z][A-Za-z]+$", ErrorMessage="Last Name must start with a capital letter")]
         public string LName { get; set; } // Last Name
         [Required(ErrorMessage="The First Name field is required")]
-        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage="First Name must start with a capital letter")]
+        [RegularExpression(@"^[A-Z][A-Za-z]+$", ErrorMessage="First Name must start with a capital letter")]
         public string FName { get; set; } // First Name
         [Required(ErrorMessage="The Middle Name field is required")]
-        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage="Middle Name must start with a capital letter")]
+        [RegularExpression(@"^[A-Z][A-Za-z]+$", ErrorMessage="Middle Name must start with a capital letter")]
         public string MName { get; set; } // Middle Name
         public string Suffix { get; set; } // Suffix (optional)
         [Required(ErrorMessage="The Date of Birth field is required")]

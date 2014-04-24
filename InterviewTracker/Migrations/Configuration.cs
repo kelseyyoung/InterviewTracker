@@ -223,7 +223,6 @@ namespace InterviewTracker.Migrations
                 LName = "admin",
                 Initials = "aa",
                 LoginID = "adminaa",
-                Password = "admin",
                 Code = "08A",
                 NR = true,
                 INST = false,
@@ -242,7 +241,6 @@ namespace InterviewTracker.Migrations
                 LName = "coord",
                 Initials = "bb",
                 LoginID = "coordbb",
-                Password = "coord",
                 Code = "08B",
                 NR = false,
                 INST = false,
@@ -262,7 +260,6 @@ namespace InterviewTracker.Migrations
                 LName = "interviewer",
                 Initials = "cc",
                 LoginID = "interviewercc",
-                Password = "interviewer",
                 Code = "08C",
                 NR = true,
                 INST = true,
@@ -281,7 +278,6 @@ namespace InterviewTracker.Migrations
                 LName = "interviewer2",
                 Initials = "cc",
                 LoginID = "interviewer2cc",
-                Password = "interviewer2",
                 Code = "08C",
                 NR = true,
                 INST = true,
@@ -300,7 +296,6 @@ namespace InterviewTracker.Migrations
                 LName = "interviewer3",
                 Initials = "cc",
                 LoginID = "interviewer3cc",
-                Password = "interviewer3",
                 Code = "08C",
                 NR = true,
                 INST = true,
@@ -843,6 +838,15 @@ namespace InterviewTracker.Migrations
             };
             ClassesAttended KelseyClassesAttended2 = new ClassesAttended
             {
+                YearTaken = 1,
+                Grade = "F",
+                SchoolsAttended = KelseySchoolsAttended,
+                BioData = Kelsey,
+                Classes = ENGL266
+
+            };
+            ClassesAttended KelseyClassesAttended3 = new ClassesAttended
+            {
                 YearTaken = 2,
                 Grade = "C-",
                 SchoolsAttended = KelseySchoolsAttended,
@@ -850,6 +854,7 @@ namespace InterviewTracker.Migrations
                 Classes = ENGL266
 
             };
+
             // 1 For John
             ClassesAttended JohnClassesAttended = new ClassesAttended
             {
@@ -872,6 +877,7 @@ namespace InterviewTracker.Migrations
             context.ClassesAttended.AddOrUpdate(i => i.ClassesAttendedID,
                 KelseyClassesAttended,
                 KelseyClassesAttended2,
+                KelseyClassesAttended3,
                 JohnClassesAttended,
                 SteveClassesAttended
             );

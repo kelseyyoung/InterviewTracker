@@ -1,5 +1,260 @@
 ﻿@{
-    ViewBag.Title = "AddUser";
+    ViewBag.Title = "Add User";
 }
 
-<h2>AddUser</h2>
+@section AddToTextCss {
+    
+    #users-list {
+    max-height: 400px;
+    overflow: auto;
+    }
+
+    #users-table {
+    table-layout: fixed;
+    width: 100%;
+    }
+
+    #users-table tbody tr:first-child {
+    width: 70%;
+    }
+}
+
+<div class="row-fluid">
+    <div class="span3 offset2">
+        <div class="panel panel-primary" id="users-list">
+            <!-- List of users for editing -->
+            <div class="panel-heading">
+                <h4 class="panel-title">Current Users</h4>
+            </div>
+            <div class="panel-body">
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Login ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in ViewBag.users)
+                        {
+                            <tr>
+                                <td>@u.LoginID</td>
+                                <td class="text-center"><button type="button" class="edit-user" data-id="@u.UserID"><i class="fa fa-edit"></i></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="span5">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Add/Edit User</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" id="add-user-form">
+                    <div class="form-group">
+                        <label for="LName" class="control-label span3">Last Name</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="LName" name="LName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Initials" class="control-label span3">Initials</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="Initials" name="Initials" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="LoginID" class="control-label span3">Login ID</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="LoginID" name="LoginID" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Code" class="control-label span3">Code</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="Code" name="Code" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="UserGroup" class="control-label span3">User Group</label>
+                        <div class="span4">
+                            <select class="form-control" id="UserGroup" name="UserGroup">
+                                <option value="">--None--</option>
+                                <option value="ADMIN">Admin</option>
+                                <option value="COORD">Interview Coordinator</option>
+                                <option value="INTER">Interviewer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" id="UserID" />
+                </form>
+                <div class="checkbox text-center">
+                    <label for="NR">
+                        <input id="NR" name="NR" type="checkbox" />NR
+                    </label>
+                    <label for="INST">
+                        <input id="INST" name="INST" type="checkbox" />INST
+                    </label>
+                    <label for="NPS">
+                        <input id="NPS" name="NPS" type="checkbox" />NPS
+                    </label>
+                    <label for="PXO">
+                        <input id="PXO" name="PXO" type="checkbox" />PXO
+                    </label>
+                    <label for="EDO">
+                        <input id="EDO" name="EDO" type="checkbox" />EDO
+                    </label>
+                    <label for="ENLTECH">
+                        <input id="ENLTECH" name="ENLTECH" type="checkbox" />ENLTECH
+                    </label>
+                </div>
+                <div class="checkbox text-center">
+                    <label for="NR1">
+                        <input id="NR1" name="NR1" type="checkbox" />NR1
+                    </label>
+                    <label for="SUPPLY">
+                        <input id="SUPPLY" name="SUPPLY" type="checkbox" />SUPPLY
+                    </label>
+                    <label for="EOOW">
+                        <input id="EOOW" name="EOOW" type="checkbox" />EOOW
+                    </label>
+                    <label for="DOE">
+                        <input id="DOE" name="INST" type="checkbox" />DOE
+                    </label>
+                </div>
+                <div id="user-errors" class="alert alert-error hide">
+                    <p></p>
+                </div>
+                <hr />
+                <div class="text-center">
+                    <button type="button" id="submit-user">Submit</button>
+                    <button type="button" id="clear-form">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+
+        var quals = [
+                "NR", "INST", "NPS", "PXO", "EDO", "ENLTECH",
+                "NR1", "SUPPLY", "EOOW", "DOE"
+        ];
+
+        $(document).ready(function () {
+
+            // If anything changes, assume it's a new user
+            // And unset UserID
+            $("#FY, #Source").on("change", function () {
+            });
+
+            $(document).on("click", ".edit-user", function () {
+                var userID = $(this).data("id");
+                $.ajax({
+                    url: baseURL + "/api/User/Get/" + userID,
+                    type: "Get",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                        var form = $("#add-user-form").serializeArray();
+                        console.log(form);
+                        // Set UserID
+                        $("#UserID").attr("name", "UserID");
+                        $("#UserID").val(data.UserID);
+                        // Populate
+                        for (var i = 0; i < form.length; i++) {
+                            console.log(data[form[i]["name"]]);
+                            $("#" + form[i]["name"]).val(data[form[i]["name"]]);
+                        }
+                        for (var i = 0; i < quals.length; i++) {
+                            console.log(quals[i]);
+                            console.log(data[quals[i]]);
+                            $("#" + quals[i]).prop("checked", data[quals[i]]);
+                        }
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            });
+
+            $("#submit-user").click(function () {
+                var formData = $("#add-user-form").serialize();
+                for (var i = 0; i < quals.length; i++) {
+                    if ($("#" + quals[i]).is(":checked")) {
+                        formData += "&" + quals[i] + "=true";
+                    } else {
+                        formData += "&" + quals[i] + "=false";
+                    }
+                }
+                console.log(formData);
+                $("#user-errors").addClass("hide");
+                // Test
+                $.ajax({
+                    url: baseURL + "/api/User/Test?" + formData,
+                    type: "Post",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                        // Figure out type (Post or Put)
+                        var type = "Post";
+                        var append = "";
+                        if ($("#UserID").val() != "") {
+                            type = "Put";
+                            append = "/" + $("#UserID").val();
+                        }
+                        console.log(type);
+                        console.log(append);
+                        // Submit
+                        $.ajax({
+                            url: baseURL + "/api/User/" + type + append + "?" + formData,
+                            type: type,
+                            success: function (data) {
+                                window.location.href = baseURL + "@Url.Action("AddUser", "Admin")";
+                            },
+                            error: function (data) {
+                                console.log("error");
+                                console.log(data);
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                        var errors = "";
+                        var response = $.parseJSON(data.responseText).ModelState;
+                        $.each(response, function (key, value) {
+                            for (var i = 0; i < value.length; i++) {
+                                errors += value[i] + "<br/>";
+                            }
+                        });
+                        $("#user-errors > p").html(errors);
+                        $("#user-errors").removeClass("hide");
+                    }
+                });
+            });
+
+            $("#clear-form").click(function () {
+                var formArray = $("#add-user-form").serializeArray();
+                for (var i = 0; i < formArray.length; i++) {
+                    $("#" + formArray[i]["name"]).val("");
+                }
+                for (var i = 0; i < quals.length; i++) {
+                    $("#" + quals[i]).prop("checked", false);
+                }
+                // Hide errors
+                $("#user-errors").addClass("hide");
+                // Unset UserID
+                $("#UserID").val("");
+                $("#UserID").removeAttr("name");
+            });
+
+        }); // End document ready
+    </script>
+}

@@ -1,5 +1,420 @@
 ﻿@{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Candidate";
 }
 
-<h2>Delete</h2>
+@section AddToTextCss {
+    .odd.table-override {
+    color: black !important;
+    background-color: rgba(23, 89, 157, 0.5) !important;
+    }
+
+    .even.table-override {
+    color: black !important;
+    background-color: white !important;
+    }
+
+    .odd.table-override > td[class*="sorting"] {
+    color: white !important;
+    background-color: rgb(23, 89, 157) !important;
+    }
+
+    .even.table-override > td[class*="sorting"] {
+    color: black !important;
+    background-color: white !important;
+    }
+
+    tr td:last-child {
+    text-align: center;
+    }
+}
+<div class="row-fluid">
+    <div class="span12 panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Candidate Search Parameters</h2>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" id="search-form">
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="FName" class="control-label span3">First Name</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="FName" id="FName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="LName" class="control-label span3">Last Name</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="LName" id="LName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="SSN" class="control-label span3">SSN</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="SSN" id="SSN" />
+                                <button type="button" id="toggle-params"><i class="fa fa-plus"></i> More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid" id="more-params" style="display: none;">
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="MName" class="control-label span3">Middle Name</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="MName" id="MName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Sex" class="control-label span3">Sex</label>
+                            <div class="span9">
+                                <select class="form-control" name="Sex" id="Sex">
+                                    <option value="">--None--</option>
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="CalendarYear" class="control-label span3">CY</label>
+                            <div class="span9">
+                                <input type="text" id="CalendarYear" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="School" class="control-label span3">School</label>
+                            <div class="span9">
+                                <select class="form-control" id="School">
+                                    <option value="">--None--</option>
+                                    @foreach (var s in ViewBag.schools)
+                                    {
+                                        <option value="@s.SchoolID">@s.SchoolValue</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="DOB" class="control-label span3">DOB</label>
+                            <div class="span9">
+                                <input type="text" class="form-control date" name="DOB" id="DOB" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="EthnicityID" class="control-label span3">Ethnicity</label>
+                            <div class="span9">
+                                <select class="form-control" name="EthnicityID" id="EthnicityID">
+                                    <option value="">--None--</option>
+                                    @foreach (var e in ViewBag.ethnicities)
+                                    {
+                                        <option value="@e.EthnicityID">@e.EthnicityValue</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="SourcesID" class="control-label span3">Source</label>
+                            <div class="span9">
+                                <select class="form-control" name="SourcesID" id="SourcesID">
+                                    <option value="">--None--</option>
+                                    @foreach (var s in ViewBag.sources)
+                                    {
+                                        <option value="@s.SourcesID">@s.SourcesValue</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="checkbox text-center">
+                            <label for="Waivers">
+                                <input id="Waivers" type="checkbox" />Has Waivers
+                            </label>
+                            <label for="Screens">
+                                <input id="Screens" type="checkbox" />Has Screens
+                            </label>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="form-group">
+                            <label for="Suffix" class="control-label span3">Suffix</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="Suffix" id="Suffix" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="FYG" class="control-label span3">FYG</label>
+                            <div class="span9">
+                                <input type="text" class="form-control" name="FYG" id="FYG" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Programs" class="control-label span3">Programs</label>
+                            <div class="span9">
+                                <select class="form-control" id="Programs" multiple>
+                                    @foreach (var p in ViewBag.programs)
+                                    {
+                                        <option value="@p.ProgramValue">@p.ProgramValue</option>
+                                    }
+                                </select>
+                                <button type="button" id="unselect-programs">Unselect All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="pull-right" id="search"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class="pull-right btn-ignore btn-danger" id="clear-search">Clear</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <!--Results table-->
+    <div class="span12">
+        <table id="search-results">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>DOB</th>
+                    <th>SSN</th>
+                    <th>Controls</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section AddToScripts {
+    <script type="text/javascript">
+
+        /**
+         * Converts a serialized form array to a string that can be used for $filter
+         * Returns: (String) string to use for $filter API string
+         * Params:
+         *  formArray - (Array) array of form objects with name and value
+         *
+         */
+        function buildFilterString(formArray) {
+            var ret = "";
+            for (var i = 0; i < formArray.length; i++) {
+                var item = formArray[i];
+                if (item["value"] != "") {
+                    if (i != 0 && ret != "") {
+                        ret += " and ";
+                    }
+                    if (isNaN(item["value"])) {
+                        ret += item["name"] + " eq '" + item["value"] + "'";
+                    } else {
+                        ret += item["name"] + " eq " + item["value"];
+                    }
+                }
+            }
+            console.log(ret);
+            return ret;
+        }
+
+        /**
+         * Populates the DataTable
+         * Params:
+         *  obj - (Object) Object return from an API call
+         */
+        function populateTable(obj) {
+            // Clear out table
+            $("#search-results").dataTable().fnClearTable();
+            // Add new rows
+            for (var i = 0; i < obj.length; i++) {
+                var bd = obj[i];
+                var dob = moment(bd.DOB);
+                dob = dob.format("MM/DD/YYYY");
+                var text = "Delete";
+                var url = "#";
+                url = url.replace("__id__", bd.ID);
+                var a = [bd.FName, bd.LName, dob, bd.SSN, "<a href='" + url + "' class='button delete-button' data-id='" + bd.ID + "' type='button'>" + text + "</a>"];
+                $("#search-results").dataTable().fnAddData(a);
+            }
+            //Re-init buttons
+            $("#search-results button:not(.btn-ignore)").button();
+            $("#search-results a.button").button();
+        }
+
+        function filterAgain(data) {
+            // Filter further by school, programs, waivers, and screens
+            // School Filter
+            var schoolID = $("#School").val();
+            if (schoolID != "") {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    var schoolsAttended = bd.SchoolsAttended;
+                    var grad = false;
+                    for (var j = 0; j < schoolsAttended.length; j++) {
+                        var sa = schoolsAttended[j];
+                        if (sa.SchoolID == schoolID) {
+                            grad = true;
+                        }
+                    }
+                    if (grad == false) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            // Waivers Filter
+            var wChecked = $("#Waivers").is(":checked");
+            if (wChecked) {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    if (bd.Waivers.length < 1) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            // Screens Filter
+            var sChecked = $("#Screens").is(":checked");
+            if (sChecked) {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    if (bd.Screens.length < 1) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            // Programs Filter
+            // Needs to only be in one or more of the selected programs
+            var programs = $("#Programs").val();
+            if (programs != null) {
+                for (var i = 0; i < data.length; i++) {
+                    var bd = data[i];
+                    var bdPrograms = bd.Programs;
+                    var remove = true;
+                    for (var j = 0; j < bdPrograms.length; j++) {
+                        if ($.inArray(bdPrograms[j].ProgramValue, programs) != -1) {
+                            remove = false;
+                        }
+                    }
+                    if (remove) {
+                        // Remove person from filter
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            console.log(data);
+            return data; // Return when done
+        }
+
+        $(document).ready(function () {
+
+            // Set datepicker
+            $(".date").datepicker({
+                changeYear: true,
+                yearRange: "-90:+0"
+            });
+
+            $("#toggle-params").click(function () {
+                $("#more-params").slideToggle(function () {
+                    if ($("#toggle-params").text().trim() == "More") {
+                        $("#toggle-params").button("option", "label", "<i class='fa fa-minus'></i> Less").button("refresh");
+                    } else {
+                        $("#toggle-params").button("option", "label", "<i class='fa fa-plus'></i> More").button("refresh");
+                        //TODO: clear out hidden parameters
+                    }
+                });
+            });
+
+            $("#search-results").dataTable({
+                "bJQueryUI": true,
+                "bFilter": false,
+                "fnDrawCallback": function (oSettings) {
+                    for (var i = 0; i < oSettings.aoData.length; i++) {
+                        oSettings.aoData[i].nTr.className += " " + "table-override";
+                    }
+                }
+            });
+
+            $("#search").click(function () {
+                var form = $("#search-form");
+                var filterStr = buildFilterString($(form).serializeArray());
+                if (filterStr == "") {
+                    // If school, waivers, screens, or programs are selected
+                    // Get all biodata, then filter by those params
+                    var schoolID = $("#School").val();
+                    var wChecked = $("#Waivers").is(":checked");
+                    var sChecked = $("#Screens").is(":checked");
+                    var programs = $("#Programs").val();
+                    if (schoolID != "" || wChecked || sChecked || programs != null) {
+                        $.ajax({
+                            url: baseURL + "/api/BioData/GetAll",
+                            type: "Get",
+                            success: function (data) {
+                                console.log("success");
+                                console.log(data);
+                                // Populate table
+                                populateTable(filterAgain(data));
+                            },
+                            error: function (data) {
+                                console.log("error");
+                                console.log(data);
+                                console.log(data.responseText);
+                            }
+                        })
+                    } else {
+                        // If nothing to search on, essentially clear table
+                        // by populating with empty data
+                        populateTable([]);
+                    }
+                } else {
+                    // Make call to API
+                    var obj = {
+                        "$filter": filterStr
+                    };
+                    $.ajax({
+                        url: baseURL + "/api/BioData/GetBy?" + $.param(obj),
+                        type: "Get",
+                        success: function (data) {
+                            console.log("success");
+                            console.log(data);
+                            // Populate table
+                            populateTable(filterAgain(data));
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                            console.log(data.responseText);
+                        }
+                    });
+
+                }
+            });
+
+            $("#clear-search").click(function () {
+                var formArray = $("#search-form").serializeArray();
+                console.log(formArray);
+                for (var i = 0; i < formArray.length; i++) {
+                    $("#" + formArray[i]["name"]).val("");
+                }
+            });
+
+            $("#School").select2();
+
+            $("#unselect-programs").click(function () {
+                $("#Programs option").removeAttr("selected");
+            });
+
+            $(document).on("click", ".delete-button", function (e) {
+                e.preventDefault();
+                console.log($(this).data("id"));
+                var id = $(this).data("id");
+            });
+
+        }); // End document ready
+    </script>
+}

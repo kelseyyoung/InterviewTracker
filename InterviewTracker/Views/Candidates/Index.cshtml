@@ -266,7 +266,8 @@
                     var grad = false;
                     for (var j = 0; j < schoolsAttended.length; j++) {
                         var sa = schoolsAttended[j];
-                        if (sa.SchoolID == schoolID) {
+
+                        if (sa.SchoolID == schoolID && sa.Graduated) {
                             grad = true;
                         }
                     }

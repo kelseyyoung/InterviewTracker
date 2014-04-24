@@ -89,6 +89,17 @@
                     </li>
                     <li><a href="@Url.Action("Index", "Calendar")"><i class="fa fa-calendar"></i> Calendar</a></li>
                     <li><a href="@Url.Action("Index", "Reports")"><i class="fa fa-bar-chart-o"></i> Reports</a></li>
+                    @if (ViewBag.currUser != null && ViewBag.currUser.Role == "ADMIN")
+                    {
+                        <li>
+                            <a href="#">Admin <i class="fa fa-chevron-down"></i></a>
+                            <ul>
+                                <li><a href="@Url.Action("AddUser", "Admin")">Add/Edit User</a></li>
+                                <li><a href="@Url.Action("EditFYGoals", "Admin")">Edit FY Goals</a></li>
+                                <li><a href="@Url.Action("Delete", "Candidates")">Delete Candidate</a></li>
+                            </ul>
+                        </li>
+                    }
                     @if (ViewBag.currUser != null)
                     {
                         <li class="pull-right"><a href="@Url.Action("Logout", "Home")">Logout</a></li>

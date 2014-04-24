@@ -41,7 +41,7 @@ function submitBioData() {
                     console.log("error");
                     console.log(data);
                 }
-            })
+            });
         },
         error: function (data) {
             // Shouldn't get here
@@ -360,7 +360,20 @@ function submitScreens(i) {
         url: baseURL + "/api/Screen/" + type + append + "?" + $(form).serialize(),
         type: type,
         success: function (data) {
-            counter++;
+            console.log(data.ScreenID);
+            // Set programs applied for
+            $.ajax({
+                url: baseURL + "/api/Screen/SetPrograms/" + data.ScreenID + "?" + $(form).serialize(),
+                type: "Post",
+                success: function (data) {
+                    counter++;
+                },
+                error: function (data) {
+                    // Shouldn't get here
+                    console.log("error");
+                    console.log(data);
+                }
+            });
         },
         error: function (data) {
             // Shouldn't get here

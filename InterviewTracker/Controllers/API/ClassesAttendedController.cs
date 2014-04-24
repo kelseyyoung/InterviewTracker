@@ -129,6 +129,17 @@ namespace InterviewTracker.Controllers.API
             return db.ClassesAttended.AsQueryable();
         }
 
+        [ActionName("GetCourseCatalog")]
+        [HttpGet]
+        public IQueryable GetCourseCatalog(string School)
+        {
+            return db.ClassesAttended.Where(y => y.SchoolsAttended.School.SchoolValue == School).Select(
+                x => new
+                {
+                    classes = x.Classes
+                }).Distinct();
+        }
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
