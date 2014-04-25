@@ -17,7 +17,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth("COORD", "ADMIN")]
         public ActionResult AddUser()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.users = db.User.ToList().OrderBy(x => x.LoginID);
             return View();
@@ -26,7 +26,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth("COORD", "ADMIN")]
         public ActionResult EditFYGoals()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.fys = db.FYGoals.OrderByDescending(x => x.FY).Select(
                 x => x.FY).Distinct();

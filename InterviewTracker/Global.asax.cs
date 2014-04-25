@@ -38,6 +38,7 @@ namespace InterviewTracker
         // Override to register logged in user and set in HttpContext
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
+            /*
             HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
 
             // If cookie isn't null or hasn't expired yet
@@ -58,6 +59,23 @@ namespace InterviewTracker
                 }
 
             }
+             */
+            
+            /*if (HttpContext.Current.User != null)
+            {
+                
+                InterviewTrackerContext db = new InterviewTrackerContext();
+                String name = HttpContext.Current.User.Identity.Name;
+                name = name.Substring(name.IndexOf("\\") + 1);
+                User u = db.User.Where(x => x.LoginID == name).FirstOrDefault();
+                if (u != null)
+                {
+                    CustomPrincipal newUser = new CustomPrincipal(name, u.UserGroup);
+                    HttpContext.Current.User = newUser;
+                }
+                 
+            }*/
+            
         }
     }
 }

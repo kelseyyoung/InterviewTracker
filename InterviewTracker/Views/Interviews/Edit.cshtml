@@ -24,10 +24,10 @@
                 <input type="hidden" id="BioDataID" name="BioDataID" value="@ViewBag.interview.BioDataID" />
                 <input type="hidden" id="InterviewerID" name="InterviewerID" value="@ViewBag.interview.InterviewerID" />
                 <input type="hidden" id="CurrentlyEditingID" name="CurrentlyEditingID" value="" />
-                @if (ViewBag.userModel.UserID == ViewBag.interview.InterviewerID) {
+                @if (ViewBag.user.UserID == ViewBag.interview.InterviewerID) {
                     <input type="hidden" id="Status" name="Status" value="Entered" />
                 }
-                else if (ViewBag.currUser.Role != "INTER")
+                else if (ViewBag.user.UserGroup != "INTER")
                 {
                     <input type="hidden" id="Status" name="Status" value="Edited" />
                 }
@@ -63,7 +63,7 @@
                         </tr>
                     </tbody>
                 </table>
-                @if (ViewBag.interview.InterviewerID != ViewBag.userModel.UserID) {
+                @if (ViewBag.interview.InterviewerID != ViewBag.user.UserID) {
                     <h3>@ViewBag.interview.InterviewerUser.LoginID's Comments</h3>
                 }
                 else
@@ -71,8 +71,8 @@
                     <h3>Your Comments</h3>
 
                 }
-                <textarea class="span12" rows="5" id="Comments" name="Comments" @if(ViewBag.interview.InterviewerID != ViewBag.userModel.UserID) { <text>disabled</text> }>@ViewBag.interview.Comments</textarea>
-                @if (ViewBag.currUser.Role != "INTER" && ViewBag.interview.InterviewerID != ViewBag.userModel.UserID) {
+                <textarea class="span12" rows="5" id="Comments" name="Comments" @if(ViewBag.interview.InterviewerID != ViewBag.user.UserID) { <text>disabled</text> }>@ViewBag.interview.Comments</textarea>
+                @if (ViewBag.user.UserGroup != "INTER" && ViewBag.interview.InterviewerID != ViewBag.user.UserID) {
                     <h3>Edit Comment</h3>
                     <textarea class="span12" rows="5" id="EditedComments" name="EditedComments">
                         @if (ViewBag.interview.EditedComments != null) {

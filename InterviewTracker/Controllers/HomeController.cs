@@ -17,20 +17,21 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult Index()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
-            CustomPrincipal u = ViewBag.currUser;
-            ViewBag.userModel = db.User.Where(x => x.LoginID == u.LoginID).FirstOrDefault();
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
             return View();
         }
 
+        /*
         public ActionResult Login()
         {
             return View();
         }
 
+        
         [HttpPost]
         public ActionResult Login(FormCollection form)
         {
+            
             string username = form["username"];
             User u = db.User.Where(x => x.LoginID == username).FirstOrDefault();
             if (u == null)
@@ -49,14 +50,17 @@ namespace InterviewTracker.Controllers
             string encTicket = FormsAuthentication.Encrypt(authTicket);
             HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
             Response.Cookies.Add(faCookie);
+             
             return RedirectToAction("Index", "Home");
         }
+        */
 
         public ActionResult Unauthorized()
         {
             return View();
         }
 
+        /*
         public ActionResult Logout()
         {
             // Create Logout Ticket
@@ -71,5 +75,6 @@ namespace InterviewTracker.Controllers
             Response.Cookies.Add(faCookie);
             return View();
         }
+         * */
     }
 }

@@ -70,9 +70,9 @@
                 <h1>NRIT - Naval Reactors Interview Tracker</h1>
             </div>
             <div class="span2 text-center" id="user-space">
-                @if (ViewBag.currUser != null)
+                @if (ViewBag.user != null)
                 {
-                    <p>Logged in as <b>@ViewBag.currUser.LoginID</b></p>
+                    <p>Logged in as <b>@ViewBag.user.LoginID</b></p>
                 }
             </div>
         </div>
@@ -89,7 +89,7 @@
                     </li>
                     <li><a href="@Url.Action("Index", "Calendar")"><i class="fa fa-calendar"></i> Calendar</a></li>
                     <li><a href="@Url.Action("Index", "Reports")"><i class="fa fa-bar-chart-o"></i> Reports</a></li>
-                    @if (ViewBag.currUser != null && ViewBag.currUser.Role == "ADMIN")
+                    @if (ViewBag.user != null && ViewBag.user.UserGroup == "ADMIN")
                     {
                         <li>
                             <a href="#">Admin <i class="fa fa-chevron-down"></i></a>
@@ -99,14 +99,6 @@
                                 <li><a href="@Url.Action("Delete", "Candidates")">Delete Candidate</a></li>
                             </ul>
                         </li>
-                    }
-                    @if (ViewBag.currUser != null)
-                    {
-                        <li class="pull-right"><a href="@Url.Action("Logout", "Home")">Logout</a></li>
-                    }
-                    else
-                    {
-                        <li class="pull-right"><a href="@Url.Action("Login", "Home")">Login</a></li>
                     }
                 </ul>
             </div>

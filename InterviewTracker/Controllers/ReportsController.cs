@@ -33,7 +33,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult Index()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             return View();
         }

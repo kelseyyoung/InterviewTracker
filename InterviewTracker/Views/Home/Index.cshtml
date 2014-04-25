@@ -24,7 +24,7 @@
     <div class="span4" id="toolbar">
         <div class="panel panel-primary" id="interview-list">
             <div class="panel-heading">
-                <h4 class="panel-title">@if(ViewBag.currUser.Role == "INTER") { <text>Your </text> }Interviews Today</h4>
+                <h4 class="panel-title">@if(ViewBag.user.UserGroup == "INTER") { <text>Your </text> }Interviews Today</h4>
             </div>
             <div class="panel-body">
                 <p class="text-center">No interviews today</p>
@@ -67,10 +67,10 @@
             interviewMapper = {};
             //Fetch events from API
             var append = "";
-            @if (ViewBag.currUser.Role == "INTER")
+            @if (ViewBag.user.UserGroup == "INTER")
             {
                 // If interviewer, only get interviews they're assigned to
-                <text>append = " and InterviewerID eq " + @ViewBag.userModel.UserID + "";</text>
+                <text>append = " and InterviewerID eq " + @ViewBag.user.UserID + "";</text>
             }
             console.log(append);
             var obj = {
@@ -87,7 +87,7 @@
                     console.log(data.length);
                     for (var i = 0; i < data.length; i++) {
                         var interview = data[i];
-                        @if (ViewBag.currUser.Role == "INTER")
+                        @if (ViewBag.user.UserGroup == "INTER")
                         {
                         <text>
                         var event = {
@@ -158,7 +158,7 @@
                             );
                         }
                     }
-                    @if (ViewBag.currUser.Role != "INTER")
+                    @if (ViewBag.user.UserGroup != "INTER")
                     {
                     <text>
                     for (var date in interviewMapper) {

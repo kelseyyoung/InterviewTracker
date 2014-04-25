@@ -233,7 +233,7 @@
                 dob = dob.format("MM/DD/YYYY");
                 var url;
                 var text
-                @if(ViewBag.currUser.Role != "INTER") {
+                @if(ViewBag.user.UserGroup != "INTER") {
                     <text>
                 url = "@Url.Action("Edit", "Candidates", new { id = "__id__"})";
                 text = "Edit";

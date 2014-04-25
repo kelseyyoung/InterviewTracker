@@ -13,11 +13,11 @@
     [InviteBack] [bit] NOT NULL,
     [SERVSEL] [nvarchar](max) NOT NULL,
     [BioDataID] [int] NOT NULL,
-    [InterviewID] [int] NOT NULL,
+    [ProgramID] [int] NOT NULL,
     CONSTRAINT [PK_dbo.Admiral] PRIMARY KEY ([AdmiralID])
 )
 CREATE INDEX [IX_BioDataID] ON [dbo].[Admiral]([BioDataID])
-CREATE INDEX [IX_InterviewID] ON [dbo].[Admiral]([InterviewID])
+CREATE INDEX [IX_ProgramID] ON [dbo].[Admiral]([ProgramID])
 CREATE TABLE [dbo].[BioData] (
     [ID] [int] NOT NULL IDENTITY,
     [SSN] [nvarchar](max) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE [dbo].[Screen] (
     [NRStatus] [nvarchar](max) NOT NULL,
     [INSTStatus] [nvarchar](max) NOT NULL,
     [NPSStatus] [nvarchar](max) NOT NULL,
-    [Notes] [nvarchar](max) NOT NULL,
+    [Notes] [nvarchar](max),
     [BioDataID] [int] NOT NULL,
     CONSTRAINT [PK_dbo.Screen] PRIMARY KEY ([ScreenID])
 )
@@ -206,7 +206,6 @@ CREATE TABLE [dbo].[User] (
     [LName] [nvarchar](max) NOT NULL,
     [Initials] [nvarchar](max) NOT NULL,
     [LoginID] [nvarchar](max) NOT NULL,
-    [Password] [nvarchar](max) NOT NULL,
     [Code] [nvarchar](max) NOT NULL,
     [NR] [bit] NOT NULL,
     [INST] [bit] NOT NULL,
@@ -234,19 +233,20 @@ CREATE TABLE [dbo].[Waiver] (
     [WaiverID] [int] NOT NULL IDENTITY,
     [Type] [nvarchar](max) NOT NULL,
     [Date] [datetime] NOT NULL,
-    [Comments] [nvarchar](max) NOT NULL,
+    [Comments] [nvarchar](max),
     [BioDataID] [int] NOT NULL,
     CONSTRAINT [PK_dbo.Waiver] PRIMARY KEY ([WaiverID])
 )
 CREATE INDEX [IX_BioDataID] ON [dbo].[Waiver]([BioDataID])
 CREATE TABLE [dbo].[FYGoals] (
-    [FY] [int] NOT NULL IDENTITY,
+    [FYID] [int] NOT NULL IDENTITY,
+    [FY] [int] NOT NULL,
     [Source] [nvarchar](max) NOT NULL,
     [SUB] [int] NOT NULL,
     [SWO] [int] NOT NULL,
     [NR] [int] NOT NULL,
     [INST] [int] NOT NULL,
-    CONSTRAINT [PK_dbo.FYGoals] PRIMARY KEY ([FY])
+    CONSTRAINT [PK_dbo.FYGoals] PRIMARY KEY ([FYID])
 )
 CREATE TABLE [dbo].[ServSel] (
     [ServSelID] [int] NOT NULL IDENTITY,
@@ -268,7 +268,7 @@ CREATE TABLE [dbo].[ScreenProgram] (
 CREATE INDEX [IX_Screen_ScreenID] ON [dbo].[ScreenProgram]([Screen_ScreenID])
 CREATE INDEX [IX_Program_ProgramID] ON [dbo].[ScreenProgram]([Program_ProgramID])
 ALTER TABLE [dbo].[Admiral] ADD CONSTRAINT [FK_dbo.Admiral_dbo.BioData_BioDataID] FOREIGN KEY ([BioDataID]) REFERENCES [dbo].[BioData] ([ID])
-ALTER TABLE [dbo].[Admiral] ADD CONSTRAINT [FK_dbo.Admiral_dbo.Interview_InterviewID] FOREIGN KEY ([InterviewID]) REFERENCES [dbo].[Interview] ([InterviewID])
+ALTER TABLE [dbo].[Admiral] ADD CONSTRAINT [FK_dbo.Admiral_dbo.Program_ProgramID] FOREIGN KEY ([ProgramID]) REFERENCES [dbo].[Program] ([ProgramID])
 ALTER TABLE [dbo].[BioData] ADD CONSTRAINT [FK_dbo.BioData_dbo.Ethnicity_EthnicityID] FOREIGN KEY ([EthnicityID]) REFERENCES [dbo].[Ethnicity] ([EthnicityID])
 ALTER TABLE [dbo].[BioData] ADD CONSTRAINT [FK_dbo.BioData_dbo.Sources_SourcesID] FOREIGN KEY ([SourcesID]) REFERENCES [dbo].[Sources] ([SourcesID])
 ALTER TABLE [dbo].[BioData] ADD CONSTRAINT [FK_dbo.BioData_dbo.SubSources_SubSourcesID] FOREIGN KEY ([SubSourcesID]) REFERENCES [dbo].[SubSources] ([SubSourcesID])
@@ -293,9 +293,3 @@ ALTER TABLE [dbo].[ProgramBioData] ADD CONSTRAINT [FK_dbo.ProgramBioData_dbo.Pro
 ALTER TABLE [dbo].[ProgramBioData] ADD CONSTRAINT [FK_dbo.ProgramBioData_dbo.BioData_BioData_ID] FOREIGN KEY ([BioData_ID]) REFERENCES [dbo].[BioData] ([ID]) ON DELETE CASCADE
 ALTER TABLE [dbo].[ScreenProgram] ADD CONSTRAINT [FK_dbo.ScreenProgram_dbo.Screen_Screen_ScreenID] FOREIGN KEY ([Screen_ScreenID]) REFERENCES [dbo].[Screen] ([ScreenID]) ON DELETE CASCADE
 ALTER TABLE [dbo].[ScreenProgram] ADD CONSTRAINT [FK_dbo.ScreenProgram_dbo.Program_Program_ProgramID] FOREIGN KEY ([Program_ProgramID]) REFERENCES [dbo].[Program] ([ProgramID]) ON DELETE CASCADE
-CREATE TABLE [dbo].[__MigrationHistory] (
-    [MigrationId] [nvarchar](255) NOT NULL,
-    [Model] [varbinary](max) NOT NULL,
-    [ProductVersion] [nvarchar](32) NOT NULL,
-    CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY ([MigrationId])
-)

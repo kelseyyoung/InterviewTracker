@@ -18,9 +18,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult Edit(int id)
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
-            CustomPrincipal u = ViewBag.currUser;
-            ViewBag.userModel = db.User.Where(x => x.LoginID == u.LoginID).FirstOrDefault();
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             var interview = db.Interview.Find(id);
             ViewBag.interview = interview;

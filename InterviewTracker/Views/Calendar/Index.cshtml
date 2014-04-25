@@ -27,7 +27,7 @@
     </div>
     <div class="span4" id="toolbar">
         <!-- Interview information panel, only show for interviewer -->
-        @if (ViewBag.currUser.Role == "INTER")
+        @if (ViewBag.user.UserGroup == "INTER")
         {
             <div class="panel panel-primary hide" id="interview-info">
                 <div class="panel-heading">
@@ -59,7 +59,7 @@
         }
         <!-- Create interview button -->
         <!-- Only coord and admins can create -->
-        @if (ViewBag.currUser.Role == "COORD" || ViewBag.currUser.Role == "ADMIN")
+        @if (ViewBag.user.UserGroup == "COORD" || ViewBag.user.UserGroup == "ADMIN")
         {
             <p class="text-center"><button id="createInterview"><i class="fa fa-plus"></i> Create Interview</button></p>
         <!-- Create new interview collapsable panel-->
@@ -221,10 +221,10 @@
             interviewMapper = {};
             //Fetch events from API
             var append = "";
-            @if (ViewBag.currUser.Role == "INTER")
+            @if (ViewBag.user.UserGroup == "INTER")
             {
                 // If interviewer, only get interviews they're assigned to
-                <text>append = " and InterviewerID eq " + @ViewBag.userModel.UserID + "";</text>
+                <text>append = " and InterviewerID eq " + @ViewBag.user.UserID + "";</text>
             }
             console.log(append);
             var obj = {
@@ -239,9 +239,13 @@
                     //Remove all events
                     $("#calendar").fullCalendar("removeEvents");
                     console.log(data.length);
+                    if (updateList) {
+                        // Clear list out
+                        $("#interview-list .panel-body").empty();
+                    }
                     for (var i = 0; i < data.length; i++) {
                         var interview = data[i];
-                        @if (ViewBag.currUser.Role == "INTER")
+                        @if (ViewBag.user.UserGroup == "INTER")
                         {
                         <text>
                         var event = {
@@ -314,7 +318,7 @@
                         // Re-init buttons in interview-list
                         $("#interview-list .panel-body a.button").button();
                     }
-                    @if (ViewBag.currUser.Role != "INTER")
+                    @if (ViewBag.user.UserGroup != "INTER")
                     {
                     <text>
                     for (var date in interviewMapper) {
@@ -410,7 +414,7 @@
         var eventClickFn;
         var viewChangeFn;
 
-        @if (ViewBag.currUser.Role == "INTER")
+        @if (ViewBag.user.UserGroup == "INTER")
         {
             <text>
         viewChangeFn = function (view, element) {

@@ -21,7 +21,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult Index()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
@@ -34,7 +34,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult Success()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             return View();
         }
@@ -42,7 +42,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth("COORD", "ADMIN")]
         public ActionResult Create()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
@@ -57,7 +57,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth("ADMIN")]
         public ActionResult Delete()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.ethnicities = db.Ethnicity.ToList();
             ViewBag.sources = db.Sources.ToList();
@@ -105,7 +105,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult View(int id)
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.bioData = db.BioData.Find(id);
 
@@ -132,7 +132,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth("ADMIN", "COORD")]
         public ActionResult Edit(int id)
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.bioData = db.BioData.Find(id);     
 
@@ -170,6 +170,7 @@ namespace InterviewTracker.Controllers
             ViewBag.screensCount = ViewBag.screens.Count;
             ViewBag.rdCount = ViewBag.RDs.Count;
 
+            // TODO: I don't think these are needed anymore
             var DHselects = getDHSelectValues(ViewBag.dutyHistories);
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             ViewBag.dhSelectValues = serializer.Serialize(DHselects.Data);

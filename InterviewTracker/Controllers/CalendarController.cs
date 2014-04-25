@@ -19,9 +19,7 @@ namespace InterviewTracker.Controllers
         [CustomAuth]
         public ActionResult Index()
         {
-            ViewBag.currUser = System.Web.HttpContext.Current.User;
-            CustomPrincipal u = ViewBag.currUser;
-            ViewBag.userModel = db.User.Where(x => x.LoginID == u.LoginID).FirstOrDefault();
+            ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.candidates = db.BioData.ToList();
             ViewBag.interviewers = db.User.ToList();

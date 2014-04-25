@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InterviewTracker.DAL;
+using InterviewTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -25,15 +27,18 @@ namespace InterviewTracker.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            IPrincipal user = HttpContext.Current.User;
+            InterviewTrackerContext db = new InterviewTrackerContext();
+            User user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
+            //IPrincipal user = HttpContext.Current.User;
             if (user == null)
             {
-                // Redirect to Login page
+                // Redirect to Unauth page
                 filterContext.Result = new RedirectToRouteResult(
-                new RouteValueDictionary { { "controller", "Home" }, { "action", "Login" } });
+                new RouteValueDictionary { { "controller", "Home" }, { "action", "Unauthorized" } });
                 return;
             }
-            CustomPrincipal u = user as CustomPrincipal;
+            //CustomPrincipal u = user as CustomPrincipal;
+            /*
             if (u == null)
             {
                 // Redirect to Login page
@@ -41,7 +46,9 @@ namespace InterviewTracker.Filters
                 new RouteValueDictionary { { "controller", "Home" }, { "action", "Login" } });
                 return;
             }
-            if (!u.IsInRole(_acceptedRoles))
+            */
+            //if (!u.IsInRole(_acceptedRoles))
+            if (_acceptedRoles.Length != 0 && !_acceptedRoles.Contains(user.UserGroup))
             {
                 // Redirect to unauthorized
                 filterContext.Result = new RedirectToRouteResult(

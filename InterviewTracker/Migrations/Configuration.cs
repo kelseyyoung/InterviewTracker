@@ -310,12 +310,32 @@ namespace InterviewTracker.Migrations
                 UserGroup = UserGroup.INTER.ToString()
             };
 
+            User KelseyUser = new User
+            {
+                LName = "Young",
+                Initials = "KY",
+                LoginID = "Kelsey",
+                Code = "08C",
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = true,
+                NR1 = true,
+                SUPPLY = true,
+                EOOW = true,
+                DOE = true,
+                UserGroup = UserGroup.ADMIN.ToString()
+            };
+
             context.User.AddOrUpdate(i => i.UserID,
                 Admin,
                 Coord,
                 Interviewer,
                 Interviewer2,
-                Interviewer3
+                Interviewer3,
+                KelseyUser
             );
 
             // Classes
