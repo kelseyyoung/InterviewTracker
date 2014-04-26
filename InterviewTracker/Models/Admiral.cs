@@ -32,6 +32,8 @@ namespace InterviewTracker.Models
         public bool? InviteBack { get; set; } // T/F if invited back for another interview
         [Required]
         public string SERVSEL { get; set; } // Community chosen by applicant for their contract
+        [Required]
+        public DateTime date { get; set; } //Date candidate was reviewed
 
         [ForeignKey("BioData")]
         public virtual int BioDataID { get; set; }

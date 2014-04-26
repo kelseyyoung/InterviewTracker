@@ -758,7 +758,8 @@ namespace InterviewTracker.Migrations
                 InviteBack = false,
                 SERVSEL = "what is this",
                 BioData = Kelsey,
-                Program = NR
+                Program = NR,
+                date = new DateTime(2014, 5, 16, 12, 0, 0)
             };
 
             context.Admiral.AddOrUpdate(i => i.AdmiralID,

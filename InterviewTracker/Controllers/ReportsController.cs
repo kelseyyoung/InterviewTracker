@@ -48,6 +48,102 @@ namespace InterviewTracker.Controllers
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/SchoolReport.html"));
 
+            header = header.Replace("<title></title>", "<style>ul.a {list-style-type:square;}ul.b {list-style-type:circle;}</style>");
+
+            reportBody = reportBody.Replace("schoolTitle", school.SchoolValue);
+            reportBody = reportBody.Replace("dateOfReport", DateTime.Today.ToString("dd MMMM yyyy"));
+
+            //Filter down to only candidates from this school who have completed the interview process
+            var alumniCandidates = db.Admiral.Where(x => x.BioData.SchoolsAttended.Any(a => a.SchoolID == id));
+
+            int numCandidatesInterviewed = alumniCandidates.Count();
+            reportBody = reportBody.Replace("numCandidatesInterviewed", numCandidatesInterviewed.ToString());
+
+            //Get counts for each source for all interviewed candidates
+            int nupocCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NUPOC").Count();
+            int nrotcCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NRTOC").Count();
+            int sta21nCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "STA21N").Count();
+
+            if (nupocCount > 0)
+                reportBody = reportBody.Replace("nupocCount", nupocCount.ToString());
+            else
+                reportBody = reportBody.Replace("<li>NUPOC:&#9; nupocCount</li>", "");
+
+            if (nrotcCount > 0)
+                reportBody = reportBody.Replace("nrotcCount", nrotcCount.ToString());
+            else
+                reportBody = reportBody.Replace("<li>NROTC:&#9; nrotcCount</li>", "");
+
+            if (sta21nCount > 0)
+                reportBody = reportBody.Replace("sta21nCount", sta21nCount.ToString());
+            else
+                reportBody = reportBody.Replace("<li>STA21N:&#9; sta21nCount</li>", "");
+
+            //Filter down to only accepted candidates
+            alumniCandidates = alumniCandidates.Where(b => b.Decision == true && b.Accepted == true);
+
+            //Filter into lists for each source
+            var nupocAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NUPOC");
+            var nrotcAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NRTOC");
+            var sta21nAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "STA21N");
+
+            //Calculate number of candidates selected for each source
+            int allSelectedCount = alumniCandidates.Count();
+            nupocCount = nupocAlumni.Count();
+            nrotcCount = nrotcAlumni.Count();
+            sta21nCount = sta21nAlumni.Count();
+
+            reportBody = reportBody.Replace("numCandidatesSelected", allSelectedCount.ToString());
+
+            float percentage;
+            if (numCandidatesInterviewed > 0)
+                percentage = ((float)(allSelectedCount) / (float)(numCandidatesInterviewed)) * 100;
+            else
+                percentage = 0;
+
+            reportBody = reportBody.Replace("selectedPercent", percentage.ToString("0.00") + "%");
+
+            //Fill total candidates selected for each source
+            reportBody = reportBody.Replace("numNupoc", nupocCount.ToString());
+            reportBody = reportBody.Replace("numNrotc", nrotcCount.ToString());
+            reportBody = reportBody.Replace("numSta21n", sta21nCount.ToString());
+
+            string[] programs = { "SUB", "SWO", "INST", "NR" };
+            string currentProgram;
+            int nupoc, nrotc, sta21n;
+            int nupocTotal = 0, nrotcTotal = 0, sta21nTotal = 0;
+
+            for (int i = 0; i < programs.Length; ++i)
+            {
+                currentProgram = programs[i];
+                nupoc = nupocAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
+                nrotc = nrotcAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
+                sta21n = nrotcAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
+
+                reportBody = reportBody.Replace("nupoc" + currentProgram, nupoc.ToString());
+                reportBody = reportBody.Replace("nrotc" + currentProgram, nrotc.ToString());
+                reportBody = reportBody.Replace("sta21n" + currentProgram, sta21n.ToString());
+
+                nupocTotal += nupoc;
+                nrotcTotal += nrotc;
+                sta21nTotal += sta21n;
+            }
+
+            if (nupocTotal < nupocCount)
+                reportBody = reportBody.Replace("nupocNo", (nupocCount - nupocTotal).ToString());
+            else
+                reportBody = reportBody.Replace("<li>No Contract:&#9; nupocNo</li>", "");
+
+            if (nrotcTotal < nrotcCount)
+                reportBody = reportBody.Replace("nrotcNo", (nrotcCount - nrotcTotal).ToString());
+            else
+                reportBody = reportBody.Replace("<li>No Contract:&#9; nrotcNo</li>", "");
+
+            if (sta21nTotal < sta21nCount)
+                reportBody = reportBody.Replace("sta21nNo", (sta21nCount - sta21nTotal).ToString());
+            else
+                reportBody = reportBody.Replace("<li>No Contract:&#9; sta21nNo</li>", "");
+
             //Compile and generate report
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false);
@@ -321,13 +417,16 @@ namespace InterviewTracker.Controllers
 
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
-            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Tegeneratemplates/InterviewResultsTableStart.html"));
+            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/InterviewResultsTableStart.html"));
 
             reportBody = reportBody.Replace("date", dt.ToLongDateString());
 
             string row;
-            //TO DO: only put the relevant interviews into list, not all of them
-            foreach (Interview interview in db.Interview.ToList())
+
+            var year = dt.Year;
+            var month = dt.Month;
+            var day = dt.Day;
+            foreach (Interview interview in db.Interview.Where(x=> x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day).ToList())
             {
                 BioData bioData = interview.BioData;
                 row = System.IO.File.ReadAllText(Server.MapPath("~/Templates/InterviewResultsRow.html"));
@@ -442,55 +541,35 @@ namespace InterviewTracker.Controllers
             {
                 date = DateTime.Today;
             }
-    
+
             string fileName = year + "_FYReport.docx"; //TO DO: add pull/latest interview date to title?
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
-
-            string statusFinal = Status.Final.ToString();
-            IQueryable<Interview> completedInterviews = db.Interview.Where(x => (x.Date.Value.CompareTo(date)) <= 0 && (x.Status == statusFinal));
-            Interview mostRecentInterview;
-            if (completedInterviews.Count() > 0)
-            {
-                mostRecentInterview = completedInterviews.OrderByDescending(z => z.Date).FirstOrDefault();
-                date = (DateTime)(mostRecentInterview.Date);
-            }
-     
 
             header = header + System.IO.File.ReadAllText(Server.MapPath("~/Templates/titleTemplate.html"));
             string dateToDisplay = date.ToString("dd MMMM yyyy");
             header = header.Replace("theTitle", "FY" + year + " NUCLEAR OFFICER ACCENSIONS<br>" + dateToDisplay);
 
             string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportTable.html"));
+            string nrTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportNRTable.html"));
+            string instTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportInstTable.html"));
+            Boolean done = false;
 
             //If doing a CY report, shuffle months around appropriately
-            if(!byFY)
+            if (!byFY)
             {
-                fileName = date.Year.ToString() + "_CYReport_forFYG"+ year +".docx"; //TO DO: is that a good title?
-                reportBody = reportBody.Replace("Oct", "octOld");
-                reportBody = reportBody.Replace("Nov", "novOld");
-                reportBody = reportBody.Replace("Dec", "decOld");
-
-                reportBody = reportBody.Replace("Sep", "Dec");
-                reportBody = reportBody.Replace("Aug", "Nov");
-                reportBody = reportBody.Replace("Jul", "Oct");
-                reportBody = reportBody.Replace("Jun", "Sep");
-                reportBody = reportBody.Replace("May", "Aug");
-                reportBody = reportBody.Replace("Apr", "Jul");
-                reportBody = reportBody.Replace("Mar", "Jun");
-                reportBody = reportBody.Replace("Feb", "May");
-                reportBody = reportBody.Replace("Jan", "Apr");
-                reportBody = reportBody.Replace("decOld", "Mar");
-                reportBody = reportBody.Replace("novOld", "Feb");
-                reportBody = reportBody.Replace("octOld", "Jan");
-
+                fileName = date.Year.ToString() + "_CYReport_forFYG" + year + ".docx"; //TO DO: is that a good title?
+                reportBody = FYMonthsToCYMonths(reportBody);
+                nrTable = FYMonthsToCYMonths(nrTable);
+                instTable = FYMonthsToCYMonths(instTable);
             }
 
             string subTable = reportBody.Replace("title", "SUBMARINE ACCESSIONS");
             string surfTable = reportBody.Replace("title", "SURFACE WAREFARE OFFICER ACCESSIONS");
-            string nrTable = reportBody.Replace("title", "NR ENGINEER ACCESSIONS");
-            string instTable = reportBody.Replace("title", "INSTRUCTOR ACCESSIONS");
             reportBody = reportBody.Replace("title", "OVERALL ACCESSIONS");
+
+            nrTable = nrTable.Replace("title", "NR ENGINEER ACCESSIONS");
+            instTable = instTable.Replace("title", "INSTRUCTOR ACCESSIONS");
 
             int totalGoal;
             int otherTotalGoal = 0, otherSubGoal = 0, otherSurfGoal = 0, otherNRGoal = 0, otherInstGoal = 0;
@@ -572,7 +651,7 @@ namespace InterviewTracker.Controllers
             //Filter down to the only candidates of the relevant FYG
             var FYGAccepted = allAccepted.Where(accepted => accepted.BioData.FYG == intYear);
             //Filter down to interviews that have occurred before or on the date specified
-            var acceptedCandidates = FYGAccepted.Where(y => y.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().Date.Value.CompareTo(date) <= 0);
+            var acceptedCandidates = FYGAccepted.Where(y => y.date.CompareTo(date) <= 0);
 
             IQueryable<Admiral> monthlyList;
             IQueryable<Admiral> sourceList;
@@ -584,7 +663,7 @@ namespace InterviewTracker.Controllers
             int month;
             int yearOfMonth;
 
-            if(byFY)
+            if (byFY)
             {
                 month = 10; //OCT
             }
@@ -593,7 +672,7 @@ namespace InterviewTracker.Controllers
                 month = 1; //JAN
             }
 
-            if(date.Month >= 10 || !byFY)
+            if (date.Month >= 10 || !byFY)
             {
                 yearOfMonth = date.Year;
             }
@@ -603,17 +682,16 @@ namespace InterviewTracker.Controllers
             }
 
             var priorCandidates = acceptedCandidates.Where(x =>
-                (x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Month < month
-                && x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Year == yearOfMonth)
-                || x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Year < yearOfMonth);
+                (x.date.Month < month
+                && x.date.Year == yearOfMonth)
+                || x.date.Year < yearOfMonth);
 
             //Calculate total prior candidates for each table
             reportBody = reportBody.Replace("total" + " " + "prior", priorCandidates.Count().ToString());
-            //TO DO: sub/surf sub categories
-            subTable = subTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().NPS == true).Count().ToString());
-            surfTable = surfTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().NPS == true).Count().ToString());
-            nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().NR == true).Count().ToString());
-            instTable = instTable.Replace("totol" + " " + "prior", priorCandidates.Where(x => x.BioData.Interviews.OrderByDescending(z => z.Date).FirstOrDefault().INST == true).Count().ToString());
+            subTable = subTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Program.ProgramValue == "SUB").Count().ToString());
+            surfTable = surfTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Program.ProgramValue == "SWO").Count().ToString());
+            nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Program.ProgramValue == "NR").Count().ToString());
+            instTable = instTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Program.ProgramValue == "INST").Count().ToString());
 
             //Loop for sorting prior candidates by source
             for (int j = 0; j < mainSources.Length + 1; ++j)
@@ -624,11 +702,7 @@ namespace InterviewTracker.Controllers
                 {
                     sourceList = priorCandidates;
                     //Filter out every "main source" until only "other" sources remain
-                    for (int l = 0; l < mainSources.Length; ++l)
-                    {
-                        currentSource = mainSources[l];
-                        sourceList = sourceList.Where(y => y.BioData.Sources.SourcesValue != currentSource);
-                    }
+                    sourceList = sourceList.Where(y => !mainSources.Contains(y.BioData.Sources.SourcesValue));
                 }
                 else //Otherwise, just get the list of appropriate source value
                 {
@@ -636,11 +710,10 @@ namespace InterviewTracker.Controllers
                     sourceList = priorCandidates.Where(y => y.BioData.Sources.SourcesValue == currentSource);
                 }
 
-                //TO DO: sub/surf sub categories 
-                var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
-                var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
-                var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NR == true);
-                var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().INST == true);
+                var subList = sourceList.Where(z => z.Program.ProgramValue == "SUB");
+                var surfList = sourceList.Where(z => z.Program.ProgramValue == "SWO");
+                var nrList = sourceList.Where(z => z.Program.ProgramValue == "NR");
+                var instrList = sourceList.Where(z => z.Program.ProgramValue == "INST");
 
                 if (j < mainSources.Length) //looking at one the main sources
                 {
@@ -650,7 +723,7 @@ namespace InterviewTracker.Controllers
                     nrTable = nrTable.Replace(mainSources[j].ToLower() + " " + "prior", nrList.Count().ToString());
                     instTable = instTable.Replace(mainSources[j].ToLower() + " " + "prior", instrList.Count().ToString());
                 }
-                else
+                else if(j == mainSources.Length)
                 {
                     reportBody = reportBody.Replace("other" + " " + "prior", sourceList.Count().ToString());
                     subTable = subTable.Replace("other" + " " + "prior", subList.Count().ToString());
@@ -658,19 +731,19 @@ namespace InterviewTracker.Controllers
                     nrTable = nrTable.Replace("other" + " " + "prior", nrList.Count().ToString());
                     instTable = instTable.Replace("other" + " " + "prior", instrList.Count().ToString());
                 }
+                //Initialize cumulative values with prior values
+                cumulativeSourceCounts[0, j] += sourceList.Count(); //table index 0 is for overall
+                cumulativeSourceCounts[1, j] += subList.Count(); //table index 1 is for submarine
+                cumulativeSourceCounts[2, j] += surfList.Count(); //table index 2 is for surface
+                cumulativeSourceCounts[3, j] += nrList.Count(); //table index 3 is for nr engineering
+                cumulativeSourceCounts[4, j] += instrList.Count(); //table index 4 is for instructor
             }
 
             //Loop for looking at each month of current year (either fiscal or calender)
             for (int i = 0; i < 12; ++i)
             {
-                //Loop around from Dec to Jan of FY when appropriate
-                if(month > 12)
-                {
-                    month = 1;
-                    yearOfMonth = yearOfMonth + 1;
-                }
                 //Get the list of accepted candidates from each month
-                monthlyList = acceptedCandidates.Where(x => x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Month == (month) && x.BioData.Interviews.OrderByDescending(y => y.Date).FirstOrDefault().Date.Value.Year == yearOfMonth);
+                monthlyList = acceptedCandidates.Where(x => x.date.Month == (month) && x.date.Year == yearOfMonth);
 
                 //Clear out totals
                 cumulativeSourceCounts[0, totalsIndex] = 0;
@@ -680,7 +753,7 @@ namespace InterviewTracker.Controllers
                 cumulativeSourceCounts[4, totalsIndex] = 0;
 
                 //Iterate through the "main" sources (sources that get their own row in the tables)
-                for (int j = 0; j < mainSources.Length+1; ++j)
+                for (int j = 0; j < mainSources.Length + 1; ++j)
                 {
                     string currentSource;
                     //If we are looking for source "other"...
@@ -688,11 +761,7 @@ namespace InterviewTracker.Controllers
                     {
                         sourceList = monthlyList;
                         //Filter out every "main source" until only "other" sources remain
-                        for (int l = 0; l < mainSources.Length; ++l)
-                        {
-                            currentSource = mainSources[l];
-                            sourceList = sourceList.Where(y => y.BioData.Sources.SourcesValue != currentSource);
-                        }
+                        sourceList = sourceList.Where(y => !mainSources.Contains(y.BioData.Sources.SourcesValue));
                     }
                     else //Otherwise, just get the list of appropriate source value
                     {
@@ -701,16 +770,51 @@ namespace InterviewTracker.Controllers
                     }
 
                     //TO DO: sub/surf sub categories
-                    var subList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
-                    var surfList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NPS == true);
-                    var nrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().NR == true);
-                    var instrList = sourceList.Where(z => z.BioData.Interviews.OrderByDescending(a => a.Date).FirstOrDefault().INST == true);
+                    var subList = sourceList.Where(z => z.Program.ProgramValue == "SUB");
+                    var surfList = sourceList.Where(z => z.Program.ProgramValue == "SWO");
+                    var nrList = sourceList.Where(z => z.Program.ProgramValue == "NR");
+                    var instrList = sourceList.Where(z => z.Program.ProgramValue == "INST");
 
-                    cumulativeSourceCounts[0, j] += sourceList.Count(); //table index 0 is for overall
-                    cumulativeSourceCounts[1, j] += subList.Count(); //table index 1 is for submarine
-                    cumulativeSourceCounts[2, j] += surfList.Count(); //table index 2 is for surface
-                    cumulativeSourceCounts[3, j] += nrList.Count(); //table index 3 is for nr engineering
-                    cumulativeSourceCounts[4, j] += instrList.Count(); //table index 4 is for instructor
+                    if ((yearOfMonth == date.Year) && (month <= date.Month) || (yearOfMonth < date.Year))
+                    {
+                        cumulativeSourceCounts[0, j] += sourceList.Count(); //table index 0 is for overall
+                        cumulativeSourceCounts[1, j] += subList.Count(); //table index 1 is for submarine
+                        cumulativeSourceCounts[2, j] += surfList.Count(); //table index 2 is for surface
+                        cumulativeSourceCounts[3, j] += nrList.Count(); //table index 3 is for nr engineering
+                        cumulativeSourceCounts[4, j] += instrList.Count(); //table index 4 is for instructor
+                        
+                        cumulativeSourceCounts[0, totalsIndex] += cumulativeSourceCounts[0, j]; //overall
+                        cumulativeSourceCounts[1, totalsIndex] += cumulativeSourceCounts[1, j]; //submarine
+                        cumulativeSourceCounts[2, totalsIndex] += cumulativeSourceCounts[2, j]; //surface
+                        cumulativeSourceCounts[3, totalsIndex] += cumulativeSourceCounts[3, j]; //nr engineering
+                        cumulativeSourceCounts[4, totalsIndex] += cumulativeSourceCounts[4, j]; //instructor
+                    }
+                    else //This month hasn't happened yet (either in reality, or according to specified report date), so fill in 0's
+                    {
+                        //Before zeroing, fill in "currently selected" column
+                        if (j < mainSources.Length)
+                        {
+                            reportBody = reportBody.Replace(mainSources[j].ToLower() + " current", cumulativeSourceCounts[0, j].ToString());
+                            subTable = subTable.Replace(mainSources[j].ToLower() + " current", cumulativeSourceCounts[1, j].ToString());
+                            surfTable = surfTable.Replace(mainSources[j].ToLower() + " current", cumulativeSourceCounts[2, j].ToString());
+                            nrTable = nrTable.Replace(mainSources[j].ToLower() + " current", cumulativeSourceCounts[3, j].ToString());
+                            instTable = instTable.Replace(mainSources[j].ToLower() + " current", cumulativeSourceCounts[4, j].ToString());
+                        }
+                        else
+                        {
+                            reportBody = reportBody.Replace("other current", cumulativeSourceCounts[0, j].ToString());
+                            subTable = subTable.Replace("other current", cumulativeSourceCounts[1, j].ToString());
+                            surfTable = surfTable.Replace("other current", cumulativeSourceCounts[2, j].ToString());
+                            nrTable = nrTable.Replace("other current", cumulativeSourceCounts[3, j].ToString());
+                            instTable = instTable.Replace("other current", cumulativeSourceCounts[4, j].ToString());
+                        }
+
+                        cumulativeSourceCounts[0, j] = 0; //overall
+                        cumulativeSourceCounts[1, j] = 0; //submarine
+                        cumulativeSourceCounts[2, j] = 0; //surface
+                        cumulativeSourceCounts[3, j] = 0; //nr engineering
+                        cumulativeSourceCounts[4, j] = 0; //instructor
+                    }
 
                     //Fill values into the report tables
                     if (j < mainSources.Length) //looking at one the main sources
@@ -721,35 +825,163 @@ namespace InterviewTracker.Controllers
                         nrTable = nrTable.Replace(mainSources[j].ToLower() + " " + (i + 1) + "_", cumulativeSourceCounts[3, j].ToString());
                         instTable = instTable.Replace(mainSources[j].ToLower() + " " + (i + 1) + "_", cumulativeSourceCounts[4, j].ToString());
                     }
-                    else if(j == mainSources.Length) //"other" source
+                    else if (j == mainSources.Length) //"other" source
                     {
+                        int nrOther = 0, instOther = 0;
+                        for(int k = 0; k < mainSources.Length; ++k)
+                        {
+                            if(mainSources[k] != "NUPOC")
+                            {
+                                instOther += cumulativeSourceCounts[4, k];
+                                if(mainSources[k] != "NROTC")
+                                {
+                                    nrOther += cumulativeSourceCounts[3, k];
+                                }
+                            }
+                        }
+                        nrOther += cumulativeSourceCounts[3, j];
+                        instOther += cumulativeSourceCounts[4, j];
+
+                        if (!done)
+                        {
+                            if (nrOther == 0)
+                                nrTable = removeOtherSection(nrTable);
+                            if (instOther == 0)
+                                instTable = removeOtherSection(instTable);
+                            done = true;
+                        }
+                            
                         reportBody = reportBody.Replace("other" + " " + (i + 1) + "_", cumulativeSourceCounts[0, j].ToString());
                         subTable = subTable.Replace("other" + " " + (i + 1) + "_", cumulativeSourceCounts[1, j].ToString());
                         surfTable = surfTable.Replace("other" + " " + (i + 1) + "_", cumulativeSourceCounts[2, j].ToString());
-                        nrTable = nrTable.Replace("other" + " " + (i + 1) + "_", cumulativeSourceCounts[3, j].ToString());
-                        instTable = instTable.Replace("other" + " " + (i + 1) + "_", cumulativeSourceCounts[4, j].ToString());
+                        nrTable = nrTable.Replace("other" + " " + (i + 1) + "_", nrOther.ToString());
+                        instTable = instTable.Replace("other" + " " + (i + 1) + "_", instOther.ToString());
                     }
-
-                    //Add up totals for each table by summing over each source (totals stored in second index mainSources.Length + 1)
-                    cumulativeSourceCounts[0, totalsIndex] += cumulativeSourceCounts[0, j]; //overall
-                    cumulativeSourceCounts[1, totalsIndex] += cumulativeSourceCounts[1, j]; //submarine
-                    cumulativeSourceCounts[2, totalsIndex] += cumulativeSourceCounts[2, j]; //surface
-                    cumulativeSourceCounts[3, totalsIndex] += cumulativeSourceCounts[3, j]; //nr engineering
-                    cumulativeSourceCounts[4, totalsIndex] += cumulativeSourceCounts[4, j]; //instructor
-                    
                 }
                 reportBody = reportBody.Replace("total" + " " + (i + 1) + "_", cumulativeSourceCounts[0, totalsIndex].ToString());
                 subTable = subTable.Replace("total" + " " + (i + 1) + "_", cumulativeSourceCounts[1, totalsIndex].ToString());
                 surfTable = surfTable.Replace("total" + " " + (i + 1) + "_", cumulativeSourceCounts[2, totalsIndex].ToString());
                 nrTable = nrTable.Replace("total" + " " + (i + 1) + "_", cumulativeSourceCounts[3, totalsIndex].ToString());
                 instTable = instTable.Replace("total" + " " + (i + 1) + "_", cumulativeSourceCounts[4, totalsIndex].ToString());
-               
+
+                //increment month
                 month++;
+                //Loop around from Dec to Jan of FY when appropriate
+                if (month > 12)
+                {
+                    month = 1;
+                    yearOfMonth = yearOfMonth + 1;
+                }
+                if(!((yearOfMonth == date.Year) && (month <= date.Month) || (yearOfMonth < date.Year)))
+                {
+                    float overallPercent = 0, subPercent = 0, surfPercent = 0, nrPercent = 0, instPercent = 0;
+                    if (overallTotalGoal > 0)
+                        overallPercent = (float)(cumulativeSourceCounts[0, totalsIndex] / (float)(overallTotalGoal));
+                    if (subTotalGoal > 0)
+                        subPercent = ((float)(cumulativeSourceCounts[1, totalsIndex]) / (float)(subTotalGoal));
+                    if (surfTotalGoal > 0)
+                        surfPercent = ((float)(cumulativeSourceCounts[2, totalsIndex]) / (float)(surfTotalGoal));
+                    if (nrTotalGoal > 0)
+                        nrPercent = ((float)(cumulativeSourceCounts[3, totalsIndex]) / (float)(nrTotalGoal));
+                    if (instTotalGoal > 0)
+                        instPercent = ((float)(cumulativeSourceCounts[4, totalsIndex]) / (float)(instTotalGoal));
+
+                    reportBody = reportBody.Replace("total current", cumulativeSourceCounts[0, totalsIndex].ToString());
+                    subTable = subTable.Replace("total current", cumulativeSourceCounts[1, totalsIndex].ToString());
+                    surfTable = surfTable.Replace("total current", cumulativeSourceCounts[2, totalsIndex].ToString());
+                    nrTable = nrTable.Replace("total current", cumulativeSourceCounts[3, totalsIndex].ToString());
+                    instTable = instTable.Replace("total current", cumulativeSourceCounts[4, totalsIndex].ToString());
+
+                    reportBody = reportBody.Replace("overall percent", overallPercent.ToString("0.00") + "%");
+                    subTable = subTable.Replace("overall percent", subPercent.ToString("0.00") + "%");
+                    surfTable = surfTable.Replace("overall percent", surfPercent.ToString("0.00") + "%");
+                    nrTable = nrTable.Replace("overall percent", nrPercent.ToString("0.00") + "%");
+                    instTable = instTable.Replace("overall percent", instPercent.ToString("0.00") + "%");
+                }
             }
 
             reportBody = reportBody + subTable + surfTable + instTable + nrTable;
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, true);
+        }
+
+        public void generateAlphaReport(String date, Boolean chrons)
+        {
+            date = date.Substring(0, "DDD MMM dd yyyy 00:00:00".Length);
+            System.Diagnostics.Debug.WriteLine(date);
+            DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            string fileName;
+            string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
+            string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
+            string reportBody;
+
+            string rowTemplate;
+            if (!chrons)
+            {
+                reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/AlphaReportStart.html"));
+                rowTemplate = "~/Templates/AlphaReportRow.html";
+                fileName = "AlphaReport" + dt.ToShortDateString() + ".docx";
+            }
+            else
+            {
+                reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/ChronReportStart.html"));
+                rowTemplate = "~/Templates/ChronReportRow.html";
+                fileName = "ChronsReport" + dt.ToShortDateString() + ".docx";
+            }
+
+            reportBody = reportBody.Replace("date", dt.ToLongDateString());
+
+            string row, university, major, gradDate;
+            var year = dt.Year;
+            var month = dt.Month;
+            var day = dt.Day;
+            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day).ToList())
+            {
+                BioData bioData = interview.BioData;
+                row = System.IO.File.ReadAllText(Server.MapPath(rowTemplate));
+                row = row.Replace("lastName", bioData.LName);
+                row = row.Replace("ex", bioData.Suffix);
+                row = row.Replace("firstName", bioData.FName);
+                row = row.Replace("source", bioData.Sources.SourcesValue);
+                row = row.Replace("fyg", bioData.FYG.Value.ToString());
+                
+                if (bioData.SATM != null)
+                    row = row.Replace("satm", bioData.SATM.Value.ToString());
+                else
+                    row = row.Replace("satm", "NA");
+
+                if (bioData.SATV != null)
+                    row = row.Replace("satv", bioData.SATV.Value.ToString());
+                else
+                    row = row.Replace("satv", "NA");
+
+                university = "";
+                major = "";
+                gradDate = "";
+                foreach(SchoolsAttended school in bioData.SchoolsAttended.ToList())
+                {
+                    if(university != "" || major != "" || gradDate != "")
+                    {
+                        university = university + ";<br>";
+                        major = major + ";<br>";
+                        gradDate = gradDate + ";<br>";
+                    }
+                    university = university + school.School.SchoolValue;
+
+                    Degree degree = school.Degrees.First();
+                    major = major + degree.Major.MajorValue.ToString();
+                    gradDate = gradDate + degree.DegreeDate.ToShortDateString();
+                }
+                row = row.Replace("university", university);
+                row = row.Replace("major", major);
+                row = row.Replace("gradDate", gradDate);
+
+                reportBody = reportBody + row;
+            }
+            reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
+            string reportHtml = header + reportBody + footer;
+            generateReport(fileName, reportHtml, false);
         }
 
         public void generateSATACTReport(String startFYG, String endFYG)
@@ -857,15 +1089,15 @@ namespace InterviewTracker.Controllers
                         var paragraphs = converter.Parse(html);
                         for (int i = 0; i < paragraphs.Count; i++)
                         {
-                            
-                            if(landscape)
+
+                            if (landscape)
                             {
                                 ParagraphProperties paragraphProperties1 = new ParagraphProperties(
                                   new ParagraphStyleId() { Val = "No Spacing" },
                                   new SpacingBetweenLines() { After = "0" }
                                  );
                                 paragraphs[i].PrependChild(paragraphProperties1);
-                                
+
                             }
                             body.Append(paragraphs[i]);
                         }
@@ -922,10 +1154,49 @@ namespace InterviewTracker.Controllers
             foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
             {
                 table.InsertAfterSelf
-                    ( new Paragraph(
+                    (new Paragraph(
                         new Run(
                             new Break() { Type = BreakValues.Page })));
             }
+        }
+
+        public string FYMonthsToCYMonths(string table)
+        {
+            string reportTable = table;
+            reportTable = reportTable.Replace("Oct", "octOld");
+            reportTable = reportTable.Replace("Nov", "novOld");
+            reportTable = reportTable.Replace("Dec", "decOld");
+
+            reportTable = reportTable.Replace("Sep", "Dec");
+            reportTable = reportTable.Replace("Aug", "Nov");
+            reportTable = reportTable.Replace("Jul", "Oct");
+            reportTable = reportTable.Replace("Jun", "Sep");
+            reportTable = reportTable.Replace("May", "Aug");
+            reportTable = reportTable.Replace("Apr", "Jul");
+            reportTable = reportTable.Replace("Mar", "Jun");
+            reportTable = reportTable.Replace("Feb", "May");
+            reportTable = reportTable.Replace("Jan", "Apr");
+            reportTable = reportTable.Replace("decOld", "Mar");
+            reportTable = reportTable.Replace("novOld", "Feb");
+            reportTable = reportTable.Replace("octOld", "Jan");
+            return reportTable;
+        }
+
+        public string removeOtherSection(string section)
+        {
+            string beginMarker = "<!--begin other section-->";
+            string endMarker = "<!--end other section-->";
+
+            int start = section.IndexOf(beginMarker);
+            int end = section.IndexOf(endMarker);
+            int length = section.Length - end;
+
+            string newSection = section;
+           
+            if(start > 0 && end > 0)
+                newSection = section.Substring(0, start) + section.Substring(end, length);
+            
+            return newSection;
         }
     }
 }
