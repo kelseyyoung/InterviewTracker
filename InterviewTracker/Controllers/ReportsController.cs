@@ -542,6 +542,25 @@ namespace InterviewTracker.Controllers
                 date = DateTime.Today;
             }
 
+            try
+            {
+                if (date.Year.ToString() != year)
+                {
+                    if(!byFY)
+                    {
+                        date = new DateTime(Int32.Parse(year), 12, 31); //Decemeber 31st of FYG year
+                    }
+                    else if (date.Month < 10 || date.Year != (Int32.Parse(year) - 1))
+                    {
+                        date = new DateTime(Int32.Parse(year), 9, 30); //September 30th of FYG year
+                    }
+                }
+            }
+            catch 
+            { 
+                //don't worry about it, just move on
+            }
+
             string fileName = year + "_FYReport.docx"; //TO DO: add pull/latest interview date to title?
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
