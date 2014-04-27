@@ -1058,6 +1058,56 @@ namespace InterviewTracker.Controllers
             generateReport(fileName, reportHtml, false);
         }
 
+        public void generateLabels(String date)
+        {
+            date = date.Substring(0, "DDD MMM dd yyyy 00:00:00".Length);
+            System.Diagnostics.Debug.WriteLine(date);
+            DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            string fileName = "Labels_" + dt.ToShortDateString() + ".docx";
+            string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
+            string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
+            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableStart.html"));
+
+            var year = dt.Year;
+            var month = dt.Month;
+            var day = dt.Day;
+
+            string row;
+            int index = 0;
+            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day).ToList())
+            {
+                if(index % 2 == 0)
+                {
+                    reportBody = reportBody + "<tr>";
+                }
+                BioData bioData = interview.BioData;
+                row = System.IO.File.ReadAllText(Server.MapPath("~/Templates/LabelRow.html"));
+                row = row.Replace("firstName", bioData.FName);
+                row = row.Replace("lastName", bioData.LName);
+                row = row.Replace("middleName", bioData.MName);
+                row = row.Replace("ssn", bioData.SSN);
+                row = row.Replace("date", interview.Date.Value.ToShortDateString());
+                row = row.Replace("source", bioData.Sources.SourcesValue);
+                
+
+                reportBody = reportBody + row;
+                if(index % 2 == 1)
+                {
+                   reportBody = reportBody + "</tr>";
+                }
+                index++;
+            }
+            if (index % 2 == 1)
+            {
+                reportBody = reportBody + "</tr>";
+            }
+
+            reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
+            string reportHtml = header + reportBody + footer;
+            generateReport(fileName, reportHtml, false);
+        }
+
         public void generateReport(String filename, String html, bool landscape)
         {
             try

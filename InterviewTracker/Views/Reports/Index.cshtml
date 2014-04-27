@@ -250,7 +250,10 @@
                     ILReport.style.display = "none";
                     document.body.appendChild(ILReport);
                     if (document.getElementById("interview-labels").checked) {
-                        //TO DO: generate labels
+                        var labelsGenerator = document.createElement("iframe");
+                        labelsGenerator.src = "Reports/generatelabels?date=" + reportDate;
+                        labelsGenerator.style.display = "none";
+                        document.body.appendChild(labelsGenerator);
                     }
                     if (document.getElementById("interview-alpha").checked) {
                         var AlphaReport = document.createElement("iframe");
