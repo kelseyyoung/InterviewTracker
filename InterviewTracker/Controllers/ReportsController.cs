@@ -28,6 +28,7 @@ namespace InterviewTracker.Controllers
         protected System.Web.UI.WebControls.Label lblError;
         protected System.Web.UI.WebControls.Label lblFeedback;
 
+        public string pageBreakParagraph = "<p>%$%lineBreak%$%</p>";
         //
         // GET: /Reports/
 
@@ -147,19 +148,32 @@ namespace InterviewTracker.Controllers
 
             //Compile and generate report
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false);
+            generateReport(fileName, reportHtml, false, false);
 
         }
+
         public void generateCandidateReport(int id)
         {
+            int[] idArray = new int[1] { id };
             var bioData = db.BioData.Find(id);
-
             string fileName = "CandidateReport_" + bioData.FName + " " + bioData.LName + ".docx";
+            generateCandidateReports(idArray, fileName);
+        }
+
+        public void generateCandidateReports(int[] ids, string fileName)
+        {  
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
-            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/CandidateReportStart.html"));
+            string reportBody = "";
             string nonApplicable = "N/A";
 
+            for (int index = 0; index < ids.Length; ++index)
+            {
+                int id = ids[index];
+
+                var bioData = db.BioData.Find(id);
+                reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/CandidateReportStart.html"));
+               
             //Fill in header section with appropriate information
             reportBody = reportBody.Replace("name", bioData.LName + ", " + bioData.FName + " " + bioData.MName + " " + bioData.Suffix);
             reportBody = reportBody.Replace("dateOfBirth", bioData.DOB.ToString().Substring(0, bioData.DOB.ToString().IndexOf(" ")));
@@ -289,111 +303,7 @@ namespace InterviewTracker.Controllers
                 nextSection = nextSection.Replace("comments", interview.EditedComments);
                 nextSection = nextSection.Replace("timeElapsed", interview.Duration.ToString());
 
-                results = "";
-                //Check for NR results
-                if (interview.NR == true)
-                    results = results + "NR - YES";
-                else if (interview.NR == false)
-                    results = results + "NR - NO";
-                //Check for INST results
-                if (interview.INST == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "INST - YES";
-                }
-                else if (interview.INST == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "INST - NO";
-                }
-                //Check for NPS results
-                if (interview.NPS == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "NPS - YES";
-                }
-                else if (interview.NPS == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "NPS - NO";
-                }
-                //Check for PXO results
-                if (interview.PXO == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "PXO - YES";
-                }
-                else if (interview.PXO == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "PXO - NO";
-                }
-                //Check for EDO results
-                if (interview.EDO == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "EDO - YES";
-                }
-                else if (interview.EDO == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "EDO - NO";
-                }
-                //Check for ENLTECH results
-                if (interview.ENLTECH == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "ENLTECH - YES";
-                }
-                else if (interview.ENLTECH == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "ENLTECH - NO";
-                }
-                //Check for NR1 results
-                if (interview.NR1 == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "NR1 - YES";
-                }
-                else if (interview.NR1 == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "NR1 - NO";
-                }
-                //Check for SUPPLY results
-                if (interview.SUPPLY == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "SUPPLY - YES";
-                }
-                else if (interview.SUPPLY == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "SUPPLY - NO";
-                }
-                //Check for EOOW results
-                if (interview.EOOW == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "EOOW - YES";
-                }
-                else if (interview.EOOW == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "EOOW - NO";
-                }
-                //Check for DOE results
-                if (interview.DOE == true)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "DOE - YES";
-                }
-                else if (interview.DOE == false)
-                {
-                    if (!results.Equals("")) results = results + ", ";
-                    results = results + "DOE - NO";
-                }
+                    results = generateResultsString(interview);
 
                 nextSection = nextSection.Replace("results", results);
                 reportBody = reportBody + nextSection;
@@ -401,10 +311,11 @@ namespace InterviewTracker.Controllers
 
             //Tack on the previously constructed transcript
             reportBody = reportBody + transcript;
-
+                reportBody = reportBody + "<p>%$%lineBreak%$%</p>";
+            }
             //Compile and generate report
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false);
+            generateReport(fileName, reportHtml, false, false);
         }
 
         public void generateInterviewResults(String date)
@@ -527,8 +438,9 @@ namespace InterviewTracker.Controllers
             }
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false);
+            generateReport(fileName, reportHtml, false, false);
         }
+
 
         public void generateFYReport(String year, String dateString, Boolean byFY)
         {
@@ -922,7 +834,7 @@ namespace InterviewTracker.Controllers
 
             reportBody = reportBody + subTable + surfTable + instTable + nrTable;
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, true);
+            generateReport(fileName, reportHtml, true, true);
         }
 
         public void generateAlphaReport(String date, Boolean chrons)
@@ -1001,7 +913,7 @@ namespace InterviewTracker.Controllers
             }
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false);
+            generateReport(fileName, reportHtml, false, false);
         }
 
         public void generateSATACTReport(String startFYG, String endFYG)
@@ -1057,7 +969,7 @@ namespace InterviewTracker.Controllers
             }
             reportBody = reportBody.Replace("__chart__", generateChart());
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false);
+            generateReport(fileName, reportHtml, false, false);
         }
 
         public void generateLabels(String date)
@@ -1107,7 +1019,179 @@ namespace InterviewTracker.Controllers
 
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false);
+            generateReport(fileName, reportHtml, false, false);
+        }
+
+        public void generateBioIDCards(int[] ids)
+        {
+            string fileName = "BioCards_" + DateTime.Today.ToShortDateString() + ".docx";
+            string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
+            string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
+            string reportBody = "";
+
+            string newTable, interviewRow;
+            for (int i = 0; i < ids.Length; ++i)
+            {
+                int id = ids[i];
+                BioData bioData = db.BioData.Find(id);
+                var interviews = db.Interview.Where(x => x.BioDataID == id);
+
+                newTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/BioCard.html"));
+                newTable = newTable.Replace("lastName", bioData.LName);
+                newTable = newTable.Replace("firstName", bioData.FName);
+                if (bioData.MName != "" && bioData.MName != null)
+                    newTable = newTable.Replace("middleName", bioData.MName);
+                else
+                    newTable = newTable.Replace(", middleName", "");
+                newTable = newTable.Replace("ssn", bioData.SSN);
+                newTable = newTable.Replace("fyg", bioData.FYG.Value.ToString());
+                newTable = newTable.Replace("source", bioData.Sources.SourcesValue);
+                newTable = newTable.Replace("dateOfBirth", bioData.DOB.Value.ToShortDateString());
+
+                string schoolInfo = "", majorInfo = "", majors = "";
+                foreach (SchoolsAttended school in bioData.SchoolsAttended.ToList())
+                {
+                    if (schoolInfo != "")
+                        schoolInfo = schoolInfo + "<br>";
+                    if (majorInfo != "")
+                        majorInfo = majorInfo + "<br>";
+
+                    majors = "";
+                    foreach(Degree d in school.Degrees.ToList())
+                    {
+                        if(majors != "")
+                        {
+                            majors = majors + "; ";
+                        }
+                        majors = majors + d.Major.MajorValue + " (" + d.DegreeType.DegreeTypeValue + ")";
+                    }
+                    majorInfo = majorInfo + majors;
+ 
+                    int numYears;
+                    if (school.YearStart != null && school.YearEnd != null)
+                    {
+                        numYears = school.YearEnd.Value - school.YearStart.Value;
+                    }
+                    else
+                    {
+                        numYears = 0;
+                    }
+
+                    if(numYears == 0)
+                        schoolInfo = school.School.SchoolValue + " (" + "< 1" + " year" + ")";
+                    else
+                        schoolInfo = school.School.SchoolValue + " (" + numYears.ToString() + " year" + ")";
+                    
+                    if (numYears > 1) schoolInfo = schoolInfo.Replace("year", "years");
+                }
+                newTable = newTable.Replace("school", schoolInfo);
+                newTable = newTable.Replace("major", majorInfo);
+
+                DutyHistory mostRecentDH = null;
+                DateTime mostRecentDate = new DateTime(1, 1, 1);
+                foreach(DutyHistory dh in bioData.DutyHistories.ToList())
+                {
+                    foreach(DutyStation ds in dh.DutyStations.ToList())
+                    {
+                        if(mostRecentDH == null)
+                        {
+                            mostRecentDH = dh;
+                            mostRecentDate = ds.ReportDate;
+                        }
+                        else if(ds.ReportDate.CompareTo(mostRecentDate) > 0)
+                        {
+                            mostRecentDH = dh;
+                            mostRecentDate = ds.ReportDate;
+                        }
+
+                    }
+                }
+                newTable = newTable.Replace("rank", mostRecentDH.Rank);
+
+                string program = "";
+                foreach(Program prog in bioData.Programs.ToList())
+                {
+                    if(program != "")
+                    {
+                        program = program + ", ";
+                    }
+                    program = program + prog.ProgramValue;
+                }
+                newTable = newTable.Replace("program", program);
+
+                newTable = newTable + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableStart.html"));
+                int interviewIndex = 1, seenIndex = 0;
+                Interview[] seenInterviews;
+                if (bioData.Interviews.Count() > 0)
+                    seenInterviews = new Interview[bioData.Interviews.Count()];
+                else
+                    seenInterviews = new Interview[10]; //10 is arbitrary... there shouldn't be any
+
+                DateTime currentDate;
+                string results;
+                foreach(Interview interview in bioData.Interviews)
+                {
+                    if(!seenInterviews.Contains(interview))
+                    {
+                        currentDate = interview.Date.Value;
+                        interviewRow = System.IO.File.ReadAllText(Server.MapPath("~/Templates/BioCardInterviewRow.html"));
+                        interviewRow = interviewRow.Replace("index", interviewIndex.ToString());
+                        interviewRow = interviewRow.Replace("date", currentDate.ToShortDateString());
+                        results = "";
+                        foreach (Interview inter in bioData.Interviews.Where(z => z.Date.Value == currentDate).OrderBy(a => a.EndTime).ToList())
+                        {
+                            if (results != "")
+                            {
+                                results = results + "<br>";
+                            }
+                            results = results + inter.InterviewerUser.LoginID + ": ";
+                            results = results + generateResultsString(inter);
+                            seenInterviews[seenIndex] = inter;
+                            seenIndex++;
+                        }
+                        interviewRow = interviewRow.Replace("decisions", results);
+                        interviewIndex++;
+                        newTable = newTable + interviewRow;
+                    }
+                }
+
+                newTable = newTable + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
+                reportBody = reportBody + newTable;
+                reportBody = reportBody + pageBreakParagraph;
+            }
+
+            string reportHtml = header + reportBody + footer;
+            generateReport(fileName, reportHtml, false, false);
+        }
+
+        public void generateBiosByDateHelper(string date, Boolean bioCards, Boolean packets)
+        {
+            date = date.Substring(0, "DDD MMM dd yyyy 00:00:00".Length);
+            System.Diagnostics.Debug.WriteLine(date);
+            DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            var year = dt.Year;
+            var month = dt.Month;
+            var day = dt.Day;
+            IQueryable<Interview> interviews = db.Interview.Where(x => x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day);
+            List<Interview> uniqueInterviews = interviews.GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault()).ToList();
+            if (uniqueInterviews.Count() > 0)
+            {
+                int[] bioIDs = new int[uniqueInterviews.Count()];
+
+                for (int i = 0; i < uniqueInterviews.Count(); ++i)
+                {
+                    bioIDs[i] = uniqueInterviews.ElementAt(i).BioDataID;
+                }
+                string fileName;
+                if(bioCards)
+                    generateBioIDCards(bioIDs);
+                if (packets)
+                {
+                    fileName = "CandidatePackets_" + dt.ToShortDateString() + ".docx";
+                    generateCandidateReports(bioIDs, fileName);
+                }
+            }
         }
 
         private string generateChart()
@@ -1186,7 +1270,49 @@ namespace InterviewTracker.Controllers
                             body.Append(paragraphs[i]);
                         }
 
+                        foreach(Paragraph P in mainPart.Document.Descendants<Paragraph>())
+                        {
+                            if (P.LocalName == "pageBreak")
+                            {
+                                P.InsertAfterSelf
+                                        (new Paragraph(
+                                            new Run(
+                                                new Break() { Type = BreakValues.Page })));
+                            }
+                        }
+
+                        //I have no idea why it doesnt work when you try to use pageBreakParagraph... but it doesnt... so redeclare this same string here
+                        string lineBreakCharacter = "%$%lineBreak%$%"; 
+
+                        List<Paragraph> pageBreakMarkers = new List<Paragraph>();
+                        var lastP = mainPart.Document.Descendants<Paragraph>().LastOrDefault();
+                        foreach (Paragraph P in mainPart.Document.Descendants<Paragraph>())
+                        {   
+                            foreach (Run R in P.Descendants<Run>())
+                            {
+                                if (R.Descendants<Text>()
+                                    .Where(T => T.Text == lineBreakCharacter).Count() > 0)
+                                {
+                                    if (P != lastP)
+                                    {
+                                        P.InsertAfterSelf
+                                            (new Paragraph(
+                                                new Run(
+                                                    new Break() { Type = BreakValues.Page })));
+                                    }
+                                    pageBreakMarkers.Add(P);
+                                }
+                            }
+                        }
+                        foreach(Paragraph P in pageBreakMarkers)
+                        {
+                            P.Remove();
+                        }
+
+                        if (tablePageBreaks)
+                        {
                         var tables = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
+                            
                         var last = tables.LastOrDefault();
                         foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
                         {
@@ -1197,6 +1323,7 @@ namespace InterviewTracker.Controllers
                                         new Run(
                                             new Break() { Type = BreakValues.Page })));
                             }
+                        }
                         }
                         mainPart.Document.Save();
                     }
@@ -1282,5 +1409,117 @@ namespace InterviewTracker.Controllers
             
             return newSection;
         }
+
+        public string generateResultsString(Interview interview)
+        {
+            string results = "";
+            //Check for NR results
+            if (interview.NR == true)
+                results = results + "NR - YES";
+            else if (interview.NR == false)
+                results = results + "NR - NO";
+            //Check for INST results
+            if (interview.INST == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "INST - YES";
+            }
+            else if (interview.INST == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "INST - NO";
+            }
+            //Check for NPS results
+            if (interview.NPS == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "NPS - YES";
+            }
+            else if (interview.NPS == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "NPS - NO";
+            }
+            //Check for PXO results
+            if (interview.PXO == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "PXO - YES";
+            }
+            else if (interview.PXO == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "PXO - NO";
+            }
+            //Check for EDO results
+            if (interview.EDO == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "EDO - YES";
+            }
+            else if (interview.EDO == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "EDO - NO";
+            }
+            //Check for ENLTECH results
+            if (interview.ENLTECH == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "ENLTECH - YES";
+            }
+            else if (interview.ENLTECH == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "ENLTECH - NO";
+            }
+            //Check for NR1 results
+            if (interview.NR1 == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "NR1 - YES";
+            }
+            else if (interview.NR1 == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "NR1 - NO";
+            }
+            //Check for SUPPLY results
+            if (interview.SUPPLY == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "SUPPLY - YES";
+            }
+            else if (interview.SUPPLY == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "SUPPLY - NO";
+            }
+            //Check for EOOW results
+            if (interview.EOOW == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "EOOW - YES";
+            }
+            else if (interview.EOOW == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "EOOW - NO";
+            }
+            //Check for DOE results
+            if (interview.DOE == true)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "DOE - YES";
+            }
+            else if (interview.DOE == false)
+            {
+                if (!results.Equals("")) results = results + ", ";
+                results = results + "DOE - NO";
+            }
+
+            return results;
+        }
+
     }
 }
