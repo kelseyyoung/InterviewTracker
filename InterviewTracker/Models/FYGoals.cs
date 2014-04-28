@@ -17,6 +17,8 @@ namespace InterviewTracker.Models
         [Required]
         public int? SUB { get; set; } // Submarine goal
         [Required]
+        public int? SUBF { get; set; } // Submarine Female goal
+        [Required]
         public int? SWO { get; set; } // Surface goal
         [Required]
         public int? NR { get; set; } // NR Duty goal

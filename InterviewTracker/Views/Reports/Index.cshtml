@@ -25,6 +25,7 @@
                                     <option value="2010">2011</option>
                                     <option value="2010">2012</option>
                                     <option value="2010">2013</option>
+                                    <option value="2014">2014</option>
                                 </select>
                             </div>
                         </div>
@@ -63,17 +64,21 @@
         <div class="row-fluid">
             <div class="span6 panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Class Letter Reports</h3>
+                    <h3 class="panel-title">School Report</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="control-label span2" for="class-letter-class">Class</label>
-                            <div class="span10">
-                                <input type="text" name="class-letter-class" id="class-letter-class" />
+                            <label class="control-label span3" for="school-school">School</label>
+                            <div class="span9">
+                                <select id="school-school">
+                                    <option value=1>University Of Arizona</option>
+                                    <option value=2>University Of Texas</option>
+                                    <option value=3>Wisconsin University</option>
+                                </select>
                             </div>
                         </div>
-                        <button type="button" class="pull-right" id="generate-class-letter">Generate</button>
+                        <button type="button" class="pull-right" id="generate-school">Generate</button>
                     </form>
                 </div>
             </div>
@@ -177,26 +182,7 @@
                     </form>
                 </div>
             </div>
-            <div class="span6 panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">School Report</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label span3" for="school-school">School</label>
-                            <div class="span9">
-                                <select id="school-school">
-                                    <option value=1>University Of Arizona</option>
-                                    <option value=2>University Of Texas</option>
-                                    <option value=3>Wisconsin University</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="button" class="pull-right" id="generate-school">Generate</button>
-                    </form>
-                </div>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -208,6 +194,15 @@
             $(".date").datepicker({
                 changeYear: true,
                 yearRange: "-90:+0"
+            });
+
+            $("#generate-school").click(function() {
+                var schoolID = 1;
+
+                var schoolReportElem = document.createElement("iframe");
+                schoolReportElem.src = "Reports/generateSchool?id=" + schoolID;
+                schoolReportElem.style.display = "none";
+                document.body.appendChild(schoolReportElem);
             });
 
             $("#generate-fy-year").click(function () {
@@ -240,13 +235,22 @@
                     ILReport.style.display = "none";
                     document.body.appendChild(ILReport);
                     if (document.getElementById("interview-labels").checked) {
-                        //TO DO: generate labels
+                        var labelsGenerator = document.createElement("iframe");
+                        labelsGenerator.src = "Reports/generatelabels?date=" + reportDate;
+                        labelsGenerator.style.display = "none";
+                        document.body.appendChild(labelsGenerator);
                     }
                     if (document.getElementById("interview-alpha").checked) {
-                        //TO DO: generate alpha report
+                        var AlphaReport = document.createElement("iframe");
+                        AlphaReport.src = "Reports/generateAlphaReport?date=" + reportDate + "&chrons=false";
+                        AlphaReport.style.display = "none";
+                        document.body.appendChild(AlphaReport);
                     }
                     if (document.getElementById("interview-chron").checked) {
-                        //TO DO: generate chron report
+                        var ChronsReport = document.createElement("iframe");
+                        ChronsReport.src = "Reports/generateAlphaReport?date=" + reportDate + "&chrons=true";
+                        ChronsReport.style.display = "none";
+                        document.body.appendChild(ChronsReport);
                     }
                     if (document.getElementById("interview-packet").checked) {
                         //TO DO: generate packets

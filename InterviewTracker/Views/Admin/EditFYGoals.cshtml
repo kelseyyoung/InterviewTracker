@@ -57,9 +57,9 @@
                         <div class="span4">
                             <input type="text" class="form-control" id="SUB" name="SUB" />
                         </div>
-                        <label for="SWO" class="control-label span2">SWO Goal</label>
+                        <label for="SUBF" class="control-label span2">SUB Female Goal</label>
                         <div class="span4">
-                            <input type="text" class="form-control" id="SWO" name="SWO" />
+                            <input type="text" class="form-control" id="SUBF" name="SUBF" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -70,6 +70,12 @@
                         <label for="INST" class="control-label span2">INST Goal</label>
                         <div class="span4">
                             <input type="text" class="form-control" id="INST" name="INST" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="SWO" class="control-label span2">SWO Goal</label>
+                        <div class="span4">
+                            <input type="text" class="form-control" id="SWO" name="SWO" />
                         </div>
                     </div>
                     <input type="hidden" id="FYID" />
@@ -122,6 +128,7 @@
                             $("#FYID").attr("name", "FYID");
                             $("#Source").val(data.Source);
                             $("#SUB").val(data.SUB);
+                            $("#SUBF").val(data.SUBF);
                             $("#SWO").val(data.SWO);
                             $("#NR").val(data.NR);
                             $("#INST").val(data.INST);

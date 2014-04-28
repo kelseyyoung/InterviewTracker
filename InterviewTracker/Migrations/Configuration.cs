@@ -477,6 +477,7 @@ namespace InterviewTracker.Migrations
                 FY = 2012,
                 Source = FYSource.NROTC.ToString(),
                 SUB = 30,
+                SUBF = 20,
                 SWO = 25,
                 NR = 10,
                 INST = 50
@@ -486,6 +487,7 @@ namespace InterviewTracker.Migrations
                 FY = 2013,
                 Source = FYSource.NUPOC.ToString(),
                 SUB = 10,
+                SUBF = 5,
                 SWO = 30,
                 NR = 13,
                 INST = 77
@@ -495,6 +497,7 @@ namespace InterviewTracker.Migrations
                 FY = 2014,
                 Source = FYSource.USNA.ToString(),
                 SUB = 11,
+                SUBF = 3,
                 SWO = 84,
                 NR = 44,
                 INST = 29
@@ -797,7 +800,8 @@ namespace InterviewTracker.Migrations
                 InviteBack = false,
                 //SERVSEL = "what is this",
                 BioData = Kelsey,
-                Program = NR
+                Program = NR,
+                Date = new DateTime(2014, 5, 16, 12, 0, 0)
             };
 
             context.Admiral.AddOrUpdate(i => i.AdmiralID,

@@ -292,7 +292,6 @@
                                     <div class="form-group">
                                         <label for="MajorValue" class="control-label span3">Major</label>
                                         <div class="span4">
-                                            <!--TODO: will be select2, because you can add a non-existing major-->
                                             <select id="MajorValue" name="MajorValue" class="span10">
                                                 @foreach (var m in ViewBag.majors)
                                                 {
@@ -1766,6 +1765,35 @@
                     }
                 });
             });
+
+            $("#cancel-candidate-button").click(function () {
+                // Just refresh page
+                var href = "@Url.Action("Edit", "Candidates", new { id = "__id__" })";
+                href = href.replace("__id__", bioDataId);
+                window.location.href = href;
+            });
+
+            // Set Major Select2's
+            var initSchoolForms = $(".schools-form");
+            console.log(initSchoolForms);
+            for (var i = 0; i < initSchoolForms.length; i++) {
+                var f = initSchoolForms[i];
+                console.log(f);
+                $(f).find("#MajorValue").select2({
+                    placeholder: "Select Major"
+                }).parent().find(".select2-with-searchbox")
+               .prepend('<div class="createLink"><a href="#">Add New Major</a></div>')
+               .on('click', '.createLink', function (e) {
+                   e.preventDefault();
+                   var name = $(this).parent().find(".select2-search input").val().toUpperCase();
+                   console.log(name);
+                   $(f).find("#MajorValue").append(
+                       "<option value='" + name + "'>" + name + "</option>"
+                   );
+                   $(f).find("#MajorValue").select2("val", name);
+                   $(f).find("#MajorValue").select2("close");
+               });
+            }
 
         }); // End document ready
 

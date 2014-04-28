@@ -1159,6 +1159,11 @@
                 });
             });
 
+            $("#cancel-candidate-button").click(function () {
+                // Just refresh page
+                window.location.href = "@Url.Action("Create", "Candidates")";
+            });
+
 
         }); // End document ready
 

@@ -288,6 +288,7 @@ else
                     </div>
                     <input type="hidden" name="BioDataID" value="@ViewBag.interview.BioDataID" />
                     <input type="hidden" id="AdmiralID" />
+                    <input type="hidden" name="Date" id="Date" />
                 </form>
                 <div class="row-fluid">
                     <div id="admiral-errors" class="alert hide alert-error span10 offset1">
@@ -516,6 +517,8 @@ else
             });
 
             $("#submit-admiral").click(function () {
+                // Set Date to now
+                $("#admiral-form #Date").val(new Date().toISOString());
                 // Collect form data
                 var formData = $("#admiral-form").serialize();
                 console.log(formData);
