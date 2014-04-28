@@ -15,6 +15,7 @@ using NotesFor.HtmlToOpenXml;
 using InterviewTracker.Models;
 using InterviewTracker.DAL;
 using InterviewTracker.Filters;
+using System.Web.Helpers;
 
 namespace InterviewTracker.Controllers
 {
@@ -1024,7 +1025,7 @@ namespace InterviewTracker.Controllers
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = "<p><b>SAT/ACT Scores from FYG " + startFYG + " to FYG " + endFYG + "</b></p> <table style=\"width:600px\">";
-            footer = "</table>" + footer;
+            footer = "</table><img src='__chart__' />" + footer;
             string nonApplicable = "";
 
             string nextEntry;
@@ -1054,6 +1055,7 @@ namespace InterviewTracker.Controllers
 
                 reportBody = reportBody + nextEntry;
             }
+            reportBody = reportBody.Replace("__chart__", generateChart());
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false);
         }
@@ -1106,6 +1108,19 @@ namespace InterviewTracker.Controllers
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false);
+        }
+
+        private string generateChart()
+        {
+            var myChart = new Chart(width: 600, height: 400)
+                .AddTitle("Chart Title")
+                .AddSeries(
+                    name: "Employee",
+                    xValue: new[] { "Peter", "Andrew", "Julie", "Mary", "Dave" },
+                    yValues: new[] { "2", "6", "4", "5", "3" })
+                .GetBytes("png");
+            var chartString = "data:image/png;base64," + Convert.ToBase64String(myChart);
+            return chartString;
         }
 
         public void generateReport(String filename, String html, bool landscape)
