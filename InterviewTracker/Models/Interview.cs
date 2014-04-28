@@ -24,7 +24,6 @@ namespace InterviewTracker.Models
         [Required(ErrorMessage="The End Time field is required")]
         public DateTime? EndTime { get; set; } // End time
         //TODO: How to make these just Time?
-        [Required]
         public int? Duration { get; set; } // Duration in minutes
         public DateTime? EditTime { get; set; } // Last time interviewer's comments were edited
         public bool? NR { get; set; } // Recommended for NR duty

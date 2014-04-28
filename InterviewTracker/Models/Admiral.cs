@@ -30,8 +30,8 @@ namespace InterviewTracker.Models
         public string AdmiralNotes { get; set; } // Printed notes from admiral
         [Required]
         public bool? InviteBack { get; set; } // T/F if invited back for another interview
-        [Required]
-        public string SERVSEL { get; set; } // Community chosen by applicant for their contract
+        //[Required]
+        //public string SERVSEL { get; set; } // Community chosen by applicant for their contract
 
         [ForeignKey("BioData")]
         public virtual int BioDataID { get; set; }

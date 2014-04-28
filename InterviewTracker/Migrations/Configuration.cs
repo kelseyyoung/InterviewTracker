@@ -157,12 +157,14 @@ namespace InterviewTracker.Migrations
 
             // ServSel
             // TODO: what is a ServSel
+            /*
             ServSel servsel = new ServSel { ServSelValue = "What is this" };
 
             context.ServSel.AddOrUpdate(i => i.ServSelID,
                 servsel
             );
-
+            */
+             
             /**** Normal Table Data ****/
 
             // BioData
@@ -329,13 +331,33 @@ namespace InterviewTracker.Migrations
                 UserGroup = UserGroup.ADMIN.ToString()
             };
 
+            User DewayneUser = new User
+            {
+                LName = "Byrnes",
+                Initials = "DB",
+                LoginID = "DWByrnes",
+                Code = "08C",
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = true,
+                NR1 = true,
+                SUPPLY = true,
+                EOOW = true,
+                DOE = true,
+                UserGroup = UserGroup.ADMIN.ToString()
+            };
+
             context.User.AddOrUpdate(i => i.UserID,
                 Admin,
                 Coord,
                 Interviewer,
                 Interviewer2,
                 Interviewer3,
-                KelseyUser
+                KelseyUser,
+                DewayneUser
             );
 
             // Classes
@@ -676,7 +698,6 @@ namespace InterviewTracker.Migrations
                 Location = "Room 203",
                 StartTime = DateTime.Parse("2014/5/13 11:00:00"),
                 EndTime = DateTime.Parse("2014/5/13 12:00:00"),
-                Duration = 60,
                 InterviewerUser = Interviewer,
                 BioData = Kelsey
             };
@@ -687,7 +708,6 @@ namespace InterviewTracker.Migrations
                 Location = "Room 203",
                 StartTime = DateTime.Parse("2014/5/13 12:00:00"),
                 EndTime = DateTime.Parse("2014/5/13 13:00:00"),
-                Duration = 60,
                 InterviewerUser = Interviewer2,
                 BioData = Kelsey
             };
@@ -698,7 +718,6 @@ namespace InterviewTracker.Migrations
                 Location = "Room 203",
                 StartTime = DateTime.Parse("2014/5/13 13:00:00"),
                 EndTime = DateTime.Parse("2014/5/13 14:00:00"),
-                Duration = 60,
                 InterviewerUser = Interviewer3,
                 BioData = Kelsey
             };
@@ -710,7 +729,7 @@ namespace InterviewTracker.Migrations
                 Comments = "Seemed like a good worker",
                 StartTime = DateTime.Parse("2014/1/20 9:00:00"),
                 EndTime = DateTime.Parse("2014/1/20 9:30:00"),
-                Duration = 3,
+                Duration = 28,
                 NR = true,
                 ENLTECH = false,
                 DOE = true,
@@ -726,7 +745,7 @@ namespace InterviewTracker.Migrations
                 EditedComments = "Gave off a bad impression, did not respond well to questions",
                 StartTime = DateTime.Parse("2014/2/2 11:00:00"),
                 EndTime = DateTime.Parse("2014/2/2 12:30:00"),
-                Duration = 90,
+                Duration = 80,
                 EditTime = DateTime.Parse("2014/2/5 11:30:00"),
                 NPS = true,
                 PXO = false,
@@ -776,7 +795,7 @@ namespace InterviewTracker.Migrations
                 LetterReceived = false,
                 AdmiralNotes = "Welcome aboard",
                 InviteBack = false,
-                SERVSEL = "what is this",
+                //SERVSEL = "what is this",
                 BioData = Kelsey,
                 Program = NR
             };

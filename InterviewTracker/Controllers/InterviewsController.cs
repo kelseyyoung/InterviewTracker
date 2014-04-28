@@ -1,5 +1,6 @@
 ﻿using InterviewTracker.DAL;
 using InterviewTracker.Filters;
+using InterviewTracker.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,11 +21,25 @@ namespace InterviewTracker.Controllers
         {
             ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
-            var interview = db.Interview.Find(id);
+            Interview interview = db.Interview.Find(id);
+            ViewBag.programsList = new string[] {"NR", "INST", "NPS", "PXO", "EDO", "ENLTECH", "NR1", "SUPPLY", "EOOW", "DOE"};
+            List<string> biodataPrograms = new List<string>();
+            foreach(Program p in interview.BioData.Programs) {
+                biodataPrograms.Add(p.ProgramValue);
+            }
+            ViewBag.biodataPrograms = biodataPrograms;
+
+            // If interviewer and this isn't your interview
+            // Redirect to unauth
+            if (ViewBag.user.UserGroup == "INTER" && ViewBag.user.UserID != interview.InterviewerID)
+            {
+                return RedirectToAction("Unauthorized", "Home");
+            }
+
             ViewBag.interview = interview;
 
             // Set CurrentlyEditingID in interview
-            interview.CurrentlyEditingID = ViewBag.userModel.UserID;
+            interview.CurrentlyEditingID = ViewBag.user.UserID;
             db.Entry(interview).State = EntityState.Modified;
             try
             {

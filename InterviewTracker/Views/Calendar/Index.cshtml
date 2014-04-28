@@ -9,7 +9,7 @@
     }
 
     #interview-list {
-    height: 300px;
+    max-height: 300px;
     overflow: auto;
     }
 
@@ -242,6 +242,9 @@
                     if (updateList) {
                         // Clear list out
                         $("#interview-list .panel-body").empty();
+                        if (data.length == 0) {
+                            $("#interview-list .panel-body").append("<p class='text-center'>No interviews for this time period</p>");
+                        }
                     }
                     for (var i = 0; i < data.length; i++) {
                         var interview = data[i];

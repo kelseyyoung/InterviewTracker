@@ -1612,6 +1612,10 @@
                 }
             });
 
+            $("#change-school-name-modal").dialog({
+                autoOpen: false
+            });
+
             $(document).on("click", ".course-catalog-trigger", function () {
                 console.log("open");
                 catalogForm = $(this).parent().parent();
