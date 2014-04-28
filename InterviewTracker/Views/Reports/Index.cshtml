@@ -196,15 +196,6 @@
                 yearRange: "-90:+0"
             });
 
-            $("#generate-school").click(function() {
-                var schoolID = 1;
-
-                var schoolReportElem = document.createElement("iframe");
-                schoolReportElem.src = "Reports/generateSchool?id=" + schoolID;
-                schoolReportElem.style.display = "none";
-                document.body.appendChild(schoolReportElem);
-            });
-
             $("#generate-fy-year").click(function () {
                 var fyear = $("#fy-year option:selected").text();
                 var date = $("#fy-date").datepicker("getDate");
@@ -253,10 +244,16 @@
                         document.body.appendChild(ChronsReport);
                     }
                     if (document.getElementById("interview-packet").checked) {
-                        //TO DO: generate packets
+                        var packets = document.createElement("iframe");
+                        packets.src = "Reports/generateBiosByDateHelper?date=" + reportDate + "&bioCards=false&packets=true";
+                        packets.style.display = "none";
+                        document.body.appendChild(packets);
                     }
                     if (document.getElementById("interview-cards").checked) {
-                        //TO DO: generate cards
+                        var idCards = document.createElement("iframe");
+                        idCards.src = "Reports/generateBiosByDateHelper?date=" + reportDate + "&bioCards=true&packets=false";
+                        idCards.style.display = "none";
+                        document.body.appendChild(idCards);
                     }
                     if (document.getElementById("interview-eod-letter").checked) {
                         //TO DO: generate eod letter
