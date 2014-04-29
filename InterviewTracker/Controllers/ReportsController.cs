@@ -37,7 +37,7 @@ namespace InterviewTracker.Controllers
         {
             ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
             ViewBag.schools = db.School.OrderBy(x=> x.SchoolValue).ToList();
-            ViewBag.candidates = db.BioData.OrderBy(x => x.LName).OrderBy(y => y.FName).ToList();
+            ViewBag.candidates = db.BioData.OrderBy(x => x.LName).ThenBy(y => y.FName).ToList();
 
             return View();
         }
@@ -295,6 +295,9 @@ namespace InterviewTracker.Controllers
 
             }
 
+            //Tack on the previously constructed transcript
+            reportBody = reportBody + transcript;
+
             //Add Interview Section
             string nextSection, results;
             //Only look at interviews that have been conducted and edited
@@ -311,9 +314,7 @@ namespace InterviewTracker.Controllers
                 reportBody = reportBody + nextSection;
             }
 
-            //Tack on the previously constructed transcript
-            reportBody = reportBody + transcript;
-                reportBody = reportBody + "<p>%$%lineBreak%$%</p>";
+            reportBody = reportBody + "<p>%$%lineBreak%$%</p>";
             }
             //Compile and generate report
             string reportHtml = header + reportBody + footer;
@@ -340,7 +341,7 @@ namespace InterviewTracker.Controllers
             var year = dt.Year;
             var month = dt.Month;
             var day = dt.Day;
-            foreach (Interview interview in db.Interview.Where(x=> x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day).ToList())
+            foreach (Admiral interview in db.Admiral.Where(x=> x.Date.Year == year && x.Date.Month == month && x.Date.Day == day).ToList())
             {
                 BioData bioData = interview.BioData;
                 row = System.IO.File.ReadAllText(Server.MapPath("~/Templates/InterviewResultsRow.html"));
@@ -374,7 +375,9 @@ namespace InterviewTracker.Controllers
                 row = row.Replace("cla", bioData.FYG.Value.ToString());
                 row = row.Replace("major", degreeInfo);
 
+                
                 string resultsString = "";
+                /*
                 if (interview.NR != null)
                 {
                     if (interview.NR.Value) resultsString = resultsString + "Yes-NR DUTY";
@@ -433,9 +436,34 @@ namespace InterviewTracker.Controllers
                     if (!resultsString.Equals("")) resultsString = resultsString + "; ";
                     if (interview.DOE.Value) resultsString = resultsString + "Yes-DOE";
                     else resultsString = resultsString + "No-DOE";
+                }*/
+                bool found = false;
+                foreach(Program program in bioData.Programs)
+                {
+                    if(resultsString != "")
+                    {
+                        resultsString = resultsString + "; ";
+                    }
+                    if(program.ProgramValue == interview.Program.ProgramValue)
+                    {
+                        resultsString = resultsString + "Yes-" + program.ProgramValue;
+                        found = true;
+                    }
+                    else
+                    {
+                        resultsString = resultsString + "No-" + program.ProgramValue;
+                    }
+                }
+                if(!found)
+                {
+                    if (resultsString != "")
+                    {
+                        resultsString = resultsString + "; ";
+                    }
+                    resultsString = resultsString + "Yes-" + interview.Program.ProgramValue;
                 }
                 row = row.Replace("results", resultsString);
-
+                
                 reportBody = reportBody + row;
             }
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
@@ -1259,6 +1287,18 @@ namespace InterviewTracker.Controllers
                             };
                             properties.Append(pageSize);
 
+                            PageMargin pageMargin = new PageMargin() 
+                            { 
+                                Top = 720, 
+                                Right = (UInt32Value)1008U, 
+                                Bottom = 720, 
+                                Left = (UInt32Value)1008U, 
+                                Header = (UInt32Value)720U, 
+                                Footer = (UInt32Value)720U, 
+                                Gutter = (UInt32Value)0U };
+                            properties.Append(pageMargin);
+                            
+
                             body.Append(properties);
 
                             SpacingBetweenLines spacing = new SpacingBetweenLines() { Line = "240", LineRule = LineSpacingRuleValues.Auto, Before = "0", After = "0" };
@@ -1286,7 +1326,7 @@ namespace InterviewTracker.Controllers
                             body.Append(paragraphs[i]);
                         }
 
-                        foreach(Paragraph P in mainPart.Document.Descendants<Paragraph>())
+                        /*foreach(Paragraph P in mainPart.Document.Descendants<Paragraph>())
                         {
                             if (P.LocalName == "pageBreak")
                             {
@@ -1295,7 +1335,7 @@ namespace InterviewTracker.Controllers
                                             new Run(
                                                 new Break() { Type = BreakValues.Page })));
                             }
-                        }
+                        }*/
 
                         //I have no idea why it doesnt work when you try to use pageBreakParagraph... but it doesnt... so redeclare this same string here
                         string lineBreakCharacter = "%$%lineBreak%$%"; 
