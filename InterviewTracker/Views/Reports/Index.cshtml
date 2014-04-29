@@ -7,7 +7,7 @@
         <div class="row-fluid">
             <div class="span6 panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Fiscal Year Reports</h3>
+                    <h3 class="panel-title">Fiscal Year Officer Accessions Report</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal">
@@ -35,7 +35,7 @@
             </div>
             <div class="span6 panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Calendar Year Reports</h3>
+                    <h3 class="panel-title">Calendar Year Officer Accessions Report</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal">
@@ -61,30 +61,11 @@
                 </div>
             </div>
         </div>
+
         <div class="row-fluid">
             <div class="span6 panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">School Report</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label span3" for="school-school">School</label>
-                            <div class="span9">
-                                <select id="school-school">
-                                    <option value=1>University Of Arizona</option>
-                                    <option value=2>University Of Texas</option>
-                                    <option value=3>Wisconsin University</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="button" class="pull-right" id="generate-school">Generate</button>
-                    </form>
-                </div>
-            </div>
-            <div class="span6 panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Candidate Reports</h3>
+                    <h3 class="panel-title">Candidate Report</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal">
@@ -92,14 +73,49 @@
                             <label class="control-label span3" for="candidate-candidate">Candidate</label>
                             <div class="span9">
                                 <select id="candidate-candidate">
-                                    <option value="John Doe">John Doe</option>
-                                    <option value="Jane Doe">Jane Doe</option>
-                                    <option value="Greg Doe">Greg Doe</option>
-                                    <option value="Hank Doe">Hank Doe</option>
+                                    @foreach (var s in ViewBag.candidates)
+                                    {
+                                        <option value="@s.ID">@s.LName, @s.FName</option>
+                                    }
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="span3"></div>
+                            <div class="span9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="individual-card" name="individual-card" /> Card
+                                        <input type="checkbox" id="individual-packet" name="individual-packet" /> Packet
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <button type="button" class="pull-right" id="generate-candidate">Generate</button>
+                    </form>
+                </div>
+                
+
+            </div>
+            <div class="span6 panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">SAT/ACT by Fiscal Year Report</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label span2" for="sat-begin">Begin FYG</label>
+                            <div class="span10">
+                                <input type="text" name="sat-begin" id="sat-begin" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label span2" for="sat-end">End FYG</label>
+                            <div class="span10">
+                                <input type="text" name="sat-end" id="sat-end" />
+                            </div>
+                        </div>
+                        <button type="button" id="generate-SAT-ACT-report" class="pull-right">Generate</button>
                     </form>
                 </div>
             </div>
@@ -162,27 +178,26 @@
             </div>
             <div class="span6 panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">SAT/ACT by Fiscal Year Reports</h3>
+                    <h3 class="panel-title">School Report</h3>
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="control-label span2" for="sat-begin">Begin</label>
-                            <div class="span10">
-                                <input type="text" name="sat-begin" id="sat-begin" />
+                            <label class="control-label span3" for="school-school">School</label>
+                            <div class="span9">
+                                <select id="school-school">
+                                    @foreach (var s in ViewBag.schools)
+                                    {
+                                        <option value=@s.SchoolID>@s.SchoolValue</option>
+                                    }
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label span2" for="sat-end">End</label>
-                            <div class="span10">
-                                <input type="text" name="sat-end" id="sat-end" />
-                            </div>
-                        </div>
-                        <button type="button" id="generate-SAT-ACT-report"class="pull-right">Generate</button>
+                        <button type="button" class="pull-right" id="generate-school">Generate</button>
                     </form>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -196,12 +211,15 @@
                 yearRange: "-90:+0"
             });
 
+            $("#candidate-candidate").select2();
+            $("#school-school").select2();
+
             $("#generate-fy-year").click(function () {
                 var fyear = $("#fy-year option:selected").text();
                 var date = $("#fy-date").datepicker("getDate");
 
                 var FYReportElem = document.createElement("iframe");
-                FYReportElem.src = "Reports/generateFYReport?year=" + fyear  + "&dateString=" + date + "&byFY=true";
+                FYReportElem.src = "Reports/generateFYReport?year=" + fyear + "&dateString=" + date + "&byFY=true";
                 FYReportElem.style.display = "none";
                 document.body.appendChild(FYReportElem);
             });
@@ -270,7 +288,7 @@
             $("#generate-SAT-ACT-report").click(function () {
                 var startYear = $("#sat-begin").val();
                 var endYear = $("#sat-end").val();
-         
+
                 if (!endYear) endYear = (new Date).getFullYear();
                 if (!startYear) startYear = endYear;
 
@@ -278,7 +296,7 @@
                     alert("Please specify integer values for FYGs");
                     return;
                 }
-                
+
                 var SATACTReport = document.createElement("iframe");
                 SATACTReport.src = "Reports/generateSATACTReport?startFYG=" + startYear + "&endFYG=" + endYear;
                 SATACTReport.style.display = "none";
@@ -286,17 +304,29 @@
             });
 
             $("#generate-candidate").click(function () {
-                //TO DO: pull id from select2 (?)
-                var id = 1;
-                var candidateReportElem = document.createElement("iframe");
-                candidateReportElem.src = "Reports/generateCandidateReport?id=" + id;
-                candidateReportElem.style.display = "none";
-                document.body.appendChild(candidateReportElem);
+                var id = $("#candidate-candidate").val();
+                if (document.getElementById("individual-packet").checked)
+                {
+                    var candidateReportElem = document.createElement("iframe");
+                    candidateReportElem.src = "Reports/generateCandidateReport?id=" + id;
+                    candidateReportElem.style.display = "none";
+                    document.body.appendChild(candidateReportElem);
+                }
+                if (document.getElementById("individual-card").checked)
+                {
+                    var bioCardElem = document.createElement("iframe");
+                    bioCardElem.src = "Reports/generateBioIDCard?id=" + id;
+                    bioCardElem.style.display = "none";
+                    document.body.appendChild(bioCardElem);
+                }
+                if(!document.getElementById("individual-packet").checked && !document.getElementById("individual-card").checked)
+                {
+                    alert("Please select at least one of the candidate report options");
+                }
             });
 
             $("#generate-school").click(function () {
-                //TO DO: pull id from select2 (?)
-                var id = 1;
+                var id = $("#school-school").val();
                 var schoolReportElem = document.createElement("iframe");
                 schoolReportElem.src = "Reports/generateSchoolReport?id=" + id;
                 schoolReportElem.style.display = "none";

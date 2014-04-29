@@ -36,6 +36,8 @@ namespace InterviewTracker.Controllers
         public ActionResult Index()
         {
             ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
+            ViewBag.schools = db.School.OrderBy(x=> x.SchoolValue).ToList();
+            ViewBag.candidates = db.BioData.OrderBy(x => x.LName).OrderBy(y => y.FName).ToList();
 
             return View();
         }
@@ -156,7 +158,7 @@ namespace InterviewTracker.Controllers
         {
             int[] idArray = new int[1] { id };
             var bioData = db.BioData.Find(id);
-            string fileName = "CandidateReport_" + bioData.FName + " " + bioData.LName + ".docx";
+            string fileName = bioData.LName + "_" + bioData.FName + "_CandidatePacket" + ".docx";
             generateCandidateReports(idArray, fileName);
         }
 
@@ -299,7 +301,7 @@ namespace InterviewTracker.Controllers
             foreach (Interview interview in bioData.Interviews.Where(x => x.Status == Status.Edited.ToString() || x.Status == Status.Final.ToString()))
             {
                 nextSection = System.IO.File.ReadAllText(Server.MapPath("~/Templates/CandidateReportInterview.html"));
-                nextSection = nextSection.Replace("interviewer", "Interviewer" + interview.InterviewerID.ToString());
+                nextSection = nextSection.Replace("interviewer", interview.InterviewerUser.LoginID.ToString());
                 nextSection = nextSection.Replace("comments", interview.EditedComments);
                 nextSection = nextSection.Replace("timeElapsed", interview.Duration.ToString());
 
@@ -474,7 +476,7 @@ namespace InterviewTracker.Controllers
                 //don't worry about it, just move on
             }
 
-            string fileName = year + "_FYReport.docx"; //TO DO: add pull/latest interview date to title?
+            string fileName = "FY" + year + "_OfficerAccessionsReport.docx";
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
 
@@ -490,7 +492,7 @@ namespace InterviewTracker.Controllers
             //If doing a CY report, shuffle months around appropriately
             if (!byFY)
             {
-                fileName = date.Year.ToString() + "_CYReport_forFYG" + year + ".docx"; //TO DO: is that a good title?
+                fileName = date.Year.ToString() + "_CYOfficerAccessionsReport_forFYG" + year + ".docx";
                 reportBody = FYMonthsToCYMonths(reportBody);
                 nrTable = FYMonthsToCYMonths(nrTable);
                 instTable = FYMonthsToCYMonths(instTable);
@@ -853,7 +855,7 @@ namespace InterviewTracker.Controllers
             {
                 reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/AlphaReportStart.html"));
                 rowTemplate = "~/Templates/AlphaReportRow.html";
-                fileName = "AlphaReport" + dt.ToShortDateString() + ".docx";
+                fileName = "AlphaReport_" + dt.ToShortDateString() + ".docx";
             }
             else
             {
@@ -868,7 +870,9 @@ namespace InterviewTracker.Controllers
             var year = dt.Year;
             var month = dt.Month;
             var day = dt.Day;
-            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day).ToList())
+            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year 
+                          && x.Date.Value.Month == month 
+                          && x.Date.Value.Day == day).GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault()).ToList())
             {
                 BioData bioData = interview.BioData;
                 row = System.IO.File.ReadAllText(Server.MapPath(rowTemplate));
@@ -992,7 +996,9 @@ namespace InterviewTracker.Controllers
 
             string row;
             int index = 0;
-            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year && x.Date.Value.Month == month && x.Date.Value.Day == day).ToList())
+            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year 
+                        && x.Date.Value.Month == month 
+                        && x.Date.Value.Day == day).GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault()).ToList())
             {
                 if(index % 2 == 0)
                 {
@@ -1025,9 +1031,16 @@ namespace InterviewTracker.Controllers
             generateReport(fileName, reportHtml, false, false);
         }
 
-        public void generateBioIDCards(int[] ids)
+        public void generateBioIDCard (int id)
         {
-            string fileName = "BioCards_" + DateTime.Today.ToShortDateString() + ".docx";
+            BioData bioData = db.BioData.Find(id);
+            string fileName = bioData.LName + "_" + bioData.FName + "_bioCard" + ".docx";
+            int[] idArray = new int[1] { id };
+            generateBioIDCards(idArray, fileName);
+        }
+
+        public void generateBioIDCards(int[] ids, string fileName)
+        {
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = "";
@@ -1187,8 +1200,11 @@ namespace InterviewTracker.Controllers
                     bioIDs[i] = uniqueInterviews.ElementAt(i).BioDataID;
                 }
                 string fileName;
-                if(bioCards)
-                    generateBioIDCards(bioIDs);
+                if (bioCards)
+                {
+                    fileName = "BioCards_" + DateTime.Today.ToShortDateString() + ".docx";
+                    generateBioIDCards(bioIDs, fileName);
+                }
                 if (packets)
                 {
                     fileName = "CandidatePackets_" + dt.ToShortDateString() + ".docx";
