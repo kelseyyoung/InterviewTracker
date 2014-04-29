@@ -964,12 +964,14 @@ namespace InterviewTracker.Controllers
                 endFYG = end.ToString();
                 startFYG = endFYG;
             }
+            //generateChart();
 
             string fileName = "SAT-ACT Scores FYG " + startFYG + "-" + endFYG;
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = "<p><b>SAT/ACT Scores from FYG " + startFYG + " to FYG " + endFYG + "</b></p> <table style=\"width:600px\">";
-            footer = "</table><img src='__chart__' />" + footer;
+            footer = "</table><p><img src='http://localhost:50741/Content/images/test.jpg' alt='' /></p>" +
+                "<p><img src='http://www.petfinder.com/wp-content/uploads/2012/11/99059361-choose-cat-litter-632x475.jpg' alt='' /></p>" + footer;
             string nonApplicable = "";
 
             string nextEntry;
@@ -999,7 +1001,8 @@ namespace InterviewTracker.Controllers
 
                 reportBody = reportBody + nextEntry;
             }
-            reportBody = reportBody.Replace("__chart__", generateChart());
+            //reportBody = reportBody.Replace("__chart__", generateChart());
+            //reportBody = reportBody.Replace("__chart__", "http://localhost:50741/Content/images/test.png");
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false, false);
         }
@@ -1240,15 +1243,16 @@ namespace InterviewTracker.Controllers
 
         private string generateChart()
         {
+            var filePath = Server.MapPath("~/Content/Images/test.jpg");
             var myChart = new Chart(width: 600, height: 400)
                 .AddTitle("Chart Title")
                 .AddSeries(
                     name: "Employee",
                     xValue: new[] { "Peter", "Andrew", "Julie", "Mary", "Dave" },
                     yValues: new[] { "2", "6", "4", "5", "3" })
-                .GetBytes("png");
-            var chartString = "data:image/png;base64," + Convert.ToBase64String(myChart);
-            return chartString;
+                .Save(filePath, "jpg");
+            //var chartString = "data:image/png;base64," + Convert.ToBase64String(myChart);
+            return filePath;
         }
 
         public void generateReport(String filename, String html, bool landscape, bool tablePageBreaks)
@@ -1272,7 +1276,9 @@ namespace InterviewTracker.Controllers
                         //http://html2openxml.codeplex.com/wikipage?title=ImageProcessing&referringTitle=Documentation
                         //to process an image you must provide a base 
 
-                        //converter.BaseImageUrl = new Uri(Request.Url.Scheme + "://" + Request.Url.Authority);
+                        //Uri baseImageUrl = new Uri(Request.Url.Scheme + "://" + Request.Url.Authority);
+                        //converter.BaseImageUrl = baseImageUrl;
+                        // Test
 
                         Body body = mainPart.Document.Body;
 
