@@ -964,13 +964,13 @@ namespace InterviewTracker.Controllers
                 endFYG = end.ToString();
                 startFYG = endFYG;
             }
-            //generateChart();
+            string chartPath = generateChart();
 
             string fileName = "SAT-ACT Scores FYG " + startFYG + "-" + endFYG;
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = "<p><b>SAT/ACT Scores from FYG " + startFYG + " to FYG " + endFYG + "</b></p> <table style=\"width:600px\">";
-            footer = "</table><p><img src='http://localhost:50741/Content/images/test.jpg' alt='' /></p>" +
+            footer = "</table><p><img src='" + chartPath +"' alt='' /></p>" +
                 "<p><img src='http://www.petfinder.com/wp-content/uploads/2012/11/99059361-choose-cat-litter-632x475.jpg' alt='' /></p>" + footer;
             string nonApplicable = "";
 
