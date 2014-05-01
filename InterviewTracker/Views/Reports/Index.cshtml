@@ -137,6 +137,11 @@
                             <div class="span10 offset1">
                                 <div class="checkbox">
                                     <label>
+                                        <input type="checkbox" id="interview-results" name="interview-results" /> Final Results
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
                                         <input type="checkbox" id="interview-labels" name="interview-labels" /> Labels
                                     </label>
                                 </div>
@@ -236,50 +241,66 @@
 
             $("#generate-interview-report").click(function () {
                 var reportDate = $("#interview-date").datepicker("getDate");
-                console.log(reportDate);
+                var optionSelected = false;
                 if (reportDate) {
-                    //Generate this general report regardless of options selected
-                    var ILReport = document.createElement("iframe");
-                    ILReport.src = "Reports/generateInterviewResults?date=" + reportDate;
-                    ILReport.style.display = "none";
-                    document.body.appendChild(ILReport);
+                    if (document.getElementById("interview-results").checked) {
+                        var ILReport = document.createElement("iframe");
+                        ILReport.src = "Reports/generateInterviewResults?date=" + reportDate;
+                        ILReport.style.display = "none";
+                        document.body.appendChild(ILReport);
+                        optionSelected = true;
+                    }
                     if (document.getElementById("interview-labels").checked) {
                         var labelsGenerator = document.createElement("iframe");
                         labelsGenerator.src = "Reports/generatelabels?date=" + reportDate;
                         labelsGenerator.style.display = "none";
                         document.body.appendChild(labelsGenerator);
+                        optionSelected = true;
                     }
                     if (document.getElementById("interview-alpha").checked) {
                         var AlphaReport = document.createElement("iframe");
                         AlphaReport.src = "Reports/generateAlphaReport?date=" + reportDate + "&chrons=false";
                         AlphaReport.style.display = "none";
                         document.body.appendChild(AlphaReport);
+                        optionSelected = true;
                     }
                     if (document.getElementById("interview-chron").checked) {
                         var ChronsReport = document.createElement("iframe");
                         ChronsReport.src = "Reports/generateAlphaReport?date=" + reportDate + "&chrons=true";
                         ChronsReport.style.display = "none";
                         document.body.appendChild(ChronsReport);
+                        optionSelected = true;
                     }
                     if (document.getElementById("interview-packet").checked) {
                         var packets = document.createElement("iframe");
                         packets.src = "Reports/generateBiosByDateHelper?date=" + reportDate + "&bioCards=false&packets=true";
                         packets.style.display = "none";
                         document.body.appendChild(packets);
+                        optionSelected = true;
                     }
                     if (document.getElementById("interview-cards").checked) {
                         var idCards = document.createElement("iframe");
                         idCards.src = "Reports/generateBiosByDateHelper?date=" + reportDate + "&bioCards=true&packets=false";
                         idCards.style.display = "none";
                         document.body.appendChild(idCards);
+                        optionSelected = true;
                     }
                     if (document.getElementById("interview-eod-letter").checked) {
-                        //TO DO: generate eod letter
+                        var eodLetter = document.createElement("iframe");
+                        eodLetter.src = "Reports/generateEoDLetter?date=" + reportDate;
+                        eodLetter.style.display = "none";
+                        document.body.appendChild(eodLetter);
+                        optionSelected = true;
                     }
-                    if (document.getElementById("interview-usna-letter").checked) {
-                        //TO DO: generate usna letter
+                    if (document.getElementById("interview-usna-letter").checked) {    
+                        var usnaLetter = document.createElement("iframe");
+                        usnaLetter.src = "Reports/generateUSNALetter?date=" + reportDate;
+                        usnaLetter.style.display = "none";
+                        document.body.appendChild(usnaLetter);
+                        optionSelected = true;
                     }
-
+                    if (!optionSelected)
+                        alert("Please select at least one report option to generate");
                 }
                 else
                     alert("Select a date")

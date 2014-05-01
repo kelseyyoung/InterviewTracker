@@ -66,7 +66,7 @@ namespace InterviewTracker.Controllers
 
             //Get counts for each source for all interviewed candidates
             int nupocCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NUPOC").Count();
-            int nrotcCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NRTOC").Count();
+            int nrotcCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NROTC").Count();
             int sta21nCount = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "STA21N").Count();
 
             if (nupocCount > 0)
@@ -82,21 +82,21 @@ namespace InterviewTracker.Controllers
             if (sta21nCount > 0)
                 reportBody = reportBody.Replace("sta21nCount", sta21nCount.ToString());
             else
-                reportBody = reportBody.Replace("<li>STA21N:&#9; sta21nCount</li>", "");
+                reportBody = reportBody.Replace("<li>STA21(N):&#9; sta21nCount</li>", "");
 
             //Filter down to only accepted candidates
             alumniCandidates = alumniCandidates.Where(b => b.Decision == true && b.Accepted == true);
 
             //Filter into lists for each source
             var nupocAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NUPOC");
-            var nrotcAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NRTOC");
+            var nrotcAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "NROTC");
             var sta21nAlumni = alumniCandidates.Where(y => y.BioData.Sources.SourcesValue == "STA21N");
 
             //Calculate number of candidates selected for each source
             int allSelectedCount = alumniCandidates.Count();
-            nupocCount = nupocAlumni.Count();
-            nrotcCount = nrotcAlumni.Count();
-            sta21nCount = sta21nAlumni.Count();
+            int acceptedNupocCount = nupocAlumni.Count();
+            int acceptedNrotcCount = nrotcAlumni.Count();
+            int acceptedSta21nCount = sta21nAlumni.Count();
 
             reportBody = reportBody.Replace("numCandidatesSelected", allSelectedCount.ToString());
 
@@ -109,9 +109,9 @@ namespace InterviewTracker.Controllers
             reportBody = reportBody.Replace("selectedPercent", percentage.ToString("0.00") + "%");
 
             //Fill total candidates selected for each source
-            reportBody = reportBody.Replace("numNupoc", nupocCount.ToString());
-            reportBody = reportBody.Replace("numNrotc", nrotcCount.ToString());
-            reportBody = reportBody.Replace("numSta21n", sta21nCount.ToString());
+            reportBody = reportBody.Replace("numNupoc", acceptedNupocCount.ToString());
+            reportBody = reportBody.Replace("numNrotc", acceptedNrotcCount.ToString());
+            reportBody = reportBody.Replace("numSta21n", acceptedSta21nCount.ToString());
 
             string[] programs = { "SUB", "SWO", "INST", "NR" };
             string currentProgram;
@@ -129,7 +129,7 @@ namespace InterviewTracker.Controllers
                 currentProgram = programs[i];
                 nupoc = nupocAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
                 nrotc = nrotcAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
-                sta21n = nrotcAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
+                sta21n = sta21nAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
 
                 programCounts[i] = nupoc + nrotc + sta21n;
 
@@ -350,7 +350,7 @@ namespace InterviewTracker.Controllers
             System.Diagnostics.Debug.WriteLine(date);
             DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-            string fileName = "InterviewResults_" + dt.ToShortDateString().Replace("/", "-") + ".docx";
+            string fileName = "FinalInterviewResults_" + dt.ToShortDateString().Replace("/", "-") + ".docx";
             System.Diagnostics.Debug.WriteLine(fileName);
 
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
@@ -400,66 +400,6 @@ namespace InterviewTracker.Controllers
 
                 
                 string resultsString = "";
-                /*
-                if (interview.NR != null)
-                {
-                    if (interview.NR.Value) resultsString = resultsString + "Yes-NR DUTY";
-                    else resultsString = resultsString + "No-NR DUTY";
-                }
-                if (interview.INST != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.INST.Value) resultsString = resultsString + "Yes-INST";
-                    else resultsString = resultsString + "No-INST";
-                }
-                if (interview.NPS != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.NPS.Value) resultsString = resultsString + "Yes-NPS";
-                    else resultsString = resultsString + "No-NPS";
-                }
-                if (interview.PXO != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.PXO.Value) resultsString = resultsString + "Yes-PXO";
-                    else resultsString = resultsString + "No-PXO";
-                }
-                if (interview.EDO != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.EDO.Value) resultsString = resultsString + "Yes-EDO";
-                    else resultsString = resultsString + "No-EDO";
-                }
-                if (interview.ENLTECH != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.ENLTECH.Value) resultsString = resultsString + "Yes-ENLTECH";
-                    else resultsString = resultsString + "No-ENLTECH";
-                }
-                if (interview.NR1 != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.NR1.Value) resultsString = resultsString + "Yes-NR1";
-                    else resultsString = resultsString + "No-NR1";
-                }
-                if (interview.SUPPLY != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.SUPPLY.Value) resultsString = resultsString + "Yes-SUPPLY";
-                    else resultsString = resultsString + "No-SUPPLY";
-                }
-                if (interview.EOOW != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.EOOW.Value) resultsString = resultsString + "Yes-EOOW";
-                    else resultsString = resultsString + "No-EOOW";
-                }
-                if (interview.DOE != null)
-                {
-                    if (!resultsString.Equals("")) resultsString = resultsString + "; ";
-                    if (interview.DOE.Value) resultsString = resultsString + "Yes-DOE";
-                    else resultsString = resultsString + "No-DOE";
-                }*/
                 bool found = false;
                 foreach(Program program in bioData.Programs)
                 {
@@ -485,8 +425,13 @@ namespace InterviewTracker.Controllers
                     }
                     resultsString = resultsString + "Yes-" + interview.Program.ProgramValue;
                 }
+
+                if (interview.PreSchool == true)
+                {
+                    resultsString = resultsString + "<br>Pre-School Required";
+                }
+
                 row = row.Replace("results", resultsString);
-                
                 reportBody = reportBody + row;
             }
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
@@ -1023,6 +968,110 @@ namespace InterviewTracker.Controllers
                 reportBody = reportBody + row;
             }
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
+            string reportHtml = header + reportBody + footer;
+            generateReport(fileName, reportHtml, false, false);
+        }
+
+        public void generateUSNALetter(string date)
+        {
+            date = date.Substring(0, "DDD MMM dd yyyy 00:00:00".Length);
+            System.Diagnostics.Debug.WriteLine(date);
+            DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            string fileName = "USNALetter_" + dt.ToShortDateString() + ".docx";
+            string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
+            string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
+            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/usnaLetter.html"));
+
+            var year = dt.Year;
+            var month = dt.Month;
+            var day = dt.Day;
+
+            var usnaCandidateList = db.Admiral.Where(x => x.Accepted == true
+                && x.Decision == true
+                && x.Date.Year == year
+                && x.Date.Month == month
+                && x.Date.Day == day
+                && x.BioData.Sources.SourcesValue == "USNA")
+                .OrderBy(y => y.BioData.LName).ThenBy(z => z.BioData.FName).ToList();
+
+            if (usnaCandidateList.Count() > 0)
+                reportBody = reportBody.Replace("fygOfClass", usnaCandidateList.FirstOrDefault().BioData.FYG.Value.ToString());
+            else
+                reportBody = reportBody.Replace("fygOfClass", "N/A");
+
+            string candidateNames = "";
+            string candidateSSN = "";
+            foreach (Admiral candidate in usnaCandidateList)
+            {
+                if (candidateNames != "")
+                {
+                    candidateNames = candidateNames + "<br>";
+                    candidateSSN = candidateSSN + "<br>";
+                }
+                candidateNames = candidateNames + "&#9;" + candidate.BioData.LName + ", " + candidate.BioData.FName;
+                candidateSSN = candidateSSN + candidate.BioData.SSN;
+            }
+            if(candidateNames == "")
+            {
+                candidateNames = "&#9;<i>No candidates from the USNA were accepted on " + dt.ToString("dd MMMM yyyy") + "</i>";
+                reportBody = reportBody.Replace("<table style=\"width=400px\"><tr><td>namesOfAccepted</td><td>ssnOfAccepted</td></tr></table>", candidateNames);
+            }
+
+            reportBody = reportBody.Replace("dateOfInterview", dt.ToString("dd MMMM yyyy"));
+            reportBody = reportBody.Replace("namesOfAccepted", candidateNames);
+            reportBody = reportBody.Replace("ssnOfAccepted", candidateSSN);
+            
+            string reportHtml = header + reportBody + footer;
+            generateReport(fileName, reportHtml, false, false);
+        }
+        public void generateEoDLetter(string date)
+        {
+            date = date.Substring(0, "DDD MMM dd yyyy 00:00:00".Length);
+            System.Diagnostics.Debug.WriteLine(date);
+            DateTime dt = DateTime.ParseExact(date, "ddd MMM d yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            string fileName = "EoDLetter_" + dt.ToShortDateString() + ".docx";
+            string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
+            string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
+            string reportBody = System.IO.File.ReadAllText(Server.MapPath("~/Templates/EoDLetter.html"));
+
+            reportBody = reportBody.Replace("nameOfAdmiral", "(!!!Enter Admiral Name!!!)");
+
+            var year = dt.Year;
+            var month = dt.Month;
+            var day = dt.Day;
+
+            var candidateList = db.Admiral.Where(x=> x.Accepted == true 
+                && x.Decision == true 
+                && x.Date.Year == year
+                && x.Date.Month == month
+                && x.Date.Day == day
+                && x.PreSchool == true)
+                .OrderBy(y=>y.BioData.LName).ThenBy(z=>z.BioData.FName).ToList();
+
+            string admiralComments = "";
+            string requiresPreSchool = "";
+            foreach(Admiral candidate in candidateList)
+            {
+                if(admiralComments != "")
+                {
+                    admiralComments = admiralComments + "<br>";
+                    requiresPreSchool = requiresPreSchool + "<br>";
+                }
+                admiralComments = admiralComments + "&#9;" + candidate.BioData.LName + ", " + candidate.BioData.FName + " :";
+                requiresPreSchool = requiresPreSchool + "Requires Pre-School";
+            }
+            if(admiralComments == "")
+            {
+                admiralComments = "&#9;<i>No candidates from " + dt.ToString("dd MMMM yyyy") + " require pre-school</i>";
+                reportBody = reportBody.Replace("<table style=\"width:300px\"><tr><td>admiralComments</td><td>requiresPreSchool</td></tr></table>", "<p>" + admiralComments + "</p>");
+            }
+
+            reportBody = reportBody.Replace("dateOfInterview", dt.ToString("dd MMMM yyyy"));
+            reportBody = reportBody.Replace("admiralComments", admiralComments);
+            reportBody = reportBody.Replace("requiresPreSchool", requiresPreSchool);
+
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false, false);
         }
