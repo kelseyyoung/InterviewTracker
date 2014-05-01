@@ -350,6 +350,25 @@ namespace InterviewTracker.Migrations
                 UserGroup = UserGroup.ADMIN.ToString()
             };
 
+            User AdministratorUser = new User
+            {
+                LName = "Admin",
+                Initials = "AA",
+                LoginID = "Administrator",
+                Code = "08C",
+                NR = true,
+                INST = true,
+                NPS = true,
+                PXO = true,
+                EDO = true,
+                ENLTECH = true,
+                NR1 = true,
+                SUPPLY = true,
+                EOOW = true,
+                DOE = true,
+                UserGroup = UserGroup.ADMIN.ToString()
+            };
+
             context.User.AddOrUpdate(i => i.UserID,
                 Admin,
                 Coord,
@@ -357,7 +376,8 @@ namespace InterviewTracker.Migrations
                 Interviewer2,
                 Interviewer3,
                 KelseyUser,
-                DewayneUser
+                DewayneUser,
+                AdministratorUser
             );
 
             // Classes
@@ -996,6 +1016,123 @@ namespace InterviewTracker.Migrations
             context.Waiver.AddOrUpdate(i => i.WaiverID,
                 SteveWaiver
             );
+
+            /** Lots of data for chart generation **/
+            // Month: (i % 4) + 1 (Jan-Apr)
+            // Day: i + 1 (1-27)
+
+            string letters = "abcdefghijklmnopqrstuvwxyz";
+            List<Sources> SourcesList = new List<Sources> { USNA, NROTC, NUPOC, STA21N };
+            List<Program> ProgramsList = new List<Program> { NR, INST, NPS };
+            List<Ethnicity> EthnicitiesList = new List<Ethnicity> { CAUC, BLACK, HISP, API, OTHER };
+            List<User> InterviewersList = new List<User> { Interviewer, Interviewer2, Interviewer3 };
+            for (var i = 0; i < 26; i++)
+            {
+                // Create BioData
+                Sex sex;
+                if (i % 2 == 0)
+                {
+                    // If i is even, they are Male
+                    sex = Sex.M;
+                }
+                else 
+                {
+                    // If i is odd, they are female
+                    sex = Sex.F;
+                }
+                Sources personSource = SourcesList.ElementAt((SourcesList.Count + i) % SourcesList.Count);
+                Ethnicity personEthnicity = EthnicitiesList.ElementAt((EthnicitiesList.Count + i) % EthnicitiesList.Count);
+                string ssn;
+                if (i < 10)
+                {
+                    ssn = "123-45-678" + i;
+                }
+                else
+                {
+                    ssn = "123-45-67" + i;
+                }
+                BioData Person = new BioData
+                {
+                    SSN = ssn,
+                    LName = "Doe" + letters[i],
+                    MName = "Reginald" + letters[i],
+                    FName = "Person" + letters[i],
+                    DOB = DateTime.Parse("1992-4-" + (i + 1)),
+                    Sex = sex.ToString(),
+                    Programs = ProgramsList,
+                    FYG = 2014,
+                    Ethnicity = personEthnicity,
+                    Sources = personSource
+                };
+                // Add BioData
+                context.BioData.AddOrUpdate(x => x.ID, Person);
+
+                // Create SchoolsAttended
+                SchoolsAttended PersonSchoolsAttended = new SchoolsAttended
+                {
+                    YearStart = 2005,
+                    YearEnd = 2008,
+                    Graduated = true,
+                    Comments = "Great student",
+                    BioData = Person,
+                    School = UofA
+                };
+                // Add SchoolsAttended
+                context.SchoolsAttended.AddOrUpdate(x => x.SchoolsAttendedID, PersonSchoolsAttended);
+
+                // Create Interview
+                User personInterviewer = InterviewersList.ElementAt((InterviewersList.Count + i) % InterviewersList.Count);
+                Interview PersonFinalInterview = new Interview
+                {
+                    Date = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 12:00:00"),
+                    Status = Status.Final.ToString(),
+                    Location = "Room 757",
+                    Comments = "This is a test",
+                    EditedComments = "This is an edited test",
+                    StartTime = DateTime.Parse("2013/" + ((i % 4) + 1)+ "/" + (i + 1) + " 11:00:00"),
+                    EndTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 11:30:00"),
+                    Duration = 28,
+                    EditTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 2) + " 9:30:00"),
+                    InterviewerUser = personInterviewer,
+                    BioData = Person
+                };
+                // Add Interview
+                context.Interview.AddOrUpdate(x => x.InterviewID, PersonFinalInterview);
+
+                Program chosenProgram = ProgramsList.ElementAt((ProgramsList.Count + i) % ProgramsList.Count);
+                if (chosenProgram == NPS)
+                {
+                    // Choose SUB or SWO
+                    if (i % 2 == 0)
+                    {
+                        chosenProgram = SUB;
+                    }
+                    else
+                    {
+                        chosenProgram = SWO;
+                    }
+                }
+                // Create Admiral
+                Admiral PersonAdmiral = new Admiral
+                {
+                    Decision = true,
+                    Accepted = true,
+                    Comments = "Great person",
+                    NP500 = false,
+                    NSTC = true,
+                    SelfStudy = true,
+                    PreSchool = false,
+                    Letter = false,
+                    LetterReceived = false,
+                    AdmiralNotes = "Welcome aboard",
+                    InviteBack = false,
+                    BioData = Person,
+                    Program = chosenProgram, //TODO: this probably isn't the best
+                    Date = new DateTime(2013, (i % 4) + 1, i + 1, 12, 0, 0)
+                };
+                // Add Admiral
+                context.Admiral.AddOrUpdate(x => x.AdmiralID, PersonAdmiral);
+            }
             
         }
     }
