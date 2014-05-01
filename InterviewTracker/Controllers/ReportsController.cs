@@ -16,6 +16,7 @@ using InterviewTracker.Models;
 using InterviewTracker.DAL;
 using InterviewTracker.Filters;
 using System.Web.Helpers;
+using System.Web.UI.DataVisualization.Charting;
 
 namespace InterviewTracker.Controllers
 {
@@ -117,12 +118,20 @@ namespace InterviewTracker.Controllers
             int nupoc, nrotc, sta21n;
             int nupocTotal = 0, nrotcTotal = 0, sta21nTotal = 0;
 
+            // Array for chart creation
+            // 4 slots for each program
+            // 5th slot for 'no contract'
+            int[] programCounts = new int[5];
+            programCounts[4] = 0;
+
             for (int i = 0; i < programs.Length; ++i)
             {
                 currentProgram = programs[i];
                 nupoc = nupocAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
                 nrotc = nrotcAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
                 sta21n = nrotcAlumni.Where(b => b.Program.ProgramValue == currentProgram).Count();
+
+                programCounts[i] = nupoc + nrotc + sta21n;
 
                 reportBody = reportBody.Replace("nupoc" + currentProgram, nupoc.ToString());
                 reportBody = reportBody.Replace("nrotc" + currentProgram, nrotc.ToString());
@@ -134,24 +143,38 @@ namespace InterviewTracker.Controllers
             }
 
             if (nupocTotal < nupocCount)
+            {
                 reportBody = reportBody.Replace("nupocNo", (nupocCount - nupocTotal).ToString());
+                programCounts[4] += (nupocCount - nupocTotal);
+            }
             else
                 reportBody = reportBody.Replace("<li>No Contract:&#9; nupocNo</li>", "");
 
             if (nrotcTotal < nrotcCount)
+            {
                 reportBody = reportBody.Replace("nrotcNo", (nrotcCount - nrotcTotal).ToString());
+                programCounts[4] += (nrotcCount - nrotcTotal);
+            }
             else
                 reportBody = reportBody.Replace("<li>No Contract:&#9; nrotcNo</li>", "");
 
             if (sta21nTotal < sta21nCount)
+            {
                 reportBody = reportBody.Replace("sta21nNo", (sta21nCount - sta21nTotal).ToString());
+                programCounts[4] += (sta21nCount - sta21nTotal);
+            }
             else
                 reportBody = reportBody.Replace("<li>No Contract:&#9; sta21nNo</li>", "");
 
+            // Create chart
+            string[] allPrograms = new List<string>(programs.Concat<string>(new string[] { "No Contract" })).ToArray();
+            string uuid = generateSchoolChart(allPrograms, programCounts);
+            reportBody = reportBody.Replace("__chart__", getChartPath(uuid));
             //Compile and generate report
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false, false);
-
+            // Delete chart when finished
+            deleteChart(uuid);
         }
 
         public void generateCandidateReport(int id)
@@ -655,6 +678,16 @@ namespace InterviewTracker.Controllers
             nrTable = nrTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Program.ProgramValue == "NR").Count().ToString());
             instTable = instTable.Replace("total" + " " + "prior", priorCandidates.Where(x => x.Program.ProgramValue == "INST").Count().ToString());
 
+            // Arrays for chart creation
+            // row 0-4: USNA, NROTC, NUPOC, STA21, OTHER
+            // 13 cols: prior + 12 months
+            int[,] overallChartArray = new int[5, 13];
+            int[,] subChartArray = new int[5, 13];
+            int[,] surfChartArray = new int[5, 13];
+            // Instructor and NR have fewer rows
+            int[,] nrChartArray = new int[3, 13]; // only NROTC and NUPOC (1, 2) and OTHER
+            int[,] instChartArray = new int[2, 13]; // only NUPOC (2) and OTHER
+
             //Loop for sorting prior candidates by source
             for (int j = 0; j < mainSources.Length + 1; ++j)
             {
@@ -699,6 +732,27 @@ namespace InterviewTracker.Controllers
                 cumulativeSourceCounts[2, j] += surfList.Count(); //table index 2 is for surface
                 cumulativeSourceCounts[3, j] += nrList.Count(); //table index 3 is for nr engineering
                 cumulativeSourceCounts[4, j] += instrList.Count(); //table index 4 is for instructor
+                // Add to chart arrays
+                overallChartArray[j, 0] = sourceList.Count();
+                subChartArray[j, 0] = subList.Count();
+                surfChartArray[j, 0] = surfList.Count();
+                if (j == 1 || j == 2) // Only add for NROTC and NUPOC
+                {
+                    nrChartArray[j - 1, 0] = nrList.Count();
+                }
+                else if (j == mainSources.Length)
+                {
+                    // Other for NR table
+                    nrChartArray[2, 0] = nrList.Count();
+                }
+                if (j == 2) // Only add for NUPOC
+                {
+                    instChartArray[j - 2, 0] = instrList.Count();
+                }
+                else if (j == mainSources.Length)
+                {
+                    instChartArray[1, 0] = instrList.Count();
+                }
             }
 
             //Loop for looking at each month of current year (either fiscal or calender)
@@ -786,6 +840,18 @@ namespace InterviewTracker.Controllers
                         surfTable = surfTable.Replace(mainSources[j].ToLower() + " " + (i + 1) + "_", cumulativeSourceCounts[2, j].ToString());
                         nrTable = nrTable.Replace(mainSources[j].ToLower() + " " + (i + 1) + "_", cumulativeSourceCounts[3, j].ToString());
                         instTable = instTable.Replace(mainSources[j].ToLower() + " " + (i + 1) + "_", cumulativeSourceCounts[4, j].ToString());
+                        // Update chart arrays
+                        overallChartArray[j, i + 1] = cumulativeSourceCounts[0, j];
+                        subChartArray[j, i + 1] = cumulativeSourceCounts[1, j];
+                        surfChartArray[j, i + 1] = cumulativeSourceCounts[2, j];
+                        if (j == 1 || j == 2) // Only add for NROTC and NUPOC
+                        {
+                            nrChartArray[j - 1, i + 1] = cumulativeSourceCounts[3, j];
+                        }
+                        if (j == 2) // Only add for NUPOC
+                        {
+                            instChartArray[j - 2, i + 1] = cumulativeSourceCounts[4, j];
+                        }
                     }
                     else if (j == mainSources.Length) //"other" source
                     {
@@ -818,6 +884,13 @@ namespace InterviewTracker.Controllers
                         surfTable = surfTable.Replace("other" + " " + (i + 1) + "_", cumulativeSourceCounts[2, j].ToString());
                         nrTable = nrTable.Replace("other" + " " + (i + 1) + "_", nrOther.ToString());
                         instTable = instTable.Replace("other" + " " + (i + 1) + "_", instOther.ToString());
+                        // Update chart arrays
+                        overallChartArray[j, i + 1] = cumulativeSourceCounts[0, j];
+                        subChartArray[j, i + 1] = cumulativeSourceCounts[1, j];
+                        surfChartArray[j, i + 1] = cumulativeSourceCounts[2, j];
+                        // Add in Other row
+                        nrChartArray[2, i + 1] = nrOther;
+                        instChartArray[1, i + 1] = instOther;
                     }
                 }
                 reportBody = reportBody.Replace("total" + " " + (i + 1) + "_", cumulativeSourceCounts[0, totalsIndex].ToString());
@@ -862,6 +935,12 @@ namespace InterviewTracker.Controllers
                 }
             }
 
+            // Generate charts
+            string overallUuid = generateFYChart(overallChartArray, new string[] {"USNA", "NROTC", "NUPOC", "STA-21N", "OTHER"});
+            string subUuid = generateFYChart(subChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" });
+            string surfUuid = generateFYChart(surfChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" });
+            string instUuid = generateFYChart(instChartArray, new string[] {"NUPOC", "OTHER"});
+            string nrUuid = generateFYChart(nrChartArray, new string[] {"NROTC", "NUPOC", "OTHER"});
             reportBody = reportBody + subTable + surfTable + instTable + nrTable;
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, true, true);
@@ -964,14 +1043,12 @@ namespace InterviewTracker.Controllers
                 endFYG = end.ToString();
                 startFYG = endFYG;
             }
-            string chartPath = generateChart();
 
             string fileName = "SAT-ACT Scores FYG " + startFYG + "-" + endFYG;
             string header = System.IO.File.ReadAllText(Server.MapPath("~/Templates/header.html"));
             string footer = System.IO.File.ReadAllText(Server.MapPath("~/Templates/footer.html"));
             string reportBody = "<p><b>SAT/ACT Scores from FYG " + startFYG + " to FYG " + endFYG + "</b></p> <table style=\"width:600px\">";
-            footer = "</table><p><img src='" + chartPath +"' alt='' /></p>" +
-                "<p><img src='http://www.petfinder.com/wp-content/uploads/2012/11/99059361-choose-cat-litter-632x475.jpg' alt='' /></p>" + footer;
+            footer = "</table>" + footer;
             string nonApplicable = "";
 
             string nextEntry;
@@ -1001,8 +1078,6 @@ namespace InterviewTracker.Controllers
 
                 reportBody = reportBody + nextEntry;
             }
-            //reportBody = reportBody.Replace("__chart__", generateChart());
-            //reportBody = reportBody.Replace("__chart__", "http://localhost:50741/Content/images/test.png");
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false, false);
         }
@@ -1239,20 +1314,6 @@ namespace InterviewTracker.Controllers
                     generateCandidateReports(bioIDs, fileName);
                 }
             }
-        }
-
-        private string generateChart()
-        {
-            var filePath = Server.MapPath("~/Content/Images/test.jpg");
-            var myChart = new Chart(width: 600, height: 400)
-                .AddTitle("Chart Title")
-                .AddSeries(
-                    name: "Employee",
-                    xValue: new[] { "Peter", "Andrew", "Julie", "Mary", "Dave" },
-                    yValues: new[] { "2", "6", "4", "5", "3" })
-                .Save(filePath, "jpg");
-            //var chartString = "data:image/png;base64," + Convert.ToBase64String(myChart);
-            return filePath;
         }
 
         public void generateReport(String filename, String html, bool landscape, bool tablePageBreaks)
@@ -1583,5 +1644,66 @@ namespace InterviewTracker.Controllers
             return results;
         }
 
+        private string generateFYChart(int[,] sourceCounts, string[] sources)
+        {
+            string uuid = Guid.NewGuid().ToString(); // Generate unique ID for file name
+            var filePath = getChartPath(uuid);
+
+            var myChart = new System.Web.Helpers.Chart(width: 700, height: 200);
+            for (var i = 0; i < sources.Length; i++)
+            {
+                int[] temp = new int[13];
+                for (var j = 0; j < 13; j++)
+                {
+                    temp[j] = sourceCounts[i, j];
+                }
+                myChart.AddSeries(sources[i],
+                        chartType: SeriesChartType.StackedBar.ToString(),
+                        xValue: new[] { "Prior", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept" },
+                        yValues: temp);
+            }
+            myChart.Save(filePath, "jpg");
+            return uuid;
+        }
+
+        private string generateSchoolChart(string[] sources, int[] sourceCounts)
+        {
+            string uuid = Guid.NewGuid().ToString();
+            var filePath = getChartPath(uuid);
+            //Theme to hide slice labels
+            string chartTheme = @"<Chart>
+                                    <Series>
+                                        <Series Name=""Sources"" ChartType=""Pie"" Label=""#PERCENT{P2}"" LegendText=""#VALX"" CustomProperties=""PieLabelStyle=Outside"">
+                                        </Series>
+                                    </Series>
+                                    <Legends>
+                                        <Legend _Template_=""All"" Docking=""Bottom"">
+                                        </Legend>
+                                    </Legends>
+                                </Chart>";
+            var myChart = new System.Web.Helpers.Chart(width: 250, height: 400, theme: chartTheme);
+            myChart.AddTitle("Candidates Selected");
+            myChart.AddSeries(
+                "Sources", chartType: SeriesChartType.Pie.ToString(),
+                xValue: sources,
+                yValues: sourceCounts
+                );
+            myChart.AddLegend("Sources");
+            myChart.Save(filePath, "jpg");
+            return uuid;
+        }
+
+        private void deleteChart(string uuid)
+        {
+            FileInfo TheFile = new FileInfo(getChartPath(uuid));
+            if (TheFile.Exists)
+            {
+                System.IO.File.Delete(getChartPath(uuid));
+            }
+        }
+
+        private string getChartPath(string uuid) {
+            return Server.MapPath("~/Content/images/" + uuid + ".jpg");
+        }
     }
 }
