@@ -132,7 +132,7 @@ namespace InterviewTracker.Controllers.API
         [HttpGet]
         public FYGoals GetByYearAndSource(int FY, string Source)
         {
-            return db.FYGoals.Where(y => y.FY == FY).Where(x => x.Source == Source).FirstOrDefault();
+            return db.FYGoals.Where(y => y.FY == FY && y.Source == Source).FirstOrDefault();
         }
 
         protected override void Dispose(bool disposing)
