@@ -41,6 +41,7 @@ namespace InterviewTracker.DAL
 
             // Prevents cascading delete on all objects
             // TODO: possibly change this to only prevent for some objects
+            // There is a cycle with BioData, ClassesAttended, and SchoolsAttended
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             // Base call

@@ -96,6 +96,36 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
+            // Remove all entities with foreign keys first
+            
+            // Screen
+            db.Screen.Where(x => x.BioDataID == id).ToList().ForEach(y => db.Screen.Remove(y));
+            // Waiver
+            db.Waiver.Where(x => x.BioDataID == id).ToList().ForEach(y => db.Waiver.Remove(y));
+            // RD
+            db.RD.Where(x => x.BioDataID == id).ToList().ForEach(y => db.RD.Remove(y));
+            // Admiral
+            db.Admiral.Where(x => x.BioDataID == id).ToList().ForEach(y => db.Admiral.Remove(y));
+            // ClassesAttended
+            db.ClassesAttended.Where(x => x.BioDataID == id).ToList().ForEach(y => db.ClassesAttended.Remove(y));
+            // Duty History and Duty Station
+            List<DutyHistory> dhs = db.DutyHistory.Where(x => x.BioDataID == id).ToList();
+            foreach (var dh in dhs)
+            {
+                db.DutyStation.Where(x => x.DutyHistoryID == dh.DutyHistoryID).ToList().ForEach(y => db.DutyStation.Remove(y));
+                db.DutyHistory.Remove(dh);
+            }
+            // Interview
+            db.Interview.Where(x => x.BioDataID == id).ToList().ForEach(y => db.Interview.Remove(y));
+            // SchoolsAttended, Degree, SchoolStandings
+            List<SchoolsAttended> sas = db.SchoolsAttended.Where(x => x.BioDataID == id).ToList();
+            foreach (var sa in sas)
+            {
+                db.Degree.Where(x => x.SchoolsAttendedID == sa.SchoolsAttendedID).ToList().ForEach(y => db.Degree.Remove(y));
+                db.SchoolStandings.Where(x => x.SchoolsAttendedID == sa.SchoolsAttendedID).ToList().ForEach(y => db.SchoolStandings.Remove(y));
+                db.SchoolsAttended.Remove(sa);
+            }
+            
             db.BioData.Remove(biodata);
 
             try

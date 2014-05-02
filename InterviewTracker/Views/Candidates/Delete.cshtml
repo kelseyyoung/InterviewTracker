@@ -188,9 +188,57 @@
         </table>
     </div>
 </div>
+<div id="dialog-confirm" title="">
+    <p></p>
+    <div>
+        <label class="control-label" for="username-confirm">Username</label>
+        <input type="text" id="username-confirm" />
+    </div>
+    <div id="delete-errors" class="alert alert-error hide">
+        <p></p>
+    </div>
+</div>
 
 @section AddToScripts {
     <script type="text/javascript">
+
+        /**
+        * Function to show and set data/callbacks for a confirmation dialog
+        * Params:
+        *  title - (String) Title for the new dialog
+        *  message - (String) Message for the new dialog
+        *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
+        *  okFunction - (Function) Callback function on OK press
+        */
+        function showDialog(title, message, okOnly, okFunction) {
+            $("#dialog-confirm > p").html(message);
+            var buttons;
+            if (okOnly) {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        //$(this).dialog("close");
+                    }
+                }
+            } else {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        //$(this).dialog("close");
+                    },
+                    Close: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }
+
+            $("#dialog-confirm").dialog({
+                title: title,
+                modal: true,
+                buttons: buttons
+            });
+            $("#dialog-confirm").dialog("open");
+        }
 
         /**
          * Converts a serialized form array to a string that can be used for $filter
@@ -412,8 +460,42 @@
             $(document).on("click", ".delete-button", function (e) {
                 e.preventDefault();
                 console.log($(this).data("id"));
-                var id = $(this).data("id");
+                var id = $(this).data("id"); // This is the BioData ID
+                showDialog("Confirm Deletion", "Please confirm the candidate deletion by entering your username", false, function () {
+                    // Verify username
+                    var username = $("#username-confirm").val();
+                    if (username != "@ViewBag.user.LoginID") {
+                        console.log("here");
+                        $("#delete-errors > p").html("The username entered does not match your username");
+                        $("#delete-errors").removeClass("hide");
+                        return;
+                    }
+                    // Show submitting wheel
+                    // Delete candidate
+                    $.ajax({
+                        url: baseURL + "/api/BioData/Delete/" + id,
+                        type: "Delete",
+                        success: function (data) {
+                            console.log("success");
+                            console.log(data);
+                            $("#delete-errors").addClass("hide");
+                            $("#dialog-confirm").dialog("open");
+                            // Refresh page
+                            window.location.href = "@Url.Action("Index", "Candidates")";
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                        }
+                    });
+                });
             });
+
+            $("#dialog-confirm").dialog({
+                autoOpen: false
+            });
+
+           
 
         }); // End document ready
     </script>
