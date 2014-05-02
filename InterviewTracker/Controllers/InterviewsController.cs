@@ -28,6 +28,8 @@ namespace InterviewTracker.Controllers
                 biodataPrograms.Add(p.ProgramValue);
             }
             ViewBag.biodataPrograms = biodataPrograms;
+            ViewBag.swoProgram = db.Program.Where(x => x.ProgramValue == "SWO").FirstOrDefault();
+            ViewBag.subProgram = db.Program.Where(x => x.ProgramValue == "SUB").FirstOrDefault();
 
             // If interviewer and this isn't your interview
             // Redirect to unauth
