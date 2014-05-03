@@ -11,7 +11,7 @@
     [LetterReceived] [bit] NOT NULL,
     [AdmiralNotes] [nvarchar](max),
     [InviteBack] [bit] NOT NULL,
-    [SERVSEL] [nvarchar](max) NOT NULL,
+    [Date] [datetime] NOT NULL,
     [BioDataID] [int] NOT NULL,
     [ProgramID] [int] NOT NULL,
     CONSTRAINT [PK_dbo.Admiral] PRIMARY KEY ([AdmiralID])
@@ -181,7 +181,7 @@ CREATE TABLE [dbo].[Interview] (
     [EditedComments] [nvarchar](max),
     [StartTime] [datetime] NOT NULL,
     [EndTime] [datetime] NOT NULL,
-    [Duration] [int] NOT NULL,
+    [Duration] [int],
     [EditTime] [datetime],
     [NR] [bit],
     [INST] [bit],
@@ -243,6 +243,7 @@ CREATE TABLE [dbo].[FYGoals] (
     [FY] [int] NOT NULL,
     [Source] [nvarchar](max) NOT NULL,
     [SUB] [int] NOT NULL,
+    [SUBF] [int] NOT NULL,
     [SWO] [int] NOT NULL,
     [NR] [int] NOT NULL,
     [INST] [int] NOT NULL,
@@ -293,3 +294,9 @@ ALTER TABLE [dbo].[ProgramBioData] ADD CONSTRAINT [FK_dbo.ProgramBioData_dbo.Pro
 ALTER TABLE [dbo].[ProgramBioData] ADD CONSTRAINT [FK_dbo.ProgramBioData_dbo.BioData_BioData_ID] FOREIGN KEY ([BioData_ID]) REFERENCES [dbo].[BioData] ([ID]) ON DELETE CASCADE
 ALTER TABLE [dbo].[ScreenProgram] ADD CONSTRAINT [FK_dbo.ScreenProgram_dbo.Screen_Screen_ScreenID] FOREIGN KEY ([Screen_ScreenID]) REFERENCES [dbo].[Screen] ([ScreenID]) ON DELETE CASCADE
 ALTER TABLE [dbo].[ScreenProgram] ADD CONSTRAINT [FK_dbo.ScreenProgram_dbo.Program_Program_ProgramID] FOREIGN KEY ([Program_ProgramID]) REFERENCES [dbo].[Program] ([ProgramID]) ON DELETE CASCADE
+CREATE TABLE [dbo].[__MigrationHistory] (
+    [MigrationId] [nvarchar](255) NOT NULL,
+    [Model] [varbinary](max) NOT NULL,
+    [ProductVersion] [nvarchar](32) NOT NULL,
+    CONSTRAINT [PK_dbo.__MigrationHistory] PRIMARY KEY ([MigrationId])
+)
