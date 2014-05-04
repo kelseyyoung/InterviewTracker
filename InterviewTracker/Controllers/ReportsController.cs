@@ -439,7 +439,6 @@ namespace InterviewTracker.Controllers
             generateReport(fileName, reportHtml, false, false);
         }
 
-
         public void generateFYReport(String year, String dateString, Boolean byFY)
         {
             DateTime date;
@@ -938,7 +937,8 @@ namespace InterviewTracker.Controllers
             var day = dt.Day;
             foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year 
                           && x.Date.Value.Month == month 
-                          && x.Date.Value.Day == day).GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault()).ToList())
+                          && x.Date.Value.Day == day).GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault())
+                          .OrderBy(a => a.BioData.LName).ThenBy(b => b.BioData.FName).ToList())
             {
                 BioData bioData = interview.BioData;
                 row = System.IO.File.ReadAllText(Server.MapPath(rowTemplate));
@@ -1039,6 +1039,7 @@ namespace InterviewTracker.Controllers
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, false, false);
         }
+        
         public void generateEoDLetter(string date)
         {
             date = date.Substring(0, "DDD MMM dd yyyy 00:00:00".Length);
@@ -1162,9 +1163,12 @@ namespace InterviewTracker.Controllers
 
             string row;
             int index = 0;
-            foreach(Interview interview in db.Interview.Where(x => x.Date.Value.Year == year 
+            List<Interview> candidateList = db.Interview.Where(x => x.Date.Value.Year == year 
                         && x.Date.Value.Month == month 
-                        && x.Date.Value.Day == day).GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault()).ToList())
+                        && x.Date.Value.Day == day).GroupBy(y => y.BioDataID).Select(z => z.FirstOrDefault())
+                        .OrderBy(a=> a.BioData.LName).ThenBy(b=> b.BioData.FName).ToList();
+
+            foreach(Interview interview in candidateList)
             {
                 if(index % 2 == 0)
                 {
@@ -1194,7 +1198,8 @@ namespace InterviewTracker.Controllers
 
             reportBody = reportBody + System.IO.File.ReadAllText(Server.MapPath("~/Templates/tableEnd.html"));
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false, false);
+            GenerateLabelsDocument(fileName, candidateList);
+            //generateReport(fileName, reportHtml, false, false);
         }
 
         public void generateBioIDCard (int id)
@@ -1288,6 +1293,7 @@ namespace InterviewTracker.Controllers
 
                     }
                 }
+                if(mostRecentDH != null)
                 newTable = newTable.Replace("rank", mostRecentDH.Rank);
 
                 string program = "";
@@ -1343,7 +1349,7 @@ namespace InterviewTracker.Controllers
             }
 
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, false, false);
+            generateReport(fileName, reportHtml, true, true);
         }
 
         public void generateBiosByDateHelper(string date, Boolean bioCards, Boolean packets)
@@ -1379,10 +1385,10 @@ namespace InterviewTracker.Controllers
             }
         }
 
-        public void generateReport(String filename, String html, bool landscape, bool tablePageBreaks)
+        public void generateReport(String filename, String html, bool landscape, bool fiveByEight)
         {
-            try
-            {
+           // try
+           // {
                 string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
                 using (MemoryStream generatedDocument = new MemoryStream())
                 {
@@ -1392,6 +1398,7 @@ namespace InterviewTracker.Controllers
                         if (mainPart == null)
                         {
                             mainPart = package.AddMainDocumentPart();
+                            //GenerateLabelsDocument().Save(mainPart);
                             new Document(new Body()).Save(mainPart);
                         }
 
@@ -1409,12 +1416,26 @@ namespace InterviewTracker.Controllers
                         if (landscape)
                         {
                             SectionProperties properties = new SectionProperties();
-                            PageSize pageSize = new PageSize()
+                            PageSize pageSize;
+
+                            if (fiveByEight)
+                            {
+                                pageSize = new PageSize()
+                                {
+                                    Width = (UInt32Value)11520U,
+                                    Height = (UInt32Value)7200U,
+                                    Orient = PageOrientationValues.Landscape
+                                };
+                            }
+                            else
+                            {
+                                pageSize = new PageSize()
                             {
                                 Width = (UInt32Value)15840U,
                                 Height = (UInt32Value)12240U,
                                 Orient = PageOrientationValues.Landscape
                             };
+                            }
                             properties.Append(pageSize);
 
                             PageMargin pageMargin = new PageMargin() 
@@ -1453,19 +1474,13 @@ namespace InterviewTracker.Controllers
                                 paragraphs[i].PrependChild(paragraphProperties1);
 
                             }
+                            ParagraphProperties paragraphProperties2 = new ParagraphProperties();
+                            ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                            paragraphProperties2.Append(contextualSpacing);
+                            paragraphs[i].Append(paragraphProperties2);
                             body.Append(paragraphs[i]);
                         }
-
-                        /*foreach(Paragraph P in mainPart.Document.Descendants<Paragraph>())
-                        {
-                            if (P.LocalName == "pageBreak")
-                            {
-                                P.InsertAfterSelf
-                                        (new Paragraph(
-                                            new Run(
-                                                new Break() { Type = BreakValues.Page })));
-                            }
-                        }*/
 
                         //I have no idea why it doesnt work when you try to use pageBreakParagraph... but it doesnt... so redeclare this same string here
                         string lineBreakCharacter = "%$%lineBreak%$%"; 
@@ -1495,19 +1510,45 @@ namespace InterviewTracker.Controllers
                             P.Remove();
                         }
 
-                        if (tablePageBreaks)
-                        {
+
                         var tables = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
                             
                         var last = tables.LastOrDefault();
                         foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
                         {
-                            if (table != last)
+                            foreach (DocumentFormat.OpenXml.Wordprocessing.Paragraph p in table.Elements<Paragraph>())
                             {
-                                table.InsertAfterSelf
-                                    (new Paragraph(
-                                        new Run(
-                                            new Break() { Type = BreakValues.Page })));
+                                ParagraphProperties spaceProperties = new ParagraphProperties();
+                                ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                                spaceProperties.Append(contextualSpacing);
+                                p.PrependChild(spaceProperties);
+                            }
+                            foreach (DocumentFormat.OpenXml.Wordprocessing.TableRow row in table.Elements<DocumentFormat.OpenXml.Wordprocessing.TableRow>())
+                            {
+                                foreach (DocumentFormat.OpenXml.Wordprocessing.Paragraph p in row.Elements<Paragraph>())
+                                {
+                                    ParagraphProperties spaceProperties = new ParagraphProperties();
+                                    ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                                    spaceProperties.Append(contextualSpacing);
+                                    p.PrependChild(spaceProperties);
+                                }
+                                foreach(DocumentFormat.OpenXml.Wordprocessing.TableCell cell in row.Elements<DocumentFormat.OpenXml.Wordprocessing.TableCell>())
+                            {
+                                    TableCellProperties tableCellProperties = new TableCellProperties();
+                                    ContextualSpacing contextualSpacing1 = new ContextualSpacing();
+                                    tableCellProperties.Append(contextualSpacing1);
+                                    cell.PrependChild(tableCellProperties);
+
+                                    foreach (DocumentFormat.OpenXml.Wordprocessing.Paragraph p in cell.Elements<Paragraph>())
+                                    {
+                                        ParagraphProperties spaceProperties = new ParagraphProperties();
+                                        ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                                        spaceProperties.Append(contextualSpacing);
+                                        p.PrependChild(spaceProperties);
+                                    }
                             }
                         }
                         }
@@ -1535,11 +1576,11 @@ namespace InterviewTracker.Controllers
 
                 }
 
-            }
+         /*   }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
+            }*/
         }
 
         static void AppendPageBreaks(WordprocessingDocument myDoc)
@@ -1789,5 +1830,312 @@ namespace InterviewTracker.Controllers
         private string getChartPath(string uuid) {
             return Server.MapPath("~/Content/images/" + uuid + ".jpg");
         }
+
+        // Creates an Document instance and adds its children.
+        public void GenerateLabelsDocument(string fileName, List<Interview> candidateList)
+        {
+            Document document1 = new Document(){ MCAttributes = new MarkupCompatibilityAttributes(){ Ignorable = "w14 wp14" }  };
+            document1.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
+            document1.AddNamespaceDeclaration("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006");
+            document1.AddNamespaceDeclaration("o", "urn:schemas-microsoft-com:office:office");
+            document1.AddNamespaceDeclaration("r", "http://schemas.openxmlformats.org/officeDocument/2006/relationships");
+            document1.AddNamespaceDeclaration("m", "http://schemas.openxmlformats.org/officeDocument/2006/math");
+            document1.AddNamespaceDeclaration("v", "urn:schemas-microsoft-com:vml");
+            document1.AddNamespaceDeclaration("wp14", "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing");
+            document1.AddNamespaceDeclaration("wp", "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing");
+            document1.AddNamespaceDeclaration("w10", "urn:schemas-microsoft-com:office:word");
+            document1.AddNamespaceDeclaration("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+            document1.AddNamespaceDeclaration("w14", "http://schemas.microsoft.com/office/word/2010/wordml");
+            document1.AddNamespaceDeclaration("wpg", "http://schemas.microsoft.com/office/word/2010/wordprocessingGroup");
+            document1.AddNamespaceDeclaration("wpi", "http://schemas.microsoft.com/office/word/2010/wordprocessingInk");
+            document1.AddNamespaceDeclaration("wne", "http://schemas.microsoft.com/office/word/2006/wordml");
+            document1.AddNamespaceDeclaration("wps", "http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
+
+            Body body1 = new Body();
+
+            DocumentFormat.OpenXml.Wordprocessing.Table table1 = new DocumentFormat.OpenXml.Wordprocessing.Table();
+
+            TableProperties tableProperties1 = new TableProperties();
+            DocumentFormat.OpenXml.Wordprocessing.TableStyle tableStyle1 = new DocumentFormat.OpenXml.Wordprocessing.TableStyle() { Val = "TableGrid" };
+            TableWidth tableWidth1 = new TableWidth(){ Width = "0", Type = TableWidthUnitValues.Auto };
+
+            TableBorders tableBorders1 = new TableBorders();
+            TopBorder topBorder1 = new TopBorder(){ Val = BorderValues.None, Color = "auto", Size = (UInt32Value)0U, Space = (UInt32Value)0U };
+            LeftBorder leftBorder1 = new LeftBorder(){ Val = BorderValues.None, Color = "auto", Size = (UInt32Value)0U, Space = (UInt32Value)0U };
+            BottomBorder bottomBorder1 = new BottomBorder(){ Val = BorderValues.None, Color = "auto", Size = (UInt32Value)0U, Space = (UInt32Value)0U };
+            RightBorder rightBorder1 = new RightBorder(){ Val = BorderValues.None, Color = "auto", Size = (UInt32Value)0U, Space = (UInt32Value)0U };
+            InsideHorizontalBorder insideHorizontalBorder1 = new InsideHorizontalBorder(){ Val = BorderValues.None, Color = "auto", Size = (UInt32Value)0U, Space = (UInt32Value)0U };
+            InsideVerticalBorder insideVerticalBorder1 = new InsideVerticalBorder(){ Val = BorderValues.None, Color = "auto", Size = (UInt32Value)0U, Space = (UInt32Value)0U };
+
+            tableBorders1.Append(topBorder1);
+            tableBorders1.Append(leftBorder1);
+            tableBorders1.Append(bottomBorder1);
+            tableBorders1.Append(rightBorder1);
+            tableBorders1.Append(insideHorizontalBorder1);
+            tableBorders1.Append(insideVerticalBorder1);
+            TableLayout tableLayout1 = new TableLayout(){ Type = TableLayoutValues.Fixed };
+
+            TableCellMarginDefault tableCellMarginDefault1 = new TableCellMarginDefault();
+            TableCellLeftMargin tableCellLeftMargin1 = new TableCellLeftMargin(){ Width = 15, Type = TableWidthValues.Dxa };
+            TableCellRightMargin tableCellRightMargin1 = new TableCellRightMargin(){ Width = 15, Type = TableWidthValues.Dxa };
+
+            tableCellMarginDefault1.Append(tableCellLeftMargin1);
+            tableCellMarginDefault1.Append(tableCellRightMargin1);
+            TableLook tableLook1 = new TableLook(){ Val = "0000", FirstRow = false, LastRow = false, FirstColumn = false, LastColumn = false, NoHorizontalBand = false, NoVerticalBand = false };
+
+            tableProperties1.Append(tableStyle1);
+            tableProperties1.Append(tableWidth1);
+            tableProperties1.Append(tableBorders1);
+            tableProperties1.Append(tableLayout1);
+            tableProperties1.Append(tableCellMarginDefault1);
+            tableProperties1.Append(tableLook1);
+
+            table1.Append(tableProperties1);
+
+            TableGrid tableGrid1 = new TableGrid();
+            GridColumn gridColumn1 = new GridColumn(){ Width = "5760" };
+            GridColumn gridColumn2 = new GridColumn(){ Width = "270" };
+            GridColumn gridColumn3 = new GridColumn(){ Width = "5760" };
+
+            tableGrid1.Append(gridColumn1);
+            tableGrid1.Append(gridColumn2);
+            tableGrid1.Append(gridColumn3);
+
+            table1.Append(tableGrid1);
+
+            string sex = Sex.M.ToString();
+            Interview interview1, interview2;
+            BioData bioData1, bioData2;
+            for(int i = 0; i < candidateList.Count(); i=i+2)
+            {
+                interview1 = candidateList.ElementAt(i);
+                bioData1 = interview1.BioData;
+                if ((i + 1) < candidateList.Count())
+                {
+                    interview2 = candidateList.ElementAt(i + 1);
+                    bioData2 = interview2.BioData;
+                }
+                else
+                {
+                    interview2 = null;
+                    bioData2 = null;
+                }
+
+                DocumentFormat.OpenXml.Wordprocessing.TableRow tableRow1 = new DocumentFormat.OpenXml.Wordprocessing.TableRow() { RsidTableRowAddition = "003D48DC" };
+
+                TablePropertyExceptions tablePropertyExceptions1 = new TablePropertyExceptions();
+
+                TableCellMarginDefault tableCellMarginDefault2 = new TableCellMarginDefault();
+                TopMargin topMargin1 = new TopMargin() { Width = "0", Type = TableWidthUnitValues.Dxa };
+                BottomMargin bottomMargin1 = new BottomMargin() { Width = "0", Type = TableWidthUnitValues.Dxa };
+
+                tableCellMarginDefault2.Append(topMargin1);
+                tableCellMarginDefault2.Append(bottomMargin1);
+
+                tablePropertyExceptions1.Append(tableCellMarginDefault2);
+
+                TableRowProperties tableRowProperties1 = new TableRowProperties();
+                CantSplit cantSplit1 = new CantSplit();
+                TableRowHeight tableRowHeight1 = new TableRowHeight() { Val = (UInt32Value)1440U, HeightType = HeightRuleValues.Exact };
+
+                tableRowProperties1.Append(cantSplit1);
+                tableRowProperties1.Append(tableRowHeight1);
+
+                DocumentFormat.OpenXml.Wordprocessing.TableCell tableCell1 = new DocumentFormat.OpenXml.Wordprocessing.TableCell();
+
+                TableCellProperties tableCellProperties1 = new TableCellProperties();
+                TableCellWidth tableCellWidth1 = new TableCellWidth() { Width = "5760", Type = TableWidthUnitValues.Dxa };
+
+                tableCellProperties1.Append(tableCellWidth1);
+
+                Paragraph paragraph1 = new Paragraph() { RsidParagraphAddition = "003D48DC", RsidParagraphProperties = "003D48DC", RsidRunAdditionDefault = "003D48DC" };
+
+                ParagraphProperties paragraphProperties1 = new ParagraphProperties();
+                Indentation indentation1 = new Indentation() { Left = "144", Right = "144" };
+
+                paragraphProperties1.Append(indentation1);
+
+                Run run1 = new Run();
+                Text text1 = new Text();
+                Text text1_2 = new Text();
+                text1.Text = bioData1.LName + ", " + bioData1.FName + ", " + bioData1.MName + "    " + bioData1.Sources.SourcesValue;
+                text1_2.Text = bioData1.SSN + "    " + interview1.Date.Value.ToShortDateString();
+
+                run1.Append(text1);
+                run1.Append(new Break());
+                run1.Append(text1_2);
+
+                paragraph1.Append(paragraphProperties1);
+                paragraph1.Append(run1);
+
+                tableCell1.Append(tableCellProperties1);
+                tableCell1.Append(paragraph1);
+
+                DocumentFormat.OpenXml.Wordprocessing.TableCell tableCell2 = new DocumentFormat.OpenXml.Wordprocessing.TableCell();
+
+                TableCellProperties tableCellProperties2 = new TableCellProperties();
+                TableCellWidth tableCellWidth2 = new TableCellWidth() { Width = "270", Type = TableWidthUnitValues.Dxa };
+
+                tableCellProperties2.Append(tableCellWidth2);
+
+                Paragraph paragraph2 = new Paragraph() { RsidParagraphAddition = "003D48DC", RsidParagraphProperties = "003D48DC", RsidRunAdditionDefault = "003D48DC" };
+
+                ParagraphProperties paragraphProperties2 = new ParagraphProperties();
+                Indentation indentation2 = new Indentation() { Left = "144", Right = "144" };
+
+                paragraphProperties2.Append(indentation2);
+
+                paragraph2.Append(paragraphProperties2);
+
+                tableCell2.Append(tableCellProperties2);
+                tableCell2.Append(paragraph2);
+
+                DocumentFormat.OpenXml.Wordprocessing.TableCell tableCell3 = new DocumentFormat.OpenXml.Wordprocessing.TableCell();
+
+                TableCellProperties tableCellProperties3 = new TableCellProperties();
+                TableCellWidth tableCellWidth3 = new TableCellWidth() { Width = "5760", Type = TableWidthUnitValues.Dxa };
+
+                tableCellProperties3.Append(tableCellWidth3);
+
+                Paragraph paragraph3 = new Paragraph() { RsidParagraphAddition = "003D48DC", RsidParagraphProperties = "003D48DC", RsidRunAdditionDefault = "003D48DC" };
+
+                ParagraphProperties paragraphProperties3 = new ParagraphProperties();
+                Indentation indentation3 = new Indentation() { Left = "144", Right = "144" };
+
+                paragraphProperties3.Append(indentation3);
+
+                Run run2 = new Run();
+                Text text2 = new Text();
+                Text text2_2 = new Text();
+                if (bioData2 != null)
+                {
+                    text2.Text = bioData2.LName + ", " + bioData2.FName + ", " + bioData2.MName + "    " + bioData2.Sources.SourcesValue;
+                    text2_2.Text = bioData2.SSN + "    " + interview2.Date.Value.ToShortDateString();
+                }
+                else
+                {
+                    text2.Text = "";
+                    text2_2.Text = "";
+                }
+
+                run2.Append(text2);
+                run2.Append(new Break());
+                run2.Append(text2_2);
+
+                paragraph3.Append(paragraphProperties3);
+                paragraph3.Append(run2);
+
+                tableCell3.Append(tableCellProperties3);
+                tableCell3.Append(paragraph3);
+
+                tableRow1.Append(tablePropertyExceptions1);
+                tableRow1.Append(tableRowProperties1);
+                tableRow1.Append(tableCell1);
+                tableRow1.Append(tableCell2);
+                tableRow1.Append(tableCell3);
+
+                table1.Append(tableRow1);
+            }
+            Paragraph paragraph31 = new Paragraph() { RsidParagraphMarkRevision = "003D48DC", RsidParagraphAddition = "003D48DC", RsidParagraphProperties = "003D48DC", RsidRunAdditionDefault = "003D48DC" };
+
+            ParagraphProperties paragraphProperties31 = new ParagraphProperties();
+            Indentation indentation31 = new Indentation() { Left = "144", Right = "144" };
+
+            ParagraphMarkRunProperties paragraphMarkRunProperties1 = new ParagraphMarkRunProperties();
+            Vanish vanish1 = new Vanish();
+
+            paragraphMarkRunProperties1.Append(vanish1);
+
+            paragraphProperties31.Append(indentation31);
+            paragraphProperties31.Append(paragraphMarkRunProperties1);
+
+            paragraph31.Append(paragraphProperties31);
+
+            SectionProperties sectionProperties1 = new SectionProperties() { RsidRPr = "003D48DC", RsidR = "003D48DC", RsidSect = "003D48DC" };
+            SectionType sectionType1 = new SectionType() { Val = SectionMarkValues.Continuous };
+            PageSize pageSize1 = new PageSize() { Width = (UInt32Value)12240U, Height = (UInt32Value)15840U };
+            PageMargin pageMargin1 = new PageMargin() { Top = 720, Right = (UInt32Value)240U, Bottom = 0, Left = (UInt32Value)240U, Header = (UInt32Value)720U, Footer = (UInt32Value)720U, Gutter = (UInt32Value)0U };
+            Columns columns1 = new Columns() { Space = "720" };
+
+            sectionProperties1.Append(sectionType1);
+            sectionProperties1.Append(pageSize1);
+            sectionProperties1.Append(pageMargin1);
+            sectionProperties1.Append(columns1);
+
+            body1.Append(table1);
+            body1.Append(paragraph31);
+            body1.Append(sectionProperties1);
+
+            document1.Append(body1);
+            //return document1;
+
+            string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            using (MemoryStream generatedDocument = new MemoryStream())
+            {
+                using (WordprocessingDocument package = WordprocessingDocument.Create(generatedDocument, WordprocessingDocumentType.Document))
+                {
+                    MainDocumentPart mainPart = package.MainDocumentPart;
+                    if (mainPart == null)
+                    {
+                        mainPart = package.AddMainDocumentPart();
+                        document1.Save(mainPart);
+                    }
+
+                    Body body = mainPart.Document.Body;
+
+                    //I have no idea why it doesnt work when you try to use pageBreakParagraph... but it doesnt... so redeclare this same string here
+                    string lineBreakCharacter = "%$%lineBreak%$%";
+
+                    List<Paragraph> pageBreakMarkers = new List<Paragraph>();
+                    var lastP = mainPart.Document.Descendants<Paragraph>().LastOrDefault();
+                    foreach (Paragraph P in mainPart.Document.Descendants<Paragraph>())
+                    {
+                        foreach (Run R in P.Descendants<Run>())
+                        {
+                            if (R.Descendants<Text>()
+                                .Where(T => T.Text == lineBreakCharacter).Count() > 0)
+                            {
+                                if (P != lastP)
+                                {
+                                    P.InsertAfterSelf
+                                        (new Paragraph(
+                                            new Run(
+                                                new Break() { Type = BreakValues.Page })));
+                                }
+                                pageBreakMarkers.Add(P);
+                            }
+                        }
+                    }
+                    foreach (Paragraph P in pageBreakMarkers)
+                    {
+                        P.Remove();
+                    }
+
+                    mainPart.Document.Save();
+                }
+
+                byte[] bytesInStream = generatedDocument.ToArray(); // simpler way of converting to array
+                generatedDocument.Close();
+
+                Response.Clear();
+                Response.ContentType = contentType;
+                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+
+                //this will generate problems
+                Response.BinaryWrite(bytesInStream);
+                try
+                {
+                    Response.End();
+                }
+                catch (Exception ex)
+                {
+                    //Response.End(); generates an exception. if you don't use it, you get some errors when Word opens the file...
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+
+            }
+        }
+
+
     }
 }
