@@ -1373,8 +1373,8 @@ namespace InterviewTracker.Controllers
 
         public void generateReport(String filename, String html, bool landscape, bool fiveByEight)
         {
-            try
-            {
+           // try
+           // {
                 string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
                 using (MemoryStream generatedDocument = new MemoryStream())
                 {
@@ -1460,6 +1460,11 @@ namespace InterviewTracker.Controllers
                                 paragraphs[i].PrependChild(paragraphProperties1);
 
                             }
+                            ParagraphProperties paragraphProperties2 = new ParagraphProperties();
+                            ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                            paragraphProperties2.Append(contextualSpacing);
+                            paragraphs[i].Append(paragraphProperties2);
                             body.Append(paragraphs[i]);
                         }
 
@@ -1491,22 +1496,48 @@ namespace InterviewTracker.Controllers
                             P.Remove();
                         }
 
-                       /* if (tablePageBreaks)
-                        {
-                            var tables = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
+
+                        var tables = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Table>();
                             
-                            var last = tables.LastOrDefault();
-                            foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
+                        var last = tables.LastOrDefault();
+                        foreach (DocumentFormat.OpenXml.Wordprocessing.Table table in tables)
+                        {
+                            foreach (DocumentFormat.OpenXml.Wordprocessing.Paragraph p in table.Elements<Paragraph>())
                             {
-                                if (table != last)
+                                ParagraphProperties spaceProperties = new ParagraphProperties();
+                                ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                                spaceProperties.Append(contextualSpacing);
+                                p.PrependChild(spaceProperties);
+                            }
+                            foreach (DocumentFormat.OpenXml.Wordprocessing.TableRow row in table.Elements<DocumentFormat.OpenXml.Wordprocessing.TableRow>())
+                            {
+                                foreach (DocumentFormat.OpenXml.Wordprocessing.Paragraph p in row.Elements<Paragraph>())
                                 {
-                                    table.InsertAfterSelf
-                                        (new Paragraph(
-                                            new Run(
-                                                new Break() { Type = BreakValues.Page })));
+                                    ParagraphProperties spaceProperties = new ParagraphProperties();
+                                    ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                                    spaceProperties.Append(contextualSpacing);
+                                    p.PrependChild(spaceProperties);
+                                }
+                                foreach(DocumentFormat.OpenXml.Wordprocessing.TableCell cell in row.Elements<DocumentFormat.OpenXml.Wordprocessing.TableCell>())
+                                {
+                                    TableCellProperties tableCellProperties = new TableCellProperties();
+                                    ContextualSpacing contextualSpacing1 = new ContextualSpacing();
+                                    tableCellProperties.Append(contextualSpacing1);
+                                    cell.PrependChild(tableCellProperties);
+
+                                    foreach (DocumentFormat.OpenXml.Wordprocessing.Paragraph p in cell.Elements<Paragraph>())
+                                    {
+                                        ParagraphProperties spaceProperties = new ParagraphProperties();
+                                        ContextualSpacing contextualSpacing = new ContextualSpacing();
+
+                                        spaceProperties.Append(contextualSpacing);
+                                        p.PrependChild(spaceProperties);
+                                    }
                                 }
                             }
-                        }*/
+                        }
                         mainPart.Document.Save();
                     }
 
@@ -1531,11 +1562,11 @@ namespace InterviewTracker.Controllers
 
                 }
 
-            }
+         /*   }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-            }
+            }*/
         }
 
         static void AppendPageBreaks(WordprocessingDocument myDoc)
