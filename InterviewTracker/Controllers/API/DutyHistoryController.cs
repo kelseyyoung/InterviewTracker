@@ -95,6 +95,9 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
+            // Delete all Duty Stations associated with this DutyHistory
+            db.DutyStation.Where(x => x.DutyHistoryID == id).ToList().ForEach(y => db.DutyStation.Remove(y));
+
             db.DutyHistory.Remove(dutyhistory);
 
             try

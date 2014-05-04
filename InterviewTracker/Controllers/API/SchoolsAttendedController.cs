@@ -95,6 +95,14 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
+            // Delete all Degrees, SchoolStandings, and ClassesAttended
+            // ClassesAttended
+            db.ClassesAttended.Where(x => x.SchoolsAttendedID == id).ToList().ForEach(y => db.ClassesAttended.Remove(y));
+            // Degree
+            db.Degree.Where(x => x.SchoolsAttendedID == id).ToList().ForEach(y => db.Degree.Remove(y));
+            // SchoolStandings
+            db.SchoolStandings.Where(x => x.SchoolsAttendedID == id).ToList().ForEach(y => db.SchoolStandings.Remove(y));
+
             db.SchoolsAttended.Remove(schoolsattended);
 
             try
