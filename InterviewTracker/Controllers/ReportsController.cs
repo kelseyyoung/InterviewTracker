@@ -40,6 +40,12 @@ namespace InterviewTracker.Controllers
             ViewBag.schools = db.School.OrderBy(x=> x.SchoolValue).ToList();
             ViewBag.candidates = db.BioData.OrderBy(x => x.LName).ThenBy(y => y.FName).ToList();
 
+            DateTime today = DateTime.Today;
+            if(today.Month >= 10)
+                ViewBag.currentYear = today.Year + 1;
+            else
+                ViewBag.currentYear = today.Year;
+
             return View();
         }
 
@@ -515,6 +521,8 @@ namespace InterviewTracker.Controllers
                     surfTable = surfTable.Replace("usna goal", fyGoal.SWO.Value.ToString());
                     nrTable = nrTable.Replace("usna goal", fyGoal.NR.Value.ToString());
                     instTable = instTable.Replace("usna goal", fyGoal.INST.Value.ToString());
+                    otherNRGoal += fyGoal.NR.Value;
+                    otherInstGoal += fyGoal.INST.Value;
                 }
                 else if (fyGoal.Source.Equals(FYSource.NROTC.ToString()))
                 {
@@ -524,6 +532,7 @@ namespace InterviewTracker.Controllers
                     surfTable = surfTable.Replace("nrotc goal", fyGoal.SWO.Value.ToString());
                     nrTable = nrTable.Replace("nrotc goal", fyGoal.NR.Value.ToString());
                     instTable = instTable.Replace("nrotc goal", fyGoal.INST.Value.ToString());
+                    otherInstGoal += fyGoal.INST.Value;
                 }
                 else if (fyGoal.Source.Equals(FYSource.NUPOC.ToString()))
                 {
@@ -542,6 +551,8 @@ namespace InterviewTracker.Controllers
                     surfTable = surfTable.Replace("sta goal", fyGoal.SWO.Value.ToString());
                     nrTable = nrTable.Replace("sta goal", fyGoal.NR.Value.ToString());
                     instTable = instTable.Replace("sta goal", fyGoal.INST.Value.ToString());
+                    otherNRGoal += fyGoal.NR.Value;
+                    otherInstGoal += fyGoal.INST.Value;
                 }
                 else
                 {

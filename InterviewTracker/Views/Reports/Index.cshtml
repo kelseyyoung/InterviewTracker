@@ -21,11 +21,10 @@
                             <label class="control-label span2" for="fy-year">Year</label>
                             <div class="span10">
                                 <select name="fy-year" id="fy-year">
-                                    <option value="2010">2010</option>
-                                    <option value="2010">2011</option>
-                                    <option value="2010">2012</option>
-                                    <option value="2010">2013</option>
-                                    <option value="2014">2014</option>
+                                    @for (int i = 0; i > -30; --i)
+                                    {
+                                        <option value="@(ViewBag.currentYear+i)">@(ViewBag.currentYear + i)</option>
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -49,10 +48,10 @@
                             <label class="control-label span2" for="cy-year">Year</label>
                             <div class="span10">
                                 <select name="cy-year" id="cy-year">
-                                    <option value="2010">2010</option>
-                                    <option value="2010">2011</option>
-                                    <option value="2010">2012</option>
-                                    <option value="2010">2013</option>
+                                    @for (int i = 0; i > -30; --i )
+                                    {
+                                        <option value="@(ViewBag.currentYear+i)">@(ViewBag.currentYear + i)</option>
+                                    }
                                 </select>
                             </div>
                         </div>
