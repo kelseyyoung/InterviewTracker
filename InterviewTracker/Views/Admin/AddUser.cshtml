@@ -3,7 +3,7 @@
 }
 
 @section AddToTextCss {
-    
+
     #users-list {
     max-height: 400px;
     overflow: auto;
@@ -132,10 +132,14 @@
                 <div class="text-center">
                     <button type="button" id="submit-user">Submit</button>
                     <button type="button" id="clear-form">Clear</button>
+                    <button type="button" class="btn-ignore btn-danger hide" id="delete-user">Delete</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div id="dialog-confirm" title="">
+    <p></p>
 </div>
 
 @section AddToScripts {
@@ -146,12 +150,45 @@
                 "NR1", "SUPPLY", "EOOW", "DOE"
         ];
 
-        $(document).ready(function () {
+        /**
+        * Function to show and set data/callbacks for a confirmation dialog
+        * Params:
+        *  title - (String) Title for the new dialog
+        *  message - (String) Message for the new dialog
+        *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
+        *  okFunction - (Function) Callback function on OK press
+        */
+        function showDialog(title, message, okOnly, okFunction) {
+            $("#dialog-confirm > p").html(message);
+            var buttons;
+            if (okOnly) {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        //$(this).dialog("close");
+                    }
+                }
+            } else {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        //$(this).dialog("close");
+                    },
+                    Close: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }
 
-            // If anything changes, assume it's a new user
-            // And unset UserID
-            $("#FY, #Source").on("change", function () {
+            $("#dialog-confirm").dialog({
+                title: title,
+                modal: true,
+                buttons: buttons
             });
+            $("#dialog-confirm").dialog("open");
+        }
+
+        $(document).ready(function () {
 
             $(document).on("click", ".edit-user", function () {
                 var userID = $(this).data("id");
@@ -176,6 +213,8 @@
                             console.log(data[quals[i]]);
                             $("#" + quals[i]).prop("checked", data[quals[i]]);
                         }
+                        // Enable delete user button
+                        $("#delete-user").removeClass("hide");
                     },
                     error: function (data) {
                         console.log("error");
@@ -253,6 +292,33 @@
                 // Unset UserID
                 $("#UserID").val("");
                 $("#UserID").removeAttr("name");
+                // Disable delete user button
+                $("#delete-user").addClass("hide");
+            });
+
+            $("#dialog-confirm").dialog({
+                autoOpen: false
+            });
+
+            $("#delete-user").click(function () {
+                var id = $("#UserID").val();
+                showDialog("Confirm Deletion", "Are you sure you want to delete this user?", false, function () {
+                    // Delete user
+                    $.ajax({
+                        url: baseURL + "/api/User/Delete/" + id,
+                        type: "Delete",
+                        success: function (data) {
+                            console.log("success");
+                            console.log(data);
+                            // Refresh page
+                            window.location.href = "@Url.Action("AddUser", "Admin")";
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                        }
+                    });
+                });
             });
 
         }); // End document ready
