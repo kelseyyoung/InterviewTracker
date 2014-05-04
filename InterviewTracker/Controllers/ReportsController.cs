@@ -506,6 +506,8 @@ namespace InterviewTracker.Controllers
             nrTable = nrTable.Replace("title", "NR ENGINEER ACCESSIONS");
             instTable = instTable.Replace("title", "INSTRUCTOR ACCESSIONS");
 
+            surfTable = surfTable.Replace("font-size: 11px", "font-size: 10px");
+
             int totalGoal;
             int otherTotalGoal = 0, otherSubGoal = 0, otherSurfGoal = 0, otherNRGoal = 0, otherInstGoal = 0;
 
@@ -903,10 +905,10 @@ namespace InterviewTracker.Controllers
             string surfHtml = chartHtml.Replace("__chart__", getChartPath(surfUuid));
             string instHtml = chartHtml.Replace("__chart__", getChartPath(instUuid));
             string nrHtml = chartHtml.Replace("__chart__", getChartPath(nrUuid));
-            reportBody = reportBody + overallHtml + subTable + subHtml + surfTable + surfHtml + instTable + instHtml + nrTable + nrHtml;
+            reportBody = reportBody + overallHtml + subTable + subHtml + pageBreakParagraph + surfTable + surfHtml + instTable + instHtml + nrTable + nrHtml;
             //reportBody = reportBody + subTable + surfTable + instTable + nrTable ;
             string reportHtml = header + reportBody + footer;
-            generateReport(fileName, reportHtml, true, true);
+            generateReport(fileName, reportHtml, true, false);
             // Delete all charts
             deleteChart(overallUuid);
             deleteChart(subUuid);
@@ -1398,8 +1400,8 @@ namespace InterviewTracker.Controllers
 
         public void generateReport(String filename, String html, bool landscape, bool fiveByEight)
         {
-           // try
-           // {
+            try
+            {
                 string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
                 using (MemoryStream generatedDocument = new MemoryStream())
                 {
@@ -1409,7 +1411,6 @@ namespace InterviewTracker.Controllers
                         if (mainPart == null)
                         {
                             mainPart = package.AddMainDocumentPart();
-                            //GenerateLabelsDocument().Save(mainPart);
                             new Document(new Body()).Save(mainPart);
                         }
 
@@ -1441,11 +1442,11 @@ namespace InterviewTracker.Controllers
                             else
                             {
                                 pageSize = new PageSize()
-                            {
-                                Width = (UInt32Value)15840U,
-                                Height = (UInt32Value)12240U,
-                                Orient = PageOrientationValues.Landscape
-                            };
+                                {
+                                    Width = (UInt32Value)15840U,
+                                    Height = (UInt32Value)12240U,
+                                    Orient = PageOrientationValues.Landscape
+                                };
                             }
                             properties.Append(pageSize);
 
@@ -1587,11 +1588,11 @@ namespace InterviewTracker.Controllers
 
                 }
 
-         /*   }
+            }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-            }*/
+            }
         }
 
         static void AppendPageBreaks(WordprocessingDocument myDoc)
@@ -1772,7 +1773,7 @@ namespace InterviewTracker.Controllers
                                         </ChartArea>
                                     </ChartAreas>
                                     <Legends>
-                                        <Legend _Template_=""All"" Docking=""Bottom"">
+                                        <Legend _Template_=""All"" Docking=""Top"" LegendStyle=""Column"" DockedToChartArea=""Default"" IsDockedInsideChartArea=""true"" BackColor=""Transparent"" Font=""Times New Roman, 6pt"">
                                         </Legend>
                                     </Legends>";
             chartTheme += "<Series>";
@@ -1783,7 +1784,7 @@ namespace InterviewTracker.Controllers
                                 "</Series>";
             }
             chartTheme += "</Series></Chart>";
-            var myChart = new System.Web.Helpers.Chart(width: 900, height: 200, theme: chartTheme);
+            var myChart = new System.Web.Helpers.Chart(width: 900, height: 130, theme: chartTheme);
             for (var i = 0; i < sources.Length; i++)
             {
                 int[] temp = new int[13];
@@ -1796,8 +1797,7 @@ namespace InterviewTracker.Controllers
                         xValue: new[] { "Prior", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept" },
                         yValues: temp);
             }
-            myChart.AddLegend("Sources");
-            myChart.AddTitle(title);
+            myChart.AddLegend();
             myChart.Save(filePath, "jpg");
             return uuid;
         }
