@@ -104,6 +104,12 @@
             });
 
             $("#get-goals").click(function () {
+                if ($("#FY").val() == "") {
+                    // They didn't put a year
+                    $("#fy-errors > p").html("You must enter a year and source to retrieve goals");
+                    $("#fy-errors").removeClass("hide");
+                    return;
+                }
                 $("#fy-errors").addClass("hide");
                 var formData = $("#fy-form").serialize();
                 console.log(formData);

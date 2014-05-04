@@ -13,16 +13,6 @@ namespace InterviewTracker
             //Adds the filter to report back model errors
             config.Filters.Add(new ValidateModelAttribute());
 
-            /*
-            // Custom route for testing
-            config.Routes.MapHttpRoute(
-                name: "Test",
-                routeTemplate: "api/{controller}/{action}",
-                defaults: new { },
-                constraints: new { action = @"^[A-Za-z]+$" }
-            );
-             * */
-
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",

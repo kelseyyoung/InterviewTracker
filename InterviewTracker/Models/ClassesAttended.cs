@@ -24,7 +24,5 @@ namespace InterviewTracker.Models
         [ForeignKey("Classes")]
         public virtual int ClassesID { get; set; } // FK to Classes table
         public virtual Classes Classes { get; set; }
-
-        // TODO: I think these relations can be cleaned up
     }
 }

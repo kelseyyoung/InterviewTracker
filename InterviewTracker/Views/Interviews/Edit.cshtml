@@ -37,7 +37,11 @@
                 <p><b>Interview Time:</b> <span id="interview-start-time"></span> - <span id="interview-end-time"></span></p>
                 <p><b>Candidate:</b> @ViewBag.interview.BioData.FName @ViewBag.interview.BioData.LName</p>
                 <label for="Duration"><b>Duration</b> (in minutes)</label>
-                <input type="text" name="Duration" id="Duration" @if (ViewBag.interview.Duration != null) { <text> value="@ViewBag.interview.Duration" </text>   } />
+                <input type="text" name="Duration" id="Duration" @if (ViewBag.interview.Duration != null) { <text> value="@ViewBag.interview.Duration" </text>        } />
+                @if (ViewBag.interview.EditTime != null)
+                {
+                    <p><b>Last Edited:</b> @ViewBag.interview.EditTime</p>
+                }
                 <hr />
                 <table id="checkbox-table">
                     <thead>
@@ -56,80 +60,80 @@
                             @if (ViewBag.biodataPrograms.Contains("NR"))
                             {
                                 <td>
-                                    <input id="NR-yes" type="checkbox" @if (ViewBag.interview.NR == true) { <text> checked </text>     } /> Yes <br />
-                                    <input id="NR-no" type="checkbox" @if (ViewBag.interview.NR == false) { <text> checked </text>     } /> No
+                                    <input id="NR-yes" type="checkbox" @if (ViewBag.interview.NR == true) { <text> checked </text>          } /> Yes <br />
+                                    <input id="NR-no" type="checkbox" @if (ViewBag.interview.NR == false) { <text> checked </text>          } /> No
                                     <input type="hidden" name="NR" id="NR" value="@ViewBag.interview.NR" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("INST"))
                             {
                                 <td>
-                                    <input id="INST-yes" type="checkbox" @if (ViewBag.interview.INST == true) { <text> checked </text>      } /> Yes <br />
-                                    <input id="INST-no" type="checkbox" @if (ViewBag.interview.INST == false) { <text> checked </text>      } /> No
+                                    <input id="INST-yes" type="checkbox" @if (ViewBag.interview.INST == true) { <text> checked </text>           } /> Yes <br />
+                                    <input id="INST-no" type="checkbox" @if (ViewBag.interview.INST == false) { <text> checked </text>           } /> No
                                     <input type="hidden" name="INST" id="INST" value="@ViewBag.interview.INST" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("NPS"))
                             {
                                 <td>
-                                    <input id="NPS-yes" type="checkbox" @if (ViewBag.interview.NPS == true) { <text> checked </text>     } /> Yes <br />
-                                    <input id="NPS-no" type="checkbox" @if (ViewBag.interview.NPS == false) { <text> checked </text>     } /> No
+                                    <input id="NPS-yes" type="checkbox" @if (ViewBag.interview.NPS == true) { <text> checked </text>          } /> Yes <br />
+                                    <input id="NPS-no" type="checkbox" @if (ViewBag.interview.NPS == false) { <text> checked </text>          } /> No
                                     <input type="hidden" name="NPS" id="NPS" value="@ViewBag.interview.NPS" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("PXO"))
                             {
                                 <td>
-                                    <input id="PXO-yes" type="checkbox" @if (ViewBag.interview.PXO == true) { <text> checked </text>      } /> Yes <br />
-                                    <input id="PXO-no" type="checkbox" @if (ViewBag.interview.PXO == false) { <text> checked </text>      } /> No
+                                    <input id="PXO-yes" type="checkbox" @if (ViewBag.interview.PXO == true) { <text> checked </text>           } /> Yes <br />
+                                    <input id="PXO-no" type="checkbox" @if (ViewBag.interview.PXO == false) { <text> checked </text>           } /> No
                                     <input type="hidden" name="PXO" id="PXO" value="@ViewBag.interview.PXO" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("EDO"))
                             {
                                 <td>
-                                    <input id="EDO-yes" type="checkbox" @if (ViewBag.interview.EDO == true) { <text> checked </text>      } /> Yes <br />
-                                    <input id="EDO-no" type="checkbox" @if (ViewBag.interview.EDO == false) { <text> checked </text>      } /> No
+                                    <input id="EDO-yes" type="checkbox" @if (ViewBag.interview.EDO == true) { <text> checked </text>           } /> Yes <br />
+                                    <input id="EDO-no" type="checkbox" @if (ViewBag.interview.EDO == false) { <text> checked </text>           } /> No
                                     <input type="hidden" name="EDO" id="EDO" value="@ViewBag.interview.EDO" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("ENLTECH"))
                             {
                                 <td>
-                                    <input id="ENLTECH-yes" type="checkbox" @if (ViewBag.interview.ENLTECH == true) { <text> checked </text>       } /> Yes <br />
-                                    <input id="ENLTECH-no" type="checkbox" @if (ViewBag.interview.ENLTECH == false) { <text> checked </text>       } /> No
+                                    <input id="ENLTECH-yes" type="checkbox" @if (ViewBag.interview.ENLTECH == true) { <text> checked </text>            } /> Yes <br />
+                                    <input id="ENLTECH-no" type="checkbox" @if (ViewBag.interview.ENLTECH == false) { <text> checked </text>            } /> No
                                     <input type="hidden" name="ENLTECH" id="ENLTECH" value="@ViewBag.interview.ENLTECH" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("NR1"))
                             {
                                 <td>
-                                    <input id="NR1-yes" type="checkbox" @if (ViewBag.interview.NR1 == true) { <text> checked </text>      } /> Yes <br />
-                                    <input id="NR1-no" type="checkbox" @if (ViewBag.interview.NR1 == false) { <text> checked </text>      } /> No
+                                    <input id="NR1-yes" type="checkbox" @if (ViewBag.interview.NR1 == true) { <text> checked </text>           } /> Yes <br />
+                                    <input id="NR1-no" type="checkbox" @if (ViewBag.interview.NR1 == false) { <text> checked </text>           } /> No
                                     <input type="hidden" name="NR1" id="NR1" value="@ViewBag.interview.NR1" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("SUPPLY"))
                             {
                                 <td>
-                                    <input id="SUPPLY-yes" type="checkbox" @if (ViewBag.interview.SUPPLY == true) { <text> checked </text>       } /> Yes <br />
-                                    <input id="SUPPLY-no" type="checkbox" @if (ViewBag.interview.SUPPLY == false) { <text> checked </text>       } /> No
+                                    <input id="SUPPLY-yes" type="checkbox" @if (ViewBag.interview.SUPPLY == true) { <text> checked </text>            } /> Yes <br />
+                                    <input id="SUPPLY-no" type="checkbox" @if (ViewBag.interview.SUPPLY == false) { <text> checked </text>            } /> No
                                     <input type="hidden" name="SUPPLY" id="SUPPLY" value="@ViewBag.interview.SUPPLY" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("EOOW"))
                             {
                                 <td>
-                                    <input id="EOOW-yes" type="checkbox" @if (ViewBag.interview.EOOW == true) { <text> checked </text>       } /> Yes <br />
-                                    <input id="EOOW-no" type="checkbox" @if (ViewBag.interview.EOOW == false) { <text> checked </text>       } /> No
+                                    <input id="EOOW-yes" type="checkbox" @if (ViewBag.interview.EOOW == true) { <text> checked </text>            } /> Yes <br />
+                                    <input id="EOOW-no" type="checkbox" @if (ViewBag.interview.EOOW == false) { <text> checked </text>            } /> No
                                     <input type="hidden" name="EOOW" id="EOOW" value="@ViewBag.interview.EOOW" />
                                 </td>
                             }
                             @if (ViewBag.biodataPrograms.Contains("DOE"))
                             {
                                 <td>
-                                    <input id="DOE-yes" type="checkbox" @if (ViewBag.interview.DOE == true) { <text> checked </text>        } /> Yes <br />
-                                    <input id="DOE-no" type="checkbox" @if (ViewBag.interview.DOE == false) { <text> checked </text>        } /> No
+                                    <input id="DOE-yes" type="checkbox" @if (ViewBag.interview.DOE == true) { <text> checked </text>             } /> Yes <br />
+                                    <input id="DOE-no" type="checkbox" @if (ViewBag.interview.DOE == false) { <text> checked </text>             } /> No
                                     <input type="hidden" name="DOE" id="DOE" value="@ViewBag.interview.DOE" />
                                 </td>
                             }
@@ -145,21 +149,17 @@
                     <h3>Your Comments</h3>
 
                 }
-                <textarea class="span12" rows="5" id="Comments" name="Comments" @if (ViewBag.interview.InterviewerID != ViewBag.user.UserID) { <text> disabled </text>   }>@ViewBag.interview.Comments</textarea>
+                <textarea class="span12" rows="5" id="Comments" name="Comments" @if (ViewBag.interview.InterviewerID != ViewBag.user.UserID) { <text> readonly </text> }>@ViewBag.interview.Comments</textarea>
                 @if (ViewBag.user.UserGroup != "INTER" && ViewBag.interview.InterviewerID != ViewBag.user.UserID)
                 {
                     <h3>Edit Comment</h3>
-<!-- This is over here to get rid of extra space in the textarea. Very annoying -->
-<textarea class="span12" rows="5" id="EditedComments" name="EditedComments">
-@if (ViewBag.interview.EditedComments != null)
-{@ViewBag.interview.EditedComments}
-else
-{@ViewBag.interview.Comments}
-</textarea>
-                    if (ViewBag.interview.EditTime != null)
-                    {
-                        <small>Comment last edited @ViewBag.interview.EditTime</small>
-                    }
+                    <!-- This is over here to get rid of extra space in the textarea. Very annoying -->
+                    <textarea class="span12" rows="5" id="EditedComments" name="EditedComments">
+                        @if (ViewBag.interview.EditedComments != null)
+                        {@ViewBag.interview.EditedComments}
+                        else
+                        {@ViewBag.interview.Comments}
+                    </textarea>
                 }
                 <h3>Previous Comments</h3>
                 <div id="prev-comments"></div>
@@ -178,6 +178,15 @@ else
                     <div class="span6">
                         <p><b>Acceptance</b></p>
                         <div class="form-group">
+                            <label for="InviteBack" class="control-label span4">Invited Back for Interview?</label>
+                            <div class="span6">
+                                <select id="InviteBack" name="InviteBack">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="Decision" class="control-label span4">Accept applicant?</label>
                             <div class="span6">
                                 <select id="Decision" name="Decision">
@@ -195,7 +204,47 @@ else
                                 </select>
                             </div>
                         </div>
+                        <p><b>Letters</b></p>
+                        <div class="form-group">
+                            <label for="Letter" class="control-label span4">Instructed to write letter?</label>
+                            <div class="span6">
+                                <select id="Letter" name="Letter">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="LetterReceived" class="control-label span4">If so, was letter received?</label>
+                            <div class="span6">
+                                <select id="LetterReceived" name="LetterReceived">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
                         <p><b>Assignment</b></p>
+                        <div class="form-group">
+                            <label class="control-label span4" for="ProgramID">Program Accepted To</label>
+                            <div class="span6">
+                                <select id="ProgramID" name="ProgramID">
+                                    @foreach (var p in ViewBag.interview.BioData.Programs)
+                                    {
+                                        if (p.ProgramValue == "NPS")
+                                        {
+                                            <option value="@ViewBag.swoProgram.ProgramID">@ViewBag.swoProgram.ProgramValue</option>
+                                            <option value="@ViewBag.subProgram.ProgramID">@ViewBag.subProgram.ProgramValue</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@p.ProgramID">@p.ProgramValue</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="NP500" class="control-label span4">Attend NP500?</label>
                             <div class="span6">
@@ -232,55 +281,15 @@ else
                                 </select>
                             </div>
                         </div>
-                        <p><b>Letters</b></p>
+                        <p><b>Comments</b></p>
                         <div class="form-group">
-                            <label for="Letter" class="control-label span4">Instructed to write letter?</label>
-                            <div class="span6">
-                                <select id="Letter" name="Letter">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="LetterReceived" class="control-label span4">If so, was letter received?</label>
-                            <div class="span6">
-                                <select id="LetterReceived" name="LetterReceived">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="span6">
-                        <div class="form-group">
-                            <label for="InviteBack" class="control-label span4">Invited Back for Interview?</label>
-                            <div class="span6">
-                                <select id="InviteBack" name="InviteBack">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label span4" for="ProgramID">Program Accepted To</label>
-                            <div class="span6">
-                                <select id="ProgramID" name="ProgramID">
-                                    @foreach (var p in ViewBag.interview.BioData.Programs)
-                                    {
-                                        <option value="@p.ProgramID">@p.ProgramValue</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label span2" for="Comments">Personal Comments</label>
+                            <label for="Comments" class="control-label span3">Personal Comments</label>
                             <div class="span8">
                                 <textarea rows="5" class="span12" id="Comments" name="Comments"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="AdmiralNotes" class="control-label span2">Notes</label>
+                            <label for="AdmiralNotes" class="control-label span3">Notes</label>
                             <div class="span8">
                                 <textarea rows="5" class="span12" id="AdmiralNotes" name="AdmiralNotes"></textarea>
                             </div>
@@ -383,13 +392,19 @@ else
 
             // Save current interview state
             var initInterview = $("#interview-form").serialize();
-            console.log(initInterview);
+            // Save current interview with 'Final' status
+            var initStatus = $("#Status").val();
+            $("#Status").val("Final");
+            var finalInterview = $("#interview-form").serialize();
+            $("#Status").val(initStatus);
+            console.log(finalInterview);
 
             $.ajax({
                 url: baseURL + "/api/Interview/Test?" + initInterview,
                 type: "Post",
                 success: function (data) {
                     console.log("success");
+                    console.log(data);
                 },
                 error: function (data) {
                     console.log(data);
@@ -398,7 +413,7 @@ else
 
             // Callback to unset CurrentlyEditingID on page unload
             // Only called if they didn't click 'Submit'
-            window.onbeforeunload = function () {
+            $(window).unload(function () {
                 if (!submitted) {
                     console.log("here");
                     console.log(initInterview);
@@ -416,8 +431,7 @@ else
                         }
                     });
                 }
-                //return "?";
-            };
+            });
 
             // Submit interview
             $("#submit").click(function () {
@@ -546,8 +560,21 @@ else
                             success: function (data) {
                                 console.log("success");
                                 console.log(data);
-                                $("#admiral-success").html("The admiral data was submitted successfully");
-                                setTimeout(function () { $("#admiral-success").empty(); }, 5000);
+                                // Need to submit interview as final
+                                $.ajax({
+                                    url: baseURL + "/api/Interview/Put/" + id + "?" + finalInterview,
+                                    type: "Put",
+                                    success: function (data) {
+                                        // Set actual status value in case they submit interview items
+                                        $("#Status").val("Final");
+                                        $("#admiral-success").html("The admiral data was submitted successfully");
+                                        setTimeout(function () { $("#admiral-success").empty(); }, 5000);
+                                    },
+                                    error: function (data) {
+                                        console.log("error");
+                                        console.log(data);
+                                    }
+                                });
                             },
                             error: function (data) {
                                 console.log("error");

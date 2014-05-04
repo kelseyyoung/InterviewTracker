@@ -51,6 +51,9 @@
             font-size: 12px;
         }
 
+        input[readonly]{background-color:#F0F0F0; color:#303030;} 
+        textarea[readonly]{background-color:#F0F0F0; color:#303030;} 
+
     @if (IsSectionDefined("AddToTextCss"))
     {
         @RenderSection("AddToTextCss", required: false)
