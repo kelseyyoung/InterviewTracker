@@ -17,6 +17,51 @@
     width: inherit;
     }
 
+    .scheduled {
+    color: #DB2C38;
+    }
+
+    .entered {
+    color: #CCBF33;
+    }
+
+    .edited {
+    color: #17599D;
+    }
+
+    .final {
+    color: #39C72A;
+    }
+
+    .editing {
+    color: #7C1296;
+    }
+
+    .scheduled-bg {
+    background-color: #DB2C38;
+    color: white;
+    }
+
+    .entered-bg {
+    background-color: #CCBF33;
+    color: white;
+    }
+
+    .edited-bg {
+    background-color: #17599D;
+    color: white;
+    }
+
+    .final-bg {
+    background-color: #39C72A;
+    color: white;
+    }
+
+    .editing-bg {
+    background-color: #7C1296;
+    color: white;
+    }
+
 }
 
 <div class="row-fluid">
@@ -26,6 +71,23 @@
         </div>
     </div>
     <div class="span4" id="toolbar">
+        <!-- Color code -->
+        <div class="text-center">
+            <b>Interview Color Code</b>
+        </div>
+        <table style="width: 100%">
+            <tbody>
+                <tr>
+                    <td class="scheduled-bg">Scheduled</td>
+                    <td class="entered-bg">Entered</td>
+                    <td class="edited-bg">Edited</td>
+                </tr>
+                <tr>
+                    <td class="final-bg">Final</td>
+                    <td class="editing-bg">Being Edited</td>
+                </tr>
+            </tbody>
+        </table>
         <!-- Interview information panel, only show for interviewer -->
         @if (ViewBag.user.UserGroup == "INTER")
         {
@@ -206,7 +268,8 @@
             "scheduled": "#DB2C38", // red
             "entered": "#CCBF33", // yellow
             "edited": "#17599D", // blue
-            "final": "#39C72A" // green
+            "final": "#39C72A", // green
+            "editing": "#7C1296" // purple
         };
 
         var interviewMapper = {};
@@ -263,8 +326,8 @@
                         };
                         if (interview.CurrentlyEditingID != null) {
                             // Set colors to black
-                            event.backgroundColor = "black";
-                            event.borderColor = "black";
+                            event.backgroundColor = "editing";
+                            event.borderColor = "editing";
                         }
                         $("#calendar").fullCalendar("renderEvent", event);
                         </text>
@@ -306,7 +369,7 @@
                                         '<div>Interviewer: ' + interview.InterviewerUser.LoginID + '</div>' +
                                         '<div>Date/Time: ' + date.format("M/D/YYYY") + ' ' + startTime.format("HH:mm") + '-' + endTime.format("HH:mm") + '</div>' +
                                         '<div>Location: ' + interview.Location + '</div>' +
-                                        '<div>Status: ' + interview.Status + '</div>' +
+                                        '<div>Status: <span class="' + interview.Status.toLowerCase() + '">' + interview.Status + '</span></div>' +
                                         '<div>Type: ' + interview.BioData.Sources.SourcesValue + '</div>' +
                                     '</div>' +
                                     '<div class="span2 text-center">' +
@@ -327,7 +390,7 @@
                     for (var date in interviewMapper) {
                         for (var source in interviewMapper[date]) {
                             var event = {
-                                id: date + ","+ source,
+                                id: date + "," + source,
                                 title: source + " (" + interviewMapper[date][source].length + ")",
                                 allDay: true,
                                 start: date,
@@ -501,7 +564,7 @@
             // Re-init buttons
             $("#interview-list .panel-body a.button").button();
         };
-            </text>
+        </text>
         }
 
         $(document).ready(function () {

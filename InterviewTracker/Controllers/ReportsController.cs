@@ -881,14 +881,28 @@ namespace InterviewTracker.Controllers
             }
 
             // Generate charts
-            string overallUuid = generateFYChart(overallChartArray, new string[] {"USNA", "NROTC", "NUPOC", "STA-21N", "OTHER"});
-            string subUuid = generateFYChart(subChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" });
-            string surfUuid = generateFYChart(surfChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" });
-            string instUuid = generateFYChart(instChartArray, new string[] {"NUPOC", "OTHER"});
-            string nrUuid = generateFYChart(nrChartArray, new string[] {"NROTC", "NUPOC", "OTHER"});
-            reportBody = reportBody + subTable + surfTable + instTable + nrTable;
+            string overallUuid = generateFYChart(overallChartArray, new string[] {"USNA", "NROTC", "NUPOC", "STA-21N", "OTHER"}, "Overall Accessions");
+            string subUuid = generateFYChart(subChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" }, "SUB Accessions");
+            string surfUuid = generateFYChart(surfChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" }, "SWO Accessions");
+            string instUuid = generateFYChart(instChartArray, new string[] {"NUPOC", "OTHER"}, "INST Accessions");
+            string nrUuid = generateFYChart(nrChartArray, new string[] {"NROTC", "NUPOC", "OTHER"}, "NR Accessions");
+            // Create HTML
+            string chartHtml = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYChart.html"));
+            string overallHtml = chartHtml.Replace("__chart__", getChartPath(overallUuid));
+            string subHtml = chartHtml.Replace("__chart__", getChartPath(subUuid));
+            string surfHtml = chartHtml.Replace("__chart__", getChartPath(surfUuid));
+            string instHtml = chartHtml.Replace("__chart__", getChartPath(instUuid));
+            string nrHtml = chartHtml.Replace("__chart__", getChartPath(nrUuid));
+            reportBody = reportBody + overallHtml + subTable + subHtml + surfTable + surfHtml + instTable + instHtml + nrTable + nrHtml;
+            //reportBody = reportBody + subTable + surfTable + instTable + nrTable ;
             string reportHtml = header + reportBody + footer;
             generateReport(fileName, reportHtml, true, true);
+            // Delete all charts
+            deleteChart(overallUuid);
+            deleteChart(subUuid);
+            deleteChart(surfUuid);
+            deleteChart(instUuid);
+            deleteChart(nrUuid);
         }
 
         public void generateAlphaReport(String date, Boolean chrons)
@@ -1693,12 +1707,31 @@ namespace InterviewTracker.Controllers
             return results;
         }
 
-        private string generateFYChart(int[,] sourceCounts, string[] sources)
+        private string generateFYChart(int[,] sourceCounts, string[] sources, string title)
         {
             string uuid = Guid.NewGuid().ToString(); // Generate unique ID for file name
             var filePath = getChartPath(uuid);
-
-            var myChart = new System.Web.Helpers.Chart(width: 700, height: 200);
+            string chartTheme = @"<Chart>
+                                    <ChartAreas>
+                                        <ChartArea Name=""Default"" _Template_=""All"">
+                                            <AxisX>
+                                                <LabelStyle Interval=""1""/>
+                                            </AxisX>
+                                        </ChartArea>
+                                    </ChartAreas>
+                                    <Legends>
+                                        <Legend _Template_=""All"" Docking=""Bottom"">
+                                        </Legend>
+                                    </Legends>";
+            chartTheme += "<Series>";
+            for (var i = 0; i < sources.Length; i++)
+            {
+                chartTheme += "" +
+                                "<Series Name='" + sources[i] + "' ChartType='StackedColumn' Label='#VALY{#}' CustomProperties='SmartLabelStyle=Enabled'>" +
+                                "</Series>";
+            }
+            chartTheme += "</Series></Chart>";
+            var myChart = new System.Web.Helpers.Chart(width: 900, height: 200, theme: chartTheme);
             for (var i = 0; i < sources.Length; i++)
             {
                 int[] temp = new int[13];
@@ -1707,10 +1740,12 @@ namespace InterviewTracker.Controllers
                     temp[j] = sourceCounts[i, j];
                 }
                 myChart.AddSeries(sources[i],
-                        chartType: SeriesChartType.StackedBar.ToString(),
+                        chartType: SeriesChartType.StackedColumn.ToString(),
                         xValue: new[] { "Prior", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept" },
                         yValues: temp);
             }
+            myChart.AddLegend("Sources");
+            myChart.AddTitle(title);
             myChart.Save(filePath, "jpg");
             return uuid;
         }
@@ -1722,7 +1757,7 @@ namespace InterviewTracker.Controllers
             //Theme to hide slice labels
             string chartTheme = @"<Chart>
                                     <Series>
-                                        <Series Name=""Sources"" ChartType=""Pie"" Label=""#PERCENT{P2}"" LegendText=""#VALX"" CustomProperties=""PieLabelStyle=Outside"">
+                                        <Series Name=""Programs"" ChartType=""Pie"" LegendText=""#VALX (#PERCENT{P2})"" CustomProperties=""PieLabelStyle=Disabled"">
                                         </Series>
                                     </Series>
                                     <Legends>
@@ -1733,11 +1768,11 @@ namespace InterviewTracker.Controllers
             var myChart = new System.Web.Helpers.Chart(width: 250, height: 400, theme: chartTheme);
             myChart.AddTitle("Candidates Selected");
             myChart.AddSeries(
-                "Sources", chartType: SeriesChartType.Pie.ToString(),
+                "Programs", chartType: SeriesChartType.Pie.ToString(),
                 xValue: sources,
                 yValues: sourceCounts
                 );
-            myChart.AddLegend("Sources");
+            myChart.AddLegend("Programs");
             myChart.Save(filePath, "jpg");
             return uuid;
         }

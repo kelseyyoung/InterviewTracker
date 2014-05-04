@@ -1060,7 +1060,7 @@ namespace InterviewTracker.Migrations
                     DOB = DateTime.Parse("1992-4-" + (i + 1)),
                     Sex = sex.ToString(),
                     Programs = ProgramsList,
-                    FYG = 2014,
+                    FYG = 2013,
                     Ethnicity = personEthnicity,
                     Sources = personSource
                 };
