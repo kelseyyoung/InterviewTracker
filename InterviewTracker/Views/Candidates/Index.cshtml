@@ -460,7 +460,9 @@
                 clear(false);
             });
 
-            $("#School").select2();
+            $("#School").select2({
+                dropdownCssClass: "expand"
+            });
 
             $("#unselect-programs").click(function () {
                 $("#Programs option").removeAttr("selected");

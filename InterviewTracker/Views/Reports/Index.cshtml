@@ -215,8 +215,13 @@
                 yearRange: "-90:+0"
             });
 
-            $("#candidate-candidate").select2();
-            $("#school-school").select2();
+            // Select2s
+            $("#candidate-candidate").select2({
+                dropdownCssClass: "expand"
+            });
+            $("#school-school").select2({
+                dropdownCssClass: "expand"
+            });
 
             $("#generate-fy-year").click(function () {
                 var fyear = $("#fy-year option:selected").text();

@@ -469,6 +469,7 @@
                     // Re-init select2
                     $("#InterviewerID").select2({
                         placeholder: "Choose Interviewer",
+                        dropdownCssClass: "expand"
                     });
                 },
                 error: function (data) {
@@ -693,14 +694,14 @@
 
             $("#date-holder").datepicker();
 
-            $("#BioDataID").select2(
-                {
-                    placeholder: "Choose Candidate",
-                    matcher: function (term, text, opt) {
-                        return text.toUpperCase().indexOf(term.toUpperCase()) >= 0
-                            || opt.attr("data-alt").toUpperCase().indexOf(term.toUpperCase()) >= 0;
-                    }
-                });
+            $("#BioDataID").select2({
+                placeholder: "Choose Candidate",
+                matcher: function (term, text, opt) {
+                    return text.toUpperCase().indexOf(term.toUpperCase()) >= 0
+                        || opt.attr("data-alt").toUpperCase().indexOf(term.toUpperCase()) >= 0;
+                },
+                dropdownCssClass: "expand"
+            });
 
             $("#InterviewerID").select2(
                 {
