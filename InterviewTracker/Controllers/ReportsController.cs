@@ -489,6 +489,7 @@ namespace InterviewTracker.Controllers
             string nrTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportNRTable.html"));
             string instTable = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYReportInstTable.html"));
             Boolean done = false;
+            Boolean hasntHappenedYet = false;
 
             //If doing a CY report, shuffle months around appropriately
             if (!byFY)
@@ -742,7 +743,6 @@ namespace InterviewTracker.Controllers
                         sourceList = monthlyList.Where(y => y.BioData.Sources.SourcesValue == currentSource);
                     }
 
-                    //TO DO: sub/surf sub categories
                     var subList = sourceList.Where(z => z.Program.ProgramValue == "SUB");
                     var surfList = sourceList.Where(z => z.Program.ProgramValue == "SWO");
                     var nrList = sourceList.Where(z => z.Program.ProgramValue == "NR");
@@ -764,6 +764,7 @@ namespace InterviewTracker.Controllers
                     }
                     else //This month hasn't happened yet (either in reality, or according to specified report date), so fill in 0's
                     {
+                        hasntHappenedYet = true;
                         //Before zeroing, fill in "currently selected" column
                         if (j < mainSources.Length)
                         {
@@ -780,6 +781,8 @@ namespace InterviewTracker.Controllers
                             surfTable = surfTable.Replace("other current", cumulativeSourceCounts[2, j].ToString());
                             nrTable = nrTable.Replace("other current", cumulativeSourceCounts[3, j].ToString());
                             instTable = instTable.Replace("other current", cumulativeSourceCounts[4, j].ToString());
+
+
                         }
 
                         cumulativeSourceCounts[0, j] = 0; //overall
@@ -827,7 +830,7 @@ namespace InterviewTracker.Controllers
                         nrOther += cumulativeSourceCounts[3, j];
                         instOther += cumulativeSourceCounts[4, j];
 
-                        if (!done)
+                        if (!done && hasntHappenedYet)
                         {
                             if (nrOther == 0)
                                 nrTable = removeOtherSection(nrTable);
