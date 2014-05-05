@@ -896,11 +896,11 @@ namespace InterviewTracker.Controllers
             }
 
             // Generate charts
-            string overallUuid = generateFYChart(overallChartArray, new string[] {"USNA", "NROTC", "NUPOC", "STA-21N", "OTHER"}, "Overall Accessions");
-            string subUuid = generateFYChart(subChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" }, "SUB Accessions");
-            string surfUuid = generateFYChart(surfChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" }, "SWO Accessions");
-            string instUuid = generateFYChart(instChartArray, new string[] {"NUPOC", "OTHER"}, "INST Accessions");
-            string nrUuid = generateFYChart(nrChartArray, new string[] {"NROTC", "NUPOC", "OTHER"}, "NR Accessions");
+            string overallUuid = generateFYChart(overallChartArray, new string[] {"USNA", "NROTC", "NUPOC", "STA-21N", "OTHER"}, byFY);
+            string subUuid = generateFYChart(subChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" }, byFY);
+            string surfUuid = generateFYChart(surfChartArray, new string[] { "USNA", "NROTC", "NUPOC", "STA-21N", "OTHER" }, byFY);
+            string instUuid = generateFYChart(instChartArray, new string[] {"NUPOC", "OTHER"}, byFY);
+            string nrUuid = generateFYChart(nrChartArray, new string[] {"NROTC", "NUPOC", "OTHER"}, byFY);
             // Create HTML
             string chartHtml = System.IO.File.ReadAllText(Server.MapPath("~/Templates/FYChart.html"));
             string overallHtml = chartHtml.Replace("__chart__", getChartPath(overallUuid));
@@ -1763,7 +1763,7 @@ namespace InterviewTracker.Controllers
             return results;
         }
 
-        private string generateFYChart(int[,] sourceCounts, string[] sources, string title)
+        private string generateFYChart(int[,] sourceCounts, string[] sources, bool byFY)
         {
             string uuid = Guid.NewGuid().ToString(); // Generate unique ID for file name
             var filePath = getChartPath(uuid);
@@ -1788,6 +1788,15 @@ namespace InterviewTracker.Controllers
             }
             chartTheme += "</Series></Chart>";
             var myChart = new System.Web.Helpers.Chart(width: 900, height: 130, theme: chartTheme);
+            string[] months;
+            if (byFY)
+            {
+                months = new[] { "Prior", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept" };
+            }
+            else
+            {
+                months = new[] { "Prior", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" };
+            }
             for (var i = 0; i < sources.Length; i++)
             {
                 int[] temp = new int[13];
@@ -1797,7 +1806,7 @@ namespace InterviewTracker.Controllers
                 }
                 myChart.AddSeries(sources[i],
                         chartType: SeriesChartType.StackedColumn.ToString(),
-                        xValue: new[] { "Prior", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept" },
+                        xValue: months,
                         yValues: temp);
             }
             myChart.AddLegend();
