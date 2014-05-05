@@ -62,6 +62,9 @@
     color: white;
     }
 
+    /* Hides top of dialog */
+    .no-close .ui-dialog-titlebar-close {display: none; }
+
 }
 
 <div class="row-fluid">
@@ -75,13 +78,17 @@
         <div class="text-center">
             <b>Interview Color Code</b>
         </div>
-        <table style="width: 100%">
+        <table style="width: 100%; table-layout: fixed;">
             <tbody>
                 <tr>
                     <td class="scheduled-bg">Scheduled</td>
                     <td class="entered-bg">Entered</td>
                     <td class="edited-bg">Edited</td>
                 </tr>
+            </tbody>
+        </table>
+        <table style="width: 100%; table-layout: fixed;">
+            <tbody>
                 <tr>
                     <td class="final-bg">Final</td>
                     <td class="editing-bg">Being Edited</td>
@@ -254,6 +261,9 @@
         }
     </div>
 </div>
+<div id="dialog" title="Fetching Interviews">
+    <p>Fetching Interviews...</p>
+</div>
 
 @section AddToScripts {
     <script type="text/javascript">
@@ -275,6 +285,8 @@
         var interviewMapper = {};
 
         function updateCalendar(view, updateList) {
+            // Show dialog to prevent any further clicking
+            $("#dialog").dialog("open");
             console.log("update calendar");
             var start = view.start;
             console.log(start.toISOString());
@@ -402,6 +414,7 @@
                     }
                     </text>
                     }
+                    $("#dialog").dialog("close");
                 },
                 error: function (data) {
                     console.log("error");
@@ -568,6 +581,13 @@
         }
 
         $(document).ready(function () {
+
+            // Init dialog for fetching interview
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                dialogClass: "no-close"
+            });
 
             $("#calendar").fullCalendar({
                 header: {

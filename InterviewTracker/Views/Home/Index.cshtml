@@ -13,6 +13,9 @@
     width: inherit;
     }
 
+    /* Hides top of dialog */
+    .no-close .ui-dialog-titlebar-close {display: none; }
+
 }
 
 <div class="row-fluid">
@@ -58,7 +61,7 @@
 
         function updateCalendar(view) {
             // Show dialog to prevent any further clicking
-            $("#submitting-dialog").dialog("open");
+            $("#dialog").dialog("open");
             console.log("update calendar");
             var start = view.start;
             console.log(start.toISOString());
