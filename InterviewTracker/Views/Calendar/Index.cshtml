@@ -587,9 +587,8 @@
                 viewRender: viewChangeFn,
                 dayClick: function (date, allDay, jsEvent, view) {
                     var myDate = $("#calendar").fullCalendar('getDate');
-                    //alert("The current date of the calendar is " + myDate);
-                    //TODO: fix this
-                    $("#Date").datepicker("setDate", date);
+                    $("#date-holder").datepicker("setDate", date);
+                    $("#date-holder").trigger("change");
                 },
                 eventClick: eventClickFn
             });
@@ -756,6 +755,7 @@
 
 
             $("#date-holder").on("change", function () {
+                alert("click");
                 var date = $(this).datepicker("getDate");
                 // Change StartTime
                 if ($("#StartTime").val() == "") {
