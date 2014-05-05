@@ -17,6 +17,8 @@ namespace InterviewTracker.Controllers
         [CustomAuth("COORD", "ADMIN")]
         public ActionResult AddUser()
         {
+            int[] temp = new int[5];
+            int length = temp[8];
             ViewBag.user = db.User.Where(x => x.LoginID == System.Environment.UserName).FirstOrDefault();
 
             ViewBag.users = db.User.ToList().OrderBy(x => x.LoginID);
