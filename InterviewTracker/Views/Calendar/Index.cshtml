@@ -8,6 +8,11 @@
     cursor: pointer;
     }
 
+    /* Get rid of margin in calendar header */
+    .fc-header-title > h2 {
+    margin-bottom: 0;
+    }
+
     #interview-list {
     max-height: 300px;
     overflow: auto;
@@ -799,6 +804,42 @@
                     $("#EndTime").val(date.toISOString());
                 }
                 console.log($("#EndTime").val());
+            });
+
+            var gotoString = "<div>" +
+                "<select id='goto-month'>" +
+                    "<option value='0'>Jan</option>" +
+                    "<option value='1'>Feb</option>" +
+                    "<option value='2'>Mar</option>" +
+                    "<option value='3'>Apr</option>" +
+                    "<option value='4'>May</option>" +
+                    "<option value='5'>Jun</option>" +
+                    "<option value='6'>Jul</option>" +
+                    "<option value='7'>Aug</option>" +
+                    "<option value='8'>Sep</option>" +
+                    "<option value='9'>Oct</option>" +
+                    "<option value='10'>Nov</option>" +
+                    "<option value='11'>Dec</option>" +
+                "</select>" +
+                "<select id='goto-day'>";
+            for (var i = 1; i <= 31; i++) {
+                gotoString += "<option value='" + i + "'>" + i + "</option>";
+            }
+            gotoString += "" +
+                "</select>" +
+                "<input id='goto-year' type='text' style='width: 50px;'/>" +
+                "<button type='button' id='goto-calendar' class='btn-ignore btn-success btn-mini'>Go</button>" +
+            "</div>";
+
+            $(".fc-header-center").append(gotoString);
+
+            $(document).on("click", "#goto-calendar", function () {
+                var day = $("#goto-day").val();
+                var month = $("#goto-month").val();
+                var year = $("#goto-year").val();
+                if (day != "" && month != "" && year != "") {
+                    $("#calendar").fullCalendar("gotoDate", year, month, day);
+                }
             });
 
             // Update calendar every minute
