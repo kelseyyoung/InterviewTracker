@@ -8,6 +8,11 @@
     cursor: pointer;
     }
 
+    /* Get rid of margin in calendar header */
+    .fc-header-title > h2 {
+    margin-bottom: 0;
+    }
+
     #interview-list {
     max-height: 300px;
     overflow: auto;
@@ -62,6 +67,9 @@
     color: white;
     }
 
+    /* Hides top of dialog */
+    .no-close .ui-dialog-titlebar-close {display: none; }
+
 }
 
 <div class="row-fluid">
@@ -75,13 +83,17 @@
         <div class="text-center">
             <b>Interview Color Code</b>
         </div>
-        <table style="width: 100%">
+        <table style="width: 100%; table-layout: fixed;">
             <tbody>
                 <tr>
                     <td class="scheduled-bg">Scheduled</td>
                     <td class="entered-bg">Entered</td>
                     <td class="edited-bg">Edited</td>
                 </tr>
+            </tbody>
+        </table>
+        <table style="width: 100%; table-layout: fixed;">
+            <tbody>
                 <tr>
                     <td class="final-bg">Final</td>
                     <td class="editing-bg">Being Edited</td>
@@ -254,6 +266,9 @@
         }
     </div>
 </div>
+<div id="dialog" title="Fetching Interviews">
+    <p>Fetching Interviews...</p>
+</div>
 
 @section AddToScripts {
     <script type="text/javascript">
@@ -275,6 +290,8 @@
         var interviewMapper = {};
 
         function updateCalendar(view, updateList) {
+            // Show dialog to prevent any further clicking
+            $("#dialog").dialog("open");
             console.log("update calendar");
             var start = view.start;
             console.log(start.toISOString());
@@ -402,6 +419,7 @@
                     }
                     </text>
                     }
+                    $("#dialog").dialog("close");
                 },
                 error: function (data) {
                     console.log("error");
@@ -451,6 +469,7 @@
                     // Re-init select2
                     $("#InterviewerID").select2({
                         placeholder: "Choose Interviewer",
+                        dropdownCssClass: "expand"
                     });
                 },
                 error: function (data) {
@@ -569,6 +588,13 @@
 
         $(document).ready(function () {
 
+            // Init dialog for fetching interview
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                dialogClass: "no-close"
+            });
+
             $("#calendar").fullCalendar({
                 header: {
                     left: "prev,next today",
@@ -667,14 +693,14 @@
 
             $("#date-holder").datepicker();
 
-            $("#BioDataID").select2(
-                {
-                    placeholder: "Choose Candidate",
-                    matcher: function (term, text, opt) {
-                        return text.toUpperCase().indexOf(term.toUpperCase()) >= 0
-                            || opt.attr("data-alt").toUpperCase().indexOf(term.toUpperCase()) >= 0;
-                    }
-                });
+            $("#BioDataID").select2({
+                placeholder: "Choose Candidate",
+                matcher: function (term, text, opt) {
+                    return text.toUpperCase().indexOf(term.toUpperCase()) >= 0
+                        || opt.attr("data-alt").toUpperCase().indexOf(term.toUpperCase()) >= 0;
+                },
+                dropdownCssClass: "expand"
+            });
 
             $("#InterviewerID").select2(
                 {
@@ -779,6 +805,42 @@
                     $("#EndTime").val(date.toISOString());
                 }
                 console.log($("#EndTime").val());
+            });
+
+            var gotoString = "<div>" +
+                "<select id='goto-month'>" +
+                    "<option value='0'>Jan</option>" +
+                    "<option value='1'>Feb</option>" +
+                    "<option value='2'>Mar</option>" +
+                    "<option value='3'>Apr</option>" +
+                    "<option value='4'>May</option>" +
+                    "<option value='5'>Jun</option>" +
+                    "<option value='6'>Jul</option>" +
+                    "<option value='7'>Aug</option>" +
+                    "<option value='8'>Sep</option>" +
+                    "<option value='9'>Oct</option>" +
+                    "<option value='10'>Nov</option>" +
+                    "<option value='11'>Dec</option>" +
+                "</select>" +
+                "<select id='goto-day'>";
+            for (var i = 1; i <= 31; i++) {
+                gotoString += "<option value='" + i + "'>" + i + "</option>";
+            }
+            gotoString += "" +
+                "</select>" +
+                "<input id='goto-year' type='text' style='width: 50px;'/>" +
+                "<button type='button' id='goto-calendar' class='btn-ignore btn-success btn-mini'>Go</button>" +
+            "</div>";
+
+            $(".fc-header-center").append(gotoString);
+
+            $(document).on("click", "#goto-calendar", function () {
+                var day = $("#goto-day").val();
+                var month = $("#goto-month").val();
+                var year = $("#goto-year").val();
+                if (day != "" && month != "" && year != "") {
+                    $("#calendar").fullCalendar("gotoDate", year, month, day);
+                }
             });
 
             // Update calendar every minute

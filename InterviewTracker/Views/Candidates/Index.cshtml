@@ -26,6 +26,9 @@
     tr td:last-child {
     text-align: center;
     }
+
+    /* Hides top of dialog */
+    .no-close .ui-dialog-titlebar-close {display: none; }
 }
 <div class="row-fluid">
     <div class="span12 panel panel-primary">
@@ -165,6 +168,9 @@
                         </div>
                     </div>
                 </div>
+                <div id="search-no-results" class="alert-error alert hide">
+                    <p>The search returned no results</p>
+                </div>
                 <button type="button" class="pull-right" id="search"><i class="fa fa-search"></i> Search</button>
                 <button type="button" class="pull-right btn-ignore btn-danger" id="clear-search">Clear</button>
             </form>
@@ -187,6 +193,9 @@
             <tbody></tbody>
         </table>
     </div>
+</div>
+<div id="dialog" title="Searching Candidates">
+    <p>Searching...</p>
 </div>
 
 @section AddToScripts {
@@ -253,6 +262,8 @@
             //Re-init buttons
             $("#search-results button:not(.btn-ignore)").button();
             $("#search-results a.button").button();
+            // Close dialog
+            $("#dialog").dialog("close");
         }
 
         function filterAgain(data) {
@@ -325,6 +336,28 @@
             return data; // Return when done
         }
 
+        function clear(less) {
+            var formArray = $("#search-form").serializeArray();
+            console.log(formArray);
+            for (var i = 0; i < formArray.length; i++) {
+                var n = formArray[i]["name"];
+                if (!(less && (n == "FName" || n == "LName" || n == "SSN"))) {
+                    $("#" + formArray[i]["name"]).val("");
+                }
+            }
+            // Waivers and screens checkboxes
+            $("#Waivers").prop("checked", false);
+            $("#Screens").prop("checked", false);
+            // School
+            $("#School").select2("val", "");
+            // CY
+            $("#CalendarYear").val("");
+            // Programs
+            $("#unselect-programs").click();
+            // Hide errors (?)
+            $("#search-no-results").addClass("hide");
+        }
+
         $(document).ready(function () {
 
             // Set datepicker
@@ -333,13 +366,21 @@
                 yearRange: "-90:+0"
             });
 
+            // Set dialog
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                dialogClass: "no-close"
+            })
+
             $("#toggle-params").click(function () {
                 $("#more-params").slideToggle(function () {
                     if ($("#toggle-params").text().trim() == "More") {
                         $("#toggle-params").button("option", "label", "<i class='fa fa-minus'></i> Less").button("refresh");
                     } else {
                         $("#toggle-params").button("option", "label", "<i class='fa fa-plus'></i> More").button("refresh");
-                        //TODO: clear out hidden parameters
+                        // Clear out hidden parameters
+                        clear(true);
                     }
                 });
             });
@@ -355,6 +396,8 @@
             });
 
             $("#search").click(function () {
+                $("#search-no-results").addClass("hide");
+                $("#dialog").dialog("open");
                 var form = $("#search-form");
                 var filterStr = buildFilterString($(form).serializeArray());
                 if (filterStr == "") {
@@ -384,6 +427,7 @@
                         // If nothing to search on, essentially clear table
                         // by populating with empty data
                         populateTable([]);
+                        $("#search-no-results").removeClass("hide");
                     }
                 } else {
                     // Make call to API
@@ -396,6 +440,9 @@
                         success: function (data) {
                             console.log("success");
                             console.log(data);
+                            if (data.length == 0) {
+                                $("#search-no-results").removeClass("hide");
+                            }
                             // Populate table
                             populateTable(filterAgain(data));
                         },
@@ -410,14 +457,12 @@
             });
 
             $("#clear-search").click(function () {
-                var formArray = $("#search-form").serializeArray();
-                console.log(formArray);
-                for (var i = 0; i < formArray.length; i++) {
-                    $("#" + formArray[i]["name"]).val("");
-                }
+                clear(false);
             });
 
-            $("#School").select2();
+            $("#School").select2({
+                dropdownCssClass: "expand"
+            });
 
             $("#unselect-programs").click(function () {
                 $("#Programs option").removeAttr("selected");

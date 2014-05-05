@@ -94,6 +94,10 @@ namespace InterviewTracker.Controllers.API
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
+            // Delete all Interviews associated with the user
+            // Interviews
+            db.Interview.Where(x => x.InterviewerID == id).ToList().ForEach(y => db.Interview.Remove(y));
+
             db.User.Remove(user);
 
             try

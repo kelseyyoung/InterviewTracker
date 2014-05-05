@@ -1114,7 +1114,8 @@
 
             // School Select2
             $("#SchoolValue").select2({
-                placeholder: "Select School"
+                placeholder: "Select School",
+                dropdownCssClass: "expand"
             }).parent().find('.select2-with-searchbox')
             .prepend('<div class="createLink"><a href="#">Add New School</a></div>')
             .on('click', '.createLink', function (e) {
