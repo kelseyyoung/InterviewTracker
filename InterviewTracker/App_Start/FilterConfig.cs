@@ -12,6 +12,8 @@ namespace InterviewTracker
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             //filters.Add(new HandleErrorAttribute());
+
+            // For Elfar Error Reporting
             var provider = new XmlErrorLogProvider();
             GlobalFilters.Filters.Add(new ErrorLogFilter(provider));
             RouteTable.Routes.Insert(0, new ErrorLogRoute(provider));
