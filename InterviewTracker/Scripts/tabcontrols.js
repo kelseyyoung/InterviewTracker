@@ -362,7 +362,7 @@ $(document).ready(function () {
             schoolList.splice(schoolList.indexOf(schoolName), 1);
             var links = $("a:contains(" + schoolName + ")").filter(function () { return $(this).text() == schoolName });
             //Delete link and associated content in links
-            //Accounts for class tab
+            //Account for class tab
             for (var i = 0; i < links.length; i++) {
                 var link = links[i];
                 var contentId = $(link).attr("href");
@@ -372,6 +372,23 @@ $(document).ready(function () {
                 $(contentId).remove();
             }
             numSchools--;
+            // Actually delete record from database
+            var schoolsAttendedID = $(btn).parent().parent().parent().find("#SchoolsAttendedIDReal");
+            if (schoolsAttendedID.length != 0) {
+                // We're in the edit page, so delete it
+                $.ajax({
+                    url: baseURL + "/api/SchoolsAttended/Delete/" + $(schoolsAttendedID).val(),
+                    type: "Delete",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
         }
         showDialog("Remove School?", "Are you sure you want to remove this school (and class info) entry?", false, f);
     });
@@ -382,8 +399,27 @@ $(document).ready(function () {
             console.log("remove class");
             var formRemove = $(btn).data("remove");
             console.log(formRemove);
+            // Remove from visible tables
             $(btn).parent().parent().remove();
+            // Remove from hidden data
+            var classesAttendedID = $("#" + formRemove).find("#ClassesAttendedID");
             $("#" + formRemove).remove();
+            console.log(classesAttendedID.length);
+            if (classesAttendedID.length != 0) {
+                // In edit form, remove ClassesAttended record
+                $.ajax({
+                    url: baseURL + "/api/ClassesAttended/Delete/" + $(classesAttendedID).val(),
+                    type: "Delete",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
         }
         showDialog("Remove Class?", "Are you sure you want to remove this class entry?", false, f);
     });
@@ -400,6 +436,23 @@ $(document).ready(function () {
             //Remove tab
             $("a[href='#duty-station-content-" + num + "']").parent().remove();
             numDutyStations--;
+            // Try to get ID
+            var dutyStationID = $(btn).parent().parent().parent().find("#DutyStationID");
+            if (dutyStationID.length != 0) {
+                // Delete record from DB
+                $.ajax({
+                    url: baseURL + "/api/DutyStation/Delete/" + $(dutyStationID).val(),
+                    type: "Delete",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
         }
         showDialog("Remove Duty Station?", "Are you sure you want to remove this duty station entry?", false, f);
     });
@@ -417,6 +470,23 @@ $(document).ready(function () {
             $("a[href='#waiver-content-" + num + "']").parent().remove();
             numWaivers--;
             console.log(numWaivers);
+            // Try to get ID
+            var waiverID = $(btn).parent().parent().parent().find("#WaiverID");
+            if (waiverID.length != 0) {
+                // Delete record from DB
+                $.ajax({
+                    url: baseURL + "/api/Waiver/Delete/" + $(waiverID).val(),
+                    type: "Delete",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
         }
         showDialog("Remove Waiver?", "Are you sure you want to remove this waiver entry?", false, f);
     });
@@ -433,6 +503,23 @@ $(document).ready(function () {
             //Remove tab
             $("a[href='#screen-content-" + num + "']").parent().remove();
             numScreens--;
+            // Try to get ID
+            var screenID = $(btn).parent().parent().parent().find("#ScreenID");
+            if (screenID.length != 0) {
+                // Delete record from DB
+                $.ajax({
+                    url: baseURL + "/api/Screen/Delete/" + $(screenID).val(),
+                    type: "Delete",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
         };
         showDialog("Remove Screen?", "Are you sure you want to remove this screen entry?", false, f);
     });
@@ -449,6 +536,23 @@ $(document).ready(function () {
             //Remove tab
             $("a[href='#rd-content-" + num + "']").parent().remove();
             numRDs--;
+            // Try to get ID
+            var rdID = $(btn).parent().parent().parent().find("#RDID");
+            if (rdID.length != 0) {
+                // Delete record from DB
+                $.ajax({
+                    url: baseURL + "/api/RD/Delete/" + $(rdID).val(),
+                    type: "Delete",
+                    success: function (data) {
+                        console.log("success");
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
         }
         showDialog("Remove RD?", "Are you sure you want to remove this RD entry?", false, f);
     });

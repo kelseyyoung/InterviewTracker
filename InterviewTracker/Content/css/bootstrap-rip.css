@@ -654,7 +654,7 @@
         background-image: none;
     }
 
-    .btn-danger[disabled] {
+    .btn-inverse[disabled] {
         color: #bbbbbb;
         background-color: #222222;
         *background-color: #151515;
