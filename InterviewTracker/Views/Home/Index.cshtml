@@ -99,7 +99,8 @@
             console.log(append);
             var obj = {
                 "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
-                    end.toISOString() + "'" + append
+                    end.toISOString() + "'" + append,
+                "$orderby": "StartTime"
             };
             $.ajax({
                 url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
