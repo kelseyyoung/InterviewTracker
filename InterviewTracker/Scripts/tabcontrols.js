@@ -166,7 +166,7 @@ $(document).ready(function () {
             showDialog("Only Numbers Allowed", "Please enter numbers for Year Start and Year End", true, function () { });
             return;
         }
-        var schoolName = $(this).prev().val();
+        var schoolName = $(this).parent().find("#school-name").val();
         classCounter++;
         var content;
         // Use clones
@@ -206,7 +206,8 @@ $(document).ready(function () {
         // Init year tabs
         $(content).find(".tabs-vertical").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
         $(content).find(".tabs-vertical li").removeClass("ui-corner-top").addClass("ui-corner-left");
-        //TODO: disable generate button afterwards?
+        // Disabled button afterwards
+        $(this).attr("disabled", "disabled");
     });
 
     $(document).on("click", ".add-class", function (e) {
@@ -355,7 +356,8 @@ $(document).ready(function () {
         var btn = $(this);
         var f = function () {
             console.log("remove school");
-            var schoolName = $(btn).prev().prev().val();
+            var schoolName = $(btn).parent().find("#school-name").val();
+            console.log(schoolName);
             //Remove school from schoolList
             schoolList.splice(schoolList.indexOf(schoolName), 1);
             var links = $("a:contains(" + schoolName + ")").filter(function () { return $(this).text() == schoolName });

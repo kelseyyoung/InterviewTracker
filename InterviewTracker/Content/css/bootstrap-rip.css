@@ -567,9 +567,15 @@
     .btn-success:focus,
     .btn-success:active,
     .btn-success.active,
-    .btn-success.disabled,
-    .btn-success[disabled] {
+    .btn-success.disabled {
         color: #ffffff;
+        background-color: #51a351;
+        *background-color: #499249;
+        background-image: none;
+    }
+
+    .btn-success[disabled] {
+        color: #bbbbbb;
         background-color: #51a351;
         *background-color: #499249;
         background-image: none;
@@ -601,9 +607,15 @@
     .btn-danger:focus,
     .btn-danger:active,
     .btn-danger.active,
-    .btn-danger.disabled,
-    .btn-danger[disabled] {
+    .btn-danger.disabled {
         color: #ffffff;
+        background-color: #bd362f;
+        *background-color: #a9302a;
+        background-image: none;
+    }
+
+    .btn-danger[disabled] {
+        color: #bbbbbb;
         background-color: #bd362f;
         *background-color: #a9302a;
         background-image: none;
@@ -635,11 +647,18 @@
     .btn-inverse:focus,
     .btn-inverse:active,
     .btn-inverse.active,
-    .btn-inverse.disabled,
-    .btn-inverse[disabled] {
+    .btn-inverse.disabled {
         color: #ffffff;
         background-color: #222222;
         *background-color: #151515;
+        background-image: none;
+    }
+
+    .btn-danger[disabled] {
+        color: #bbbbbb;
+        background-color: #222222;
+        *background-color: #151515;
+        background-image: none;
     }
 
     .btn-inverse:active,
@@ -710,9 +729,9 @@
 }
 
 .btn-mini {
-  padding: 0 6px;
-  font-size: 10.5px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+    padding: 0 6px;
+    font-size: 10.5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }

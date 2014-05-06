@@ -994,6 +994,8 @@
             } else {
                 //Close dialog at end
                 $("#submitting-dialog").dialog("close");
+                // Go to top of page to signify there were errors
+                $('html, body').animate({ scrollTop: 0 }, 0);
             }
         }
 
