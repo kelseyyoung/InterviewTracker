@@ -195,7 +195,10 @@
                             <select id="BiodataPrograms" name="BiodataPrograms" multiple>
                                 @foreach (var p in ViewBag.programs)
                                 {
-                                <option value="@p.ProgramID" @if(ViewBag.bioData.Programs.Contains(p)) { <text>selected</text> }>@p.ProgramValue</option>
+                                    if(p.ProgramValue != "SUB" && p.ProgramValue != "SWO")
+                                    {
+                                        <option value="@p.ProgramID" @if(ViewBag.bioData.Programs.Contains(p)) { <text>selected</text> }>@p.ProgramValue</option>
+                                    }
                                 }
                             </select>
                         </div>
