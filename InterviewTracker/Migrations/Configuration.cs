@@ -1367,8 +1367,8 @@ namespace InterviewTracker.Migrations
                         Date = DateTime.Parse("2014/5/6 12:00:00"),
                         Status = Status.Scheduled.ToString(),
                         Location = "Room 5" + i,
-                        StartTime = DateTime.Parse("2014/5/6 3:00:00"),
-                        EndTime = DateTime.Parse("2014/5/6 3:30:00"),
+                        StartTime = DateTime.Parse("2014/5/6 15:00:00"),
+                        EndTime = DateTime.Parse("2014/5/6 15:30:00"),
                         Duration = 28,
                         InterviewerUser = personInterviewer,
                         BioData = Person
