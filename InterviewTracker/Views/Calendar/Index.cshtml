@@ -350,7 +350,8 @@
             console.log(append);
             var obj = {
                 "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
-                    end.toISOString() + "'" + append
+                    end.toISOString() + "'" + append,
+                "$orderby" : "StartTime"
             };
             $.ajax({
                 url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
@@ -420,6 +421,12 @@
                             var link = "@Url.Action("Edit", "Interviews", new { id = "__id__" })";
                             link = link.replace("__id__", interview.InterviewID);
                             $("#edit-interview").attr("href", link);
+                            var statusClass = interview.Status.toLowerCase();
+                            var status = interview.Status;
+                            if (interview.CurrentlyEditingID != null) {
+                                statusClass = "editing";
+                                status = "Being Edited"
+                            }
                             $("#interview-list .panel-body").append(
                                 '<div class="well well-small row-fluid">' +
                                     '<div class="span10">' +
@@ -427,7 +434,7 @@
                                         '<div>Interviewer: ' + interview.InterviewerUser.LoginID + '</div>' +
                                         '<div>Date/Time: ' + date.format("M/D/YYYY") + ' ' + startTime.format("HH:mm") + '-' + endTime.format("HH:mm") + '</div>' +
                                         '<div>Location: ' + interview.Location + '</div>' +
-                                        '<div>Status: <span class="' + interview.Status.toLowerCase() + '">' + interview.Status + '</span></div>' +
+                                        '<div>Status: <span class="' + statusClass + '">' + status + '</span></div>' +
                                         '<div>Type: ' + interview.BioData.Sources.SourcesValue + '</div>' +
                                     '</div>' +
                                     '<div class="span2 text-center">' +

@@ -1408,7 +1408,7 @@ namespace InterviewTracker.Migrations
                         InterviewerUser = personInterviewer,
                         BioData = Person
                     };
-                    if (i % 2 == 0)
+                    if (i % 3 == 0)
                     {
                         // Add some currently being edited
                         PersonInterview.CurrentlyEditingUser = Coord;
