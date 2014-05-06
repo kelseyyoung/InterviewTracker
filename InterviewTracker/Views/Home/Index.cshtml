@@ -5,7 +5,7 @@
 @section AddToTextCss {
 
     #interview-list {
-    max-height: 90%;
+    max-height: 300px;
     overflow: auto;
     }
 
@@ -15,6 +15,26 @@
 
     /* Hides top of dialog */
     .no-close .ui-dialog-titlebar-close {display: none; }
+
+    .scheduled {
+    color: #DB2C38;
+    }
+
+    .entered {
+    color: #CCBF33;
+    }
+
+    .edited {
+    color: #17599D;
+    }
+
+    .final {
+    color: #39C72A;
+    }
+
+    .editing {
+    color: #7C1296;
+    }
 
 }
 
@@ -30,7 +50,7 @@
                 <h4 class="panel-title">@if(ViewBag.user.UserGroup == "INTER") { <text>Your </text> }Interviews Today</h4>
             </div>
             <div class="panel-body">
-                <p class="text-center">No interviews today</p>
+                <!--<p class="text-center">No interviews today</p>-->
             </div>
         </div>
     </div>
@@ -58,7 +78,7 @@
             modal: true,
             dialogClass: "no-close"
         });
-
+        
         function updateCalendar(view) {
             // Show dialog to prevent any further clicking
             $("#dialog").dialog("open");
@@ -68,6 +88,7 @@
             var end = view.end;
             console.log(end.toISOString());
             interviewMapper = {};
+            $("#interview-list .panel-body").empty();
             //Fetch events from API
             var append = "";
             @if (ViewBag.user.UserGroup == "INTER")
@@ -146,6 +167,14 @@
                             var date = moment(interview.Date);
                             var startTime = moment(interview.StartTime);
                             var endTime = moment(interview.EndTime);
+                            var link = "@Url.Action("Edit", "Interviews", new { id = "__id__" })";
+                            link = link.replace("__id__", interview.InterviewID);
+                            var statusClass = interview.Status.toLowerCase();
+                            var status = interview.Status;
+                            if (interview.CurrentlyEditingID != null) {
+                                statusClass = "editing";
+                                status = "Being Edited"
+                            }
                             $("#edit-interview").attr("href", link);
                             $("#interview-list .panel-body").append(
                                 '<div class="well well-small row-fluid">' +
@@ -154,7 +183,7 @@
                                         '<div>Interviewer: ' + interview.InterviewerUser.LoginID + '</div>' +
                                         '<div>Date/Time: ' + date.format("M/D/YYYY") + ' ' + startTime.format("HH:mm") + '-' + endTime.format("HH:mm") + '</div>' +
                                         '<div>Location: ' + interview.Location + '</div>' +
-                                        '<div>Status: ' + interview.Status + '</div>' +
+                                        '<div>Status: <span class="' + statusClass + '">' + status + '</span></div>' +
                                         '<div>Type: ' + interview.BioData.Sources.SourcesValue + '</div>' +
                                     '</div>' +
                                 '</div>'
