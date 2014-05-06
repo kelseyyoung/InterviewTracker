@@ -269,6 +269,9 @@
 <div id="dialog" title="Fetching Interviews">
     <p>Fetching Interviews...</p>
 </div>
+<div id="dialog-confirm" title="">
+    <p></p>
+</div>
 
 @section AddToScripts {
     <script type="text/javascript">
@@ -288,6 +291,44 @@
         };
 
         var interviewMapper = {};
+
+        /**
+        * Function to show and set data/callbacks for a confirmation dialog
+        * Params:
+        *  title - (String) Title for the new dialog
+        *  message - (String) Message for the new dialog
+        *  okOnly - (Boolean) T/F if the dialog should just have an OK button, otherwise will have OK and cancel
+        *  okFunction - (Function) Callback function on OK press
+        */
+        function showDialog(title, message, okOnly, okFunction) {
+            $("#dialog-confirm > p").html(message);
+            var buttons;
+            if (okOnly) {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        //$(this).dialog("close");
+                    }
+                }
+            } else {
+                buttons = {
+                    Ok: function () {
+                        okFunction();
+                        //$(this).dialog("close");
+                    },
+                    Close: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }
+
+            $("#dialog-confirm").dialog({
+                title: title,
+                modal: true,
+                buttons: buttons
+            });
+            $("#dialog-confirm").dialog("open");
+        }
 
         function updateCalendar(view, updateList) {
             // Show dialog to prevent any further clicking
@@ -391,7 +432,7 @@
                                     '</div>' +
                                     '<div class="span2 text-center">' +
                                         '<a class="button" type="button" href="' + link + '"><i class="fa fa-edit"></i></a>' +
-                                        '<button type="button" class="btn-ignore btn-danger"><i class="fa fa-times-circle"></i></button>' +
+                                        '<button type="button" class="delete-interview btn-ignore btn-danger" data-id="' + interview.InterviewID + '"><i class="fa fa-times-circle"></i></button>' +
                                     '</div>' +
                                 '</div>'
                             );
@@ -593,6 +634,10 @@
                 autoOpen: false,
                 modal: true,
                 dialogClass: "no-close"
+            });
+
+            $("#dialog-confirm").dialog({
+                autoOpen: false
             });
 
             $("#calendar").fullCalendar({
@@ -841,6 +886,29 @@
                 if (day != "" && month != "" && year != "") {
                     $("#calendar").fullCalendar("gotoDate", year, month, day);
                 }
+            });
+
+            // Delete interview
+            $(document).on("click", ".delete-interview", function () {
+                var id = $(this).data("id");
+                console.log(id);
+                showDialog("Confirm Deletion", "Are you sure you want to delete this interview?", false, function () {
+                    // Delete interview
+                    $.ajax({
+                        url: baseURL + "/api/Interview/Delete/" + id,
+                        type: "Delete",
+                        success: function (data) {
+                            console.log("success");
+                            console.log(data);
+                            // Refresh page
+                            window.location.href = "@Url.Action("Index", "Calendar")";
+                        },
+                        error: function (data) {
+                            console.log("error");
+                            console.log(data);
+                        }
+                    });
+                });
             });
 
             // Update calendar every minute

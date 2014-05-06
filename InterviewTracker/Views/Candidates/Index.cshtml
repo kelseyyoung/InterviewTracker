@@ -83,9 +83,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="CalendarYear" class="control-label span3">CY</label>
+                            <label for="CY" class="control-label span3">CY</label>
                             <div class="span9">
-                                <input type="text" id="CalendarYear" />
+                                <input type="text" id="CY" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -333,6 +333,27 @@
                 }
             }
             console.log(data);
+            // CY filter
+            var cy = $("#CY").val();
+            console.log(cy);
+            if (cy != "") {
+                for (var i = 0; i < data.length; i++) {
+                    var interviews = data[i].Interviews;
+                    var remove = true;
+                    for (var j = 0; j < interviews.length; j++) {
+                        if (new Date(interviews[j].Date).getFullYear() == cy) {
+                            remove = false;
+                        }
+                    }
+                    if (remove) {
+                        data.splice(i, 1);
+                    }
+                }
+            }
+            if (data.length == 0) {
+                // Show no results
+                $("#search-no-results").removeClass("hide");
+            }
             return data; // Return when done
         }
 
@@ -351,7 +372,7 @@
             // School
             $("#School").select2("val", "");
             // CY
-            $("#CalendarYear").val("");
+            $("#CY").val("");
             // Programs
             $("#unselect-programs").click();
             // Hide errors (?)
@@ -392,6 +413,9 @@
                     for (var i = 0; i < oSettings.aoData.length; i++) {
                         oSettings.aoData[i].nTr.className += " " + "table-override";
                     }
+                    //Re-init buttons
+                    $("#search-results button:not(.btn-ignore)").button();
+                    $("#search-results a.button").button();
                 }
             });
 
@@ -407,7 +431,8 @@
                     var wChecked = $("#Waivers").is(":checked");
                     var sChecked = $("#Screens").is(":checked");
                     var programs = $("#Programs").val();
-                    if (schoolID != "" || wChecked || sChecked || programs != null) {
+                    var cy = $("#CY").val();
+                    if (schoolID != "" || wChecked || sChecked || programs != null || cy != "") {
                         $.ajax({
                             url: baseURL + "/api/BioData/GetAll",
                             type: "Get",
@@ -458,6 +483,14 @@
 
             $("#clear-search").click(function () {
                 clear(false);
+            });
+
+            // Enter key functionality
+            $(document).on("keydown", function (e) {
+                var key = e.which;
+                if (key == 13) {
+                    $("#search").click();
+                }
             });
 
             $("#School").select2({
