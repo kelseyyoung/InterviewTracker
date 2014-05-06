@@ -164,11 +164,11 @@ namespace InterviewTracker.Migrations
                 servsel
             );
             */
-             
+
             /**** Normal Table Data ****/
 
             // BioData
-            
+            /*
             List<Program> KelseyPrograms = new List<Program> { NR, INST };
             BioData Kelsey = new BioData
                 {
@@ -218,7 +218,7 @@ namespace InterviewTracker.Migrations
                 John,
                 Steve
             );
-
+            */
             // Users
             User Admin = new User
             {
@@ -408,7 +408,7 @@ namespace InterviewTracker.Migrations
                 ENGL266,
                 PHYS418
             );
-            
+            /*
             // Duty History
             DutyHistory KelseyDutyHistory = new DutyHistory
             {
@@ -490,7 +490,8 @@ namespace InterviewTracker.Migrations
                 JohnDutyStation,
                 SteveDutyStation
             );
-            
+            */
+
             // FY Goals
             FYGoals FY2012 = new FYGoals
             {
@@ -528,7 +529,7 @@ namespace InterviewTracker.Migrations
                 FY2013,
                 FY2014
             );
-            
+            /*
             // SchoolsAttended
             SchoolsAttended KelseySchoolsAttended = new SchoolsAttended
             {
@@ -1016,6 +1017,7 @@ namespace InterviewTracker.Migrations
             context.Waiver.AddOrUpdate(i => i.WaiverID,
                 SteveWaiver
             );
+            */
 
             /** Lots of data for chart generation **/
             // Month: (i % 4) + 1 (Jan-Apr)
@@ -1035,7 +1037,7 @@ namespace InterviewTracker.Migrations
                     // If i is even, they are Male
                     sex = Sex.M;
                 }
-                else 
+                else
                 {
                     // If i is odd, they are female
                     sex = Sex.F;
@@ -1089,7 +1091,116 @@ namespace InterviewTracker.Migrations
                     Location = "Room 757",
                     Comments = "This is a test",
                     EditedComments = "This is an edited test",
-                    StartTime = DateTime.Parse("2013/" + ((i % 4) + 1)+ "/" + (i + 1) + " 11:00:00"),
+                    StartTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 11:00:00"),
+                    EndTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 11:30:00"),
+                    Duration = 28,
+                    EditTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 2) + " 9:30:00"),
+                    InterviewerUser = personInterviewer,
+                    BioData = Person
+                };
+                // Add Interview
+                context.Interview.AddOrUpdate(x => x.InterviewID, PersonFinalInterview);
+
+                Program chosenProgram = ProgramsList.ElementAt((ProgramsList.Count + i) % ProgramsList.Count);
+                if (chosenProgram == NPS)
+                {
+                    // Choose SUB or SWO
+                    if (i % 2 == 0)
+                    {
+                        chosenProgram = SUB;
+                    }
+                    else
+                    {
+                        chosenProgram = SWO;
+                    }
+                }
+                // Create Admiral
+                Admiral PersonAdmiral = new Admiral
+                {
+                    Decision = true,
+                    Accepted = true,
+                    Comments = "Great person",
+                    NP500 = false,
+                    NSTC = true,
+                    SelfStudy = true,
+                    PreSchool = false,
+                    Letter = false,
+                    LetterReceived = false,
+                    AdmiralNotes = "Welcome aboard",
+                    InviteBack = false,
+                    BioData = Person,
+                    Program = chosenProgram,
+                    Date = new DateTime(2013, (i % 4) + 1, i + 1, 12, 0, 0)
+                };
+                // Add Admiral
+                context.Admiral.AddOrUpdate(x => x.AdmiralID, PersonAdmiral);
+            }
+
+            // Even more people for chart generation
+            for (var i = 0; i < 26; i++)
+            {
+                // Create BioData
+                Sex sex;
+                if (i % 2 == 0)
+                {
+                    // If i is even, they are Male
+                    sex = Sex.M;
+                }
+                else
+                {
+                    // If i is odd, they are female
+                    sex = Sex.F;
+                }
+                Sources personSource = SourcesList.ElementAt((SourcesList.Count + i) % SourcesList.Count);
+                Ethnicity personEthnicity = EthnicitiesList.ElementAt((EthnicitiesList.Count + i) % EthnicitiesList.Count);
+                string ssn;
+                if (i < 10)
+                {
+                    ssn = "123-45-678" + i;
+                }
+                else
+                {
+                    ssn = "123-45-67" + i;
+                }
+                BioData Person = new BioData
+                {
+                    SSN = ssn,
+                    LName = "Doe" + letters[i],
+                    MName = "Reginald" + letters[i],
+                    FName = "Anotherperson" + letters[i],
+                    DOB = DateTime.Parse("1992-4-" + (i + 1)),
+                    Sex = sex.ToString(),
+                    Programs = ProgramsList,
+                    FYG = 2013,
+                    Ethnicity = personEthnicity,
+                    Sources = personSource
+                };
+                // Add BioData
+                context.BioData.AddOrUpdate(x => x.ID, Person);
+
+                // Create SchoolsAttended
+                SchoolsAttended PersonSchoolsAttended = new SchoolsAttended
+                {
+                    YearStart = 2005,
+                    YearEnd = 2008,
+                    Graduated = true,
+                    Comments = "Great student",
+                    BioData = Person,
+                    School = UofA
+                };
+                // Add SchoolsAttended
+                context.SchoolsAttended.AddOrUpdate(x => x.SchoolsAttendedID, PersonSchoolsAttended);
+
+                // Create Interview
+                User personInterviewer = InterviewersList.ElementAt((InterviewersList.Count + i) % InterviewersList.Count);
+                Interview PersonFinalInterview = new Interview
+                {
+                    Date = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 12:00:00"),
+                    Status = Status.Final.ToString(),
+                    Location = "Room 757",
+                    Comments = "This is a test",
+                    EditedComments = "This is an edited test",
+                    StartTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 11:00:00"),
                     EndTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 1) + " 11:30:00"),
                     Duration = 28,
                     EditTime = DateTime.Parse("2013/" + ((i % 4) + 1) + "/" + (i + 2) + " 9:30:00"),
@@ -1133,7 +1244,315 @@ namespace InterviewTracker.Migrations
                 // Add Admiral
                 context.Admiral.AddOrUpdate(x => x.AdmiralID, PersonAdmiral);
             }
-            
+
+            // Data for calendar/interviews
+            for (var i = 0; i < 26; i++)
+            {
+                // Create BioData
+                Sex sex;
+                if (i % 2 == 0)
+                {
+                    // If i is even, they are Male
+                    sex = Sex.M;
+                }
+                else
+                {
+                    // If i is odd, they are female
+                    sex = Sex.F;
+                }
+                Sources personSource = SourcesList.ElementAt((SourcesList.Count + i) % SourcesList.Count);
+                Ethnicity personEthnicity = EthnicitiesList.ElementAt((EthnicitiesList.Count + i) % EthnicitiesList.Count);
+                string ssn;
+                if (i < 10)
+                {
+                    ssn = "123-45-678" + i;
+                }
+                else
+                {
+                    ssn = "123-45-67" + i;
+                }
+                BioData Person = new BioData
+                {
+                    SSN = ssn,
+                    LName = "Test" + letters[i],
+                    MName = "Test" + letters[i],
+                    FName = "Test" + letters[i],
+                    DOB = DateTime.Parse("1992-4-" + (i + 1)),
+                    Sex = sex.ToString(),
+                    Programs = ProgramsList,
+                    FYG = 2014,
+                    Ethnicity = personEthnicity,
+                    Sources = personSource
+                };
+                // Add BioData
+                context.BioData.AddOrUpdate(x => x.ID, Person);
+
+                DutyHistory PersonDutyHistory = new DutyHistory
+                {
+                    Branch = "Navy",
+                    Rank = "E1",
+                    Rating = "MM",
+                    NUC = false,
+                    BioData = Person
+                };
+
+                context.DutyHistory.AddOrUpdate(x => x.DutyHistoryID, PersonDutyHistory);
+
+                DutyStation PersonDutyStation = new DutyStation
+                {
+                    Name = "A Duty Station",
+                    ReportDate = DateTime.Parse("2011-1-1"),
+                    DepartDate = DateTime.Parse("2013-1-1"),
+                    Duties = "Corporal duties",
+                    GPA = 3.94,
+                    RankOverallVal = 2,
+                    RankOverallTot = 100,
+                    RankInRateVal = 3,
+                    RankInRateTot = 80,
+                    Notes = "One of the smartest",
+                    DutyHistory = PersonDutyHistory
+                };
+
+                context.DutyStation.AddOrUpdate(x => x.DutyStationID, PersonDutyStation);
+
+                SchoolsAttended PersonSchoolsAttended = new SchoolsAttended
+                {
+                    YearStart = 2009,
+                    YearEnd = 2011,
+                    Graduated = true,
+                    Comments = "Great student",
+                    BioData = Person,
+                    School = UofA
+                };
+
+                context.SchoolsAttended.AddOrUpdate(x => x.SchoolsAttendedID, PersonSchoolsAttended);
+
+                SchoolStandings PersonSchoolStandings1 = new SchoolStandings
+                {
+                    YearOfRecord = 1,
+                    GPA = 3.2,
+                    AOMVal = 30,
+                    AOMTot = 300,
+                    OOMVal = 20,
+                    OOMTot = 300,
+                    InMajorVal = 20,
+                    InMajorTot = 200,
+                    SchoolsAttended = PersonSchoolsAttended
+                };
+                SchoolStandings PersonSchoolStandings2 = new SchoolStandings
+                {
+                    YearOfRecord = 2,
+                    GPA = 3.2,
+                    AOMVal = 30,
+                    AOMTot = 300,
+                    OOMVal = 20,
+                    OOMTot = 300,
+                    InMajorVal = 20,
+                    InMajorTot = 200,
+                    SchoolsAttended = PersonSchoolsAttended
+                };
+
+                context.SchoolStandings.AddOrUpdate(x => x.SchoolStandingsID,
+                    PersonSchoolStandings1,
+                    PersonSchoolStandings2
+                );
+
+                Interview PersonInterview;
+                User personInterviewer = InterviewersList.ElementAt((InterviewersList.Count + i) % InterviewersList.Count);
+                if (i % 4 == 0)
+                {
+                    // Schedule
+                    PersonInterview = new Interview
+                    {
+                        Date = DateTime.Parse("2014/5/6 12:00:00"),
+                        Status = Status.Scheduled.ToString(),
+                        Location = "Room 5" + i,
+                        StartTime = DateTime.Parse("2014/5/6 3:00:00"),
+                        EndTime = DateTime.Parse("2014/5/6 3:30:00"),
+                        Duration = 28,
+                        InterviewerUser = personInterviewer,
+                        BioData = Person
+                    };
+                }
+                else if (i % 4 == 1)
+                {
+                    // Entered
+                    PersonInterview = new Interview
+                    {
+                        Date = DateTime.Parse("2014/5/6 12:00:00"),
+                        Status = Status.Entered.ToString(),
+                        Location = "Room 2" + i,
+                        Comments = "Interview went normally",
+                        StartTime = DateTime.Parse("2014/5/6 10:00:00"),
+                        EndTime = DateTime.Parse("2014/5/6 10:30:00"),
+                        Duration = 27,
+                        EditTime = DateTime.Parse("2014/5/6 10:40:00"),
+                        InterviewerUser = personInterviewer,
+                        BioData = Person
+                    };
+                }
+                else if (i % 4 == 2)
+                {
+                    // Edited
+                    PersonInterview = new Interview
+                    {
+                        Date = DateTime.Parse("2014/5/6 12:00:00"),
+                        Status = Status.Edited.ToString(),
+                        Location = "Room 7" + i,
+                        Comments = "Gave off a bad impression",
+                        EditedComments = "Gave off a bad impression, did not respond well to questions",
+                        StartTime = DateTime.Parse("2014/5/6 9:30:00"),
+                        EndTime = DateTime.Parse("2014/5/6 10:00:00"),
+                        Duration = 28,
+                        EditTime = DateTime.Parse("2014/5/6 10:20:00"),
+                        InterviewerUser = personInterviewer,
+                        BioData = Person
+                    };
+                    if (i % 2 == 0)
+                    {
+                        // Add some currently being edited
+                        PersonInterview.CurrentlyEditingUser = Coord;
+                    }
+                }
+                else
+                {
+                    // Final
+                    PersonInterview = new Interview
+                    {
+                        Date = DateTime.Parse("2014/5/6 12:00:00"),
+                        Status = Status.Final.ToString(),
+                        Location = "Room 6" + i,
+                        Comments = "Gave off a bad impression",
+                        EditedComments = "Gave off a bad impression, did not respond well to questions",
+                        StartTime = DateTime.Parse("2014/5/6 9:00:00"),
+                        EndTime = DateTime.Parse("2014/5/6 9:30:00"),
+                        Duration = 28,
+                        EditTime = DateTime.Parse("2014/5/6 9:35:00"),
+                        InterviewerUser = personInterviewer,
+                        BioData = Person
+                    };
+                }
+
+                context.Interview.AddOrUpdate(x => x.InterviewID,
+                    PersonInterview);
+
+                if (i % 4 == 3)
+                {
+                    Program chosenProgram = ProgramsList.ElementAt((ProgramsList.Count + i) % ProgramsList.Count);
+                    if (chosenProgram == NPS)
+                    {
+                        // Choose SUB or SWO
+                        if (i % 2 == 0)
+                        {
+                            chosenProgram = SUB;
+                        }
+                        else
+                        {
+                            chosenProgram = SWO;
+                        }
+                    }
+                    Admiral PersonAdmiral = new Admiral
+                    {
+                        Decision = true,
+                        Accepted = true,
+                        Comments = "Was very intelligent",
+                        NP500 = false,
+                        NSTC = true,
+                        SelfStudy = true,
+                        PreSchool = false,
+                        Letter = false,
+                        LetterReceived = false,
+                        AdmiralNotes = "Welcome aboard",
+                        InviteBack = false,
+                        BioData = Person,
+                        Program = chosenProgram,
+                        Date = new DateTime(2014, 5, 6, 12, 0, 0)
+                    };
+
+                    context.Admiral.AddOrUpdate(x => x.AdmiralID,
+                        PersonAdmiral
+                    );
+                }
+
+                // ClassesAttended
+                ClassesAttended PersonClassesAttended1 = new ClassesAttended
+                {
+                    YearTaken = 1,
+                    Grade = "C+",
+                    SchoolsAttended = PersonSchoolsAttended,
+                    BioData = Person,
+                    Classes = PHYS418
+                };
+                ClassesAttended PersonClassesAttended2 = new ClassesAttended
+                {
+                    YearTaken = 2,
+                    Grade = "A-",
+                    SchoolsAttended = PersonSchoolsAttended,
+                    BioData = Person,
+                    Classes = ENGL266
+                };
+
+                context.ClassesAttended.AddOrUpdate(x => x.ClassesAttendedID,
+                PersonClassesAttended1,
+                PersonClassesAttended2);
+
+                // Degrees
+                Degree PersonDegree = new Degree
+                {
+                    DegreeDate = DateTime.Parse("2011-5-20"),
+                    SchoolsAttended = PersonSchoolsAttended,
+                    Major = MATH,
+                    DegreeType = BS
+                };
+
+                context.Degree.AddOrUpdate(x => x.DegreeID, PersonDegree);
+
+                // RD
+                RD PersonRD = new RD
+                {
+                    Type = RDType.DEVOL.ToString(),
+                    Reason = "US Traitor",
+                    Date = DateTime.Parse("2009-1-1"),
+                    BioData = Person
+                };
+
+                context.RD.AddOrUpdate(x => x.RDID,
+                    PersonRD
+                );
+
+
+                // Screens
+                Screen PersonScreen = new Screen
+                {
+                    Screener = "Dorothy Gale",
+                    Location = "U of A Career Fair",
+                    ScreenDate = DateTime.Parse("2009-1-1"),
+                    NRStatus = ScreenStatus.Maybe.ToString(),
+                    INSTStatus = ScreenStatus.No.ToString(),
+                    NPSStatus = ScreenStatus.Yes.ToString(),
+                    ProgramsAppliedFor = ProgramsList,
+                    BioData = Person
+                };
+
+                context.Screen.AddOrUpdate(x => x.ScreenID,
+                    PersonScreen
+                );
+
+                // Waiver
+                Waiver PersonWaiver = new Waiver
+                {
+                    Type = WaiverType.Drug.ToString(),
+                    Date = DateTime.Parse("2012-1-1"),
+                    Comments = "All the drugs",
+                    BioData = Person
+                };
+
+                context.Waiver.AddOrUpdate(x => x.WaiverID,
+                    PersonWaiver
+                );
+
+            } // End for loop
+
         }
     }
 }
