@@ -332,11 +332,8 @@
         function updateCalendar(view, updateList) {
             // Show dialog to prevent any further clicking
             $("#dialog").dialog("open");
-            console.log("update calendar");
             var start = view.start;
-            console.log(start.toISOString());
             var end = view.end;
-            console.log(end.toISOString());
             // Reset interviewMapper
             interviewMapper = {};
             //Fetch events from API
@@ -346,7 +343,6 @@
                 // If interviewer, only get interviews they're assigned to
                 <text>append = " and InterviewerID eq " + @ViewBag.user.UserID + "";</text>
             }
-            console.log(append);
             var obj = {
                 "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
                     end.toISOString() + "'" + append,
@@ -356,10 +352,8 @@
                 url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
                 type: "Get",
                 success: function (data) {
-                    console.log("success");
                     //Remove all events
                     $("#calendar").fullCalendar("removeEvents");
-                    console.log(data.length);
                     if (updateList) {
                         // Clear list out
                         $("#interview-list .panel-body").empty();
@@ -469,9 +463,6 @@
                     $("#dialog").dialog("close");
                 },
                 error: function (data) {
-                    console.log("error");
-                    console.log(data);
-                    console.log(data.responseText);
                 }
             });
         }
@@ -501,8 +492,6 @@
                 url: url,
                 type: "Get",
                 success: function (data) {
-                    console.log("success");
-                    console.log(data);
                     // Clear out current select
                     $("#InterviewerID").select2("destroy");
                     $("#InterviewerID").empty();
@@ -520,9 +509,6 @@
                     });
                 },
                 error: function (data) {
-                    console.log("error");
-                    console.log(data);
-                    console.log(data.responseText);
                 }
             });
         }
@@ -559,8 +545,6 @@
                 url: baseURL + "/api/Interview/Get/" + id,
                 type: "Get",
                 success: function (data) {
-                    console.log("success");
-                    console.log(data);
                     // Display information in sidebar
                     var date = moment(data.Date);
                     var startDate = moment(data.StartTime);
@@ -580,9 +564,6 @@
                     $("#interview-info").removeClass("hide");
                 },
                 error: function (data) {
-                    console.log("error");
-                    console.log(data);
-                    console.log(data.responseText);
                 }
             });
         };
@@ -677,7 +658,6 @@
             });
 
             $("#submit-quals").click(function () {
-                console.log("submit quals");
                 updateInterviewers();
             });
 
@@ -692,19 +672,16 @@
                 $("#Date").val(date.toISOString());
                 // Get form data
                 var interview = $("#interview-form").serialize();
-                console.log(interview);
                 // Test
                 $.ajax({
                     url: baseURL + "/api/Interview/Test?" + interview,
                     type: "Post",
                     success: function (data) {
-                        console.log(data);
                         // Submit interview
                         $.ajax({
                             url: baseURL + "/api/Interview/Post?" + interview,
                             type: "Post",
                             success: function (data) {
-                                console.log("interview post successful");
                                 // Update calendar
                                 updateCalendar($("#calendar").fullCalendar("getView"));
                                 // Re-enable checkboxes
@@ -719,7 +696,6 @@
                     },
                     error: function (data) {
                         // Show errors
-                        console.log(data);
                         var errors = "";
                         var response = $.parseJSON(data.responseText).ModelState;
                         $.each(response, function (key, value) {
@@ -783,7 +759,6 @@
                 time.setHours(hour);
                 time.setMinutes(min);
                 $("#StartTime").val(time.toISOString());
-                console.log($("#StartTime").val());
                 // Change Duration
                 if ($("#EndTime").val() != "") {
                     var start = moment($("#StartTime").val());
@@ -795,7 +770,6 @@
                         hoursPassed -= 1;
                     }
                     var duration = hoursPassed * 60 + minsPassed;
-                    console.log(duration);
                     $("#Duration").val(duration);
                 }
             });
@@ -819,7 +793,6 @@
                 time.setHours(hour);
                 time.setMinutes(min);
                 $("#EndTime").val(time.toISOString());
-                console.log($("#EndTime").val());
                 // Change Duration
                 if ($("#StartTime").val() != "") {
                     var start = moment($("#StartTime").val());
@@ -831,7 +804,6 @@
                         hoursPassed -= 1;
                     }
                     var duration = hoursPassed * 60 + minsPassed;
-                    console.log(duration);
                     $("#Duration").val(duration);
                 }
             });
@@ -850,7 +822,6 @@
                     date.setMinutes(time.getMinutes());
                     $("#StartTime").val(date.toISOString());
                 }
-                console.log($("#StartTime").val());
                 // Change EndTime
                 if ($("#EndTime").val() == "") {
                     $("#EndTime").val(date.toISOString());
@@ -861,7 +832,6 @@
                     date.setMinutes(time.getMinutes());
                     $("#EndTime").val(date.toISOString());
                 }
-                console.log($("#EndTime").val());
             });
 
             var gotoString = "<div>" +
@@ -903,21 +873,16 @@
             // Delete interview
             $(document).on("click", ".delete-interview", function () {
                 var id = $(this).data("id");
-                console.log(id);
                 showDialog("Confirm Deletion", "Are you sure you want to delete this interview?", false, function () {
                     // Delete interview
                     $.ajax({
                         url: baseURL + "/api/Interview/Delete/" + id,
                         type: "Delete",
                         success: function (data) {
-                            console.log("success");
-                            console.log(data);
                             // Refresh page
                             window.location.href = "@Url.Action("Index", "Calendar")";
                         },
                         error: function (data) {
-                            console.log("error");
-                            console.log(data);
                         }
                     });
                 });

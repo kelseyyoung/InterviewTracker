@@ -196,29 +196,21 @@
                     url: baseURL + "/api/User/Get/" + userID,
                     type: "Get",
                     success: function (data) {
-                        console.log("success");
-                        console.log(data);
                         var form = $("#add-user-form").serializeArray();
-                        console.log(form);
                         // Set UserID
                         $("#UserID").attr("name", "UserID");
                         $("#UserID").val(data.UserID);
                         // Populate
                         for (var i = 0; i < form.length; i++) {
-                            console.log(data[form[i]["name"]]);
                             $("#" + form[i]["name"]).val(data[form[i]["name"]]);
                         }
                         for (var i = 0; i < quals.length; i++) {
-                            console.log(quals[i]);
-                            console.log(data[quals[i]]);
                             $("#" + quals[i]).prop("checked", data[quals[i]]);
                         }
                         // Enable delete user button
                         $("#delete-user").removeClass("hide");
                     },
                     error: function (data) {
-                        console.log("error");
-                        console.log(data);
                     }
                 });
             });
@@ -232,15 +224,12 @@
                         formData += "&" + quals[i] + "=false";
                     }
                 }
-                console.log(formData);
                 $("#user-errors").addClass("hide");
                 // Test
                 $.ajax({
                     url: baseURL + "/api/User/Test?" + formData,
                     type: "Post",
                     success: function (data) {
-                        console.log("success");
-                        console.log(data);
                         // Figure out type (Post or Put)
                         var type = "Post";
                         var append = "";
@@ -248,8 +237,6 @@
                             type = "Put";
                             append = "/" + $("#UserID").val();
                         }
-                        console.log(type);
-                        console.log(append);
                         // Submit
                         $.ajax({
                             url: baseURL + "/api/User/" + type + append + "?" + formData,
@@ -258,14 +245,10 @@
                                 window.location.href = baseURL + "@Url.Action("AddUser", "Admin")";
                             },
                             error: function (data) {
-                                console.log("error");
-                                console.log(data);
                             }
                         });
                     },
                     error: function (data) {
-                        console.log("error");
-                        console.log(data);
                         var errors = "";
                         var response = $.parseJSON(data.responseText).ModelState;
                         $.each(response, function (key, value) {
@@ -308,14 +291,10 @@
                         url: baseURL + "/api/User/Delete/" + id,
                         type: "Delete",
                         success: function (data) {
-                            console.log("success");
-                            console.log(data);
                             // Refresh page
                             window.location.href = "@Url.Action("AddUser", "Admin")";
                         },
                         error: function (data) {
-                            console.log("error");
-                            console.log(data);
                         }
                     });
                 });

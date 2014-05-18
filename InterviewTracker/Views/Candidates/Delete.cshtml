@@ -261,7 +261,6 @@
                     }
                 }
             }
-            console.log(ret);
             return ret;
         }
 
@@ -310,7 +309,6 @@
                     }
                 }
             }
-            console.log(data);
             // Waivers Filter
             var wChecked = $("#Waivers").is(":checked");
             if (wChecked) {
@@ -322,7 +320,6 @@
                     }
                 }
             }
-            console.log(data);
             // Screens Filter
             var sChecked = $("#Screens").is(":checked");
             if (sChecked) {
@@ -334,7 +331,6 @@
                     }
                 }
             }
-            console.log(data);
             // Programs Filter
             // Needs to only be in one or more of the selected programs
             var programs = $("#Programs").val();
@@ -354,7 +350,6 @@
                     }
                 }
             }
-            console.log(data);
             return data; // Return when done
         }
 
@@ -402,15 +397,10 @@
                             url: baseURL + "/api/BioData/GetAll",
                             type: "Get",
                             success: function (data) {
-                                console.log("success");
-                                console.log(data);
                                 // Populate table
                                 populateTable(filterAgain(data));
                             },
                             error: function (data) {
-                                console.log("error");
-                                console.log(data);
-                                console.log(data.responseText);
                             }
                         })
                     } else {
@@ -427,15 +417,10 @@
                         url: baseURL + "/api/BioData/GetBy?" + $.param(obj),
                         type: "Get",
                         success: function (data) {
-                            console.log("success");
-                            console.log(data);
                             // Populate table
                             populateTable(filterAgain(data));
                         },
                         error: function (data) {
-                            console.log("error");
-                            console.log(data);
-                            console.log(data.responseText);
                         }
                     });
 
@@ -444,7 +429,6 @@
 
             $("#clear-search").click(function () {
                 var formArray = $("#search-form").serializeArray();
-                console.log(formArray);
                 for (var i = 0; i < formArray.length; i++) {
                     $("#" + formArray[i]["name"]).val("");
                 }
@@ -460,13 +444,11 @@
 
             $(document).on("click", ".delete-button", function (e) {
                 e.preventDefault();
-                console.log($(this).data("id"));
                 var id = $(this).data("id"); // This is the BioData ID
                 showDialog("Confirm Deletion", "Please confirm the candidate deletion by entering your username", false, function () {
                     // Verify username
                     var username = $("#username-confirm").val();
                     if (username != "@ViewBag.user.LoginID") {
-                        console.log("here");
                         $("#delete-errors > p").html("The username entered does not match your username");
                         $("#delete-errors").removeClass("hide");
                         return;
@@ -477,16 +459,12 @@
                         url: baseURL + "/api/BioData/Delete/" + id,
                         type: "Delete",
                         success: function (data) {
-                            console.log("success");
-                            console.log(data);
                             $("#delete-errors").addClass("hide");
                             $("#dialog-confirm").dialog("open");
                             // Refresh page
                             window.location.href = "@Url.Action("Index", "Candidates")";
                         },
                         error: function (data) {
-                            console.log("error");
-                            console.log(data);
                         }
                     });
                 });

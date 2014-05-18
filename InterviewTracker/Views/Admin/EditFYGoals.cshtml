@@ -109,13 +109,10 @@
                 }
                 $("#fy-errors").addClass("hide");
                 var formData = $("#fy-form").serialize();
-                console.log(formData);
                 $.ajax({
                     url: baseURL + "/api/FYGoals/GetByYearAndSource/?" + formData,
                     type: "Get",
                     success: function (data) {
-                        console.log("success");
-                        console.log(data);
                         if (data == null) {
                             // No FY Goal exists
                             $("#fy-errors > p").html("No FY Goal for that source");
@@ -138,23 +135,18 @@
                         }
                     },
                     error: function (data) {
-                        console.log("error");
-                        console.log(data);
                     }
                 })
             });
 
             $("#submit-goals").click(function () {
                 var formData = $("#fy-form").serialize();
-                console.log(formData);
                 $("#fy-errors").addClass("hide");
                 // Test
                 $.ajax({
                     url: baseURL + "/api/FYGoals/Test?" + formData,
                     type: "Post",
                     success: function (data) {
-                        console.log("success");
-                        console.log(data);
                         // Figure out type (Post or Put)
                         var type = "Post";
                         var append = "";
@@ -162,27 +154,19 @@
                             type = "Put";
                             append = "/" + $("#FYID").val();
                         }
-                        console.log(type);
-                        console.log(append);
                         // Submit
                         $.ajax({
                             url: baseURL + "/api/FYGoals/" + type + append + "?" + formData,
                             type: type,
                             success: function (data) {
-                                console.log("success");
-                                console.log(data);
                                 // Refresh page
                                 window.location.href = baseURL + "@Url.Action("EditFYGoals", "Admin")";
                             },
                             error: function (data) {
-                                console.log("error");
-                                console.log(data);
                             }
                         });
                     },
                     error: function (data) {
-                        console.log("error");
-                        console.log(data);
                         // Show errors
                         var errors = "";
                         var response = $.parseJSON(data.responseText).ModelState;

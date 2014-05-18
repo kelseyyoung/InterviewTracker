@@ -223,7 +223,6 @@
                     }
                 }
             }
-            console.log(ret);
             return ret;
         }
 
@@ -288,7 +287,6 @@
                     }
                 }
             }
-            console.log(data);
             // Waivers Filter
             var wChecked = $("#Waivers").is(":checked");
             if (wChecked) {
@@ -300,7 +298,6 @@
                     }
                 }
             }
-            console.log(data);
             // Screens Filter
             var sChecked = $("#Screens").is(":checked");
             if (sChecked) {
@@ -312,7 +309,6 @@
                     }
                 }
             }
-            console.log(data);
             // Programs Filter
             // Needs to only be in one or more of the selected programs
             var programs = $("#Programs").val();
@@ -332,10 +328,8 @@
                     }
                 }
             }
-            console.log(data);
             // CY filter
             var cy = $("#CY").val();
-            console.log(cy);
             if (cy != "") {
                 for (var i = 0; i < data.length; i++) {
                     var interviews = data[i].Interviews;
@@ -359,7 +353,6 @@
 
         function clear(less) {
             var formArray = $("#search-form").serializeArray();
-            console.log(formArray);
             for (var i = 0; i < formArray.length; i++) {
                 var n = formArray[i]["name"];
                 if (!(less && (n == "FName" || n == "LName" || n == "SSN"))) {
@@ -437,15 +430,10 @@
                             url: baseURL + "/api/BioData/GetAll",
                             type: "Get",
                             success: function (data) {
-                                console.log("success");
-                                console.log(data);
                                 // Populate table
                                 populateTable(filterAgain(data));
                             },
                             error: function (data) {
-                                console.log("error");
-                                console.log(data);
-                                console.log(data.responseText);
                             }
                         })
                     } else {
@@ -463,8 +451,6 @@
                         url: baseURL + "/api/BioData/GetBy?" + $.param(obj),
                         type: "Get",
                         success: function (data) {
-                            console.log("success");
-                            console.log(data);
                             if (data.length == 0) {
                                 $("#search-no-results").removeClass("hide");
                             }
@@ -472,9 +458,6 @@
                             populateTable(filterAgain(data));
                         },
                         error: function (data) {
-                            console.log("error");
-                            console.log(data);
-                            console.log(data.responseText);
                         }
                     });
 

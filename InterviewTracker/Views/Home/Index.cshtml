@@ -82,11 +82,8 @@
         function updateCalendar(view) {
             // Show dialog to prevent any further clicking
             $("#dialog").dialog("open");
-            console.log("update calendar");
             var start = view.start;
-            console.log(start.toISOString());
             var end = view.end;
-            console.log(end.toISOString());
             interviewMapper = {};
             $("#interview-list .panel-body").empty();
             //Fetch events from API
@@ -96,7 +93,6 @@
                 // If interviewer, only get interviews they're assigned to
                 <text>append = " and InterviewerID eq " + @ViewBag.user.UserID + "";</text>
             }
-            console.log(append);
             var obj = {
                 "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
                     end.toISOString() + "'" + append,
@@ -106,10 +102,8 @@
                 url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
                 type: "Get",
                 success: function (data) {
-                    console.log("success");
                     //Remove all events
                     $("#calendar").fullCalendar("removeEvents");
-                    console.log(data.length);
                     for (var i = 0; i < data.length; i++) {
                         var interview = data[i];
                         @if (ViewBag.user.UserGroup == "INTER")
@@ -160,11 +154,9 @@
                         today.setMinutes(0);
                         today.setSeconds(0);
                         today.setMilliseconds(0);
-                        console.log(today);
                         var date = new Date(interview.Date);
                         date.setHours(12);
                         if (today.getTime() === date.getTime()) {
-                            console.log("add to interview-list");
                             var date = moment(interview.Date);
                             var startTime = moment(interview.StartTime);
                             var endTime = moment(interview.EndTime);
@@ -212,9 +204,6 @@
                     $("#dialog").dialog("close");
                 },
                 error: function (data) {
-                    console.log("error");
-                    console.log(data);
-                    console.log(data.responseText);
                 }
             });
         }
@@ -241,7 +230,6 @@
                 },
                 dayClick: function (date, allDay, jsEvent, view) {
                     var myDate = $("#calendar").fullCalendar('getDate');
-                    //console.log("The current date of the calendar is " + myDate);
                 }
             });
 

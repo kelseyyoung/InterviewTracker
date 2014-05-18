@@ -340,8 +340,6 @@
             // Get previous interviews, ending right before this interview started
             var start = new moment(iDate.year() + " " + (iDate.month() + 1) + " " + iDate.date());
             var end = startTime;
-            console.log(start.toISOString());
-            console.log(end.toISOString());
             // Create filter string
             var obj = {
                 "$filter": "Date gt datetime'" + start.toISOString() + "' and Date lt datetime'" +
@@ -352,12 +350,9 @@
                 url: baseURL + "/api/Interview/GetBy?" + $.param(obj),
                 type: "Get",
                 success: function (data) {
-                    console.log("success");
                     var count = 0;
                     for (var i = 0; i < data.length; i++) {
                         var interview = data[i];
-                        console.log(interview);
-                        console.log(interview.InterviewID);
                         if (interview.InterviewID != id && interview.Comments != null) {
                             // Populate area
                             $("#prev-comments").append(
@@ -372,9 +367,6 @@
                     }
                 },
                 error: function (data) {
-                    console.log("error");
-                    console.log(data);
-                    console.log(data.responseText);
                 }
             });
 
@@ -397,17 +389,13 @@
             $("#Status").val("Final");
             var finalInterview = $("#interview-form").serialize();
             $("#Status").val(initStatus);
-            console.log(finalInterview);
 
             $.ajax({
                 url: baseURL + "/api/Interview/Test?" + initInterview,
                 type: "Post",
                 success: function (data) {
-                    console.log("success");
-                    console.log(data);
                 },
                 error: function (data) {
-                    console.log(data);
                 }
             });
 
@@ -415,19 +403,13 @@
             // Only called if they didn't click 'Submit'
             $(window).unload(function () {
                 if (!submitted) {
-                    console.log("here");
-                    console.log(initInterview);
                     // Set initial interview
                     $.ajax({
                         url: baseURL + "/api/Interview/Put/" + id + "?" + initInterview,
                         type: "Put",
                         success: function (data) {
-                            console.log("success");
-                            console.log(data);
                         },
                         error: function (data) {
-                            console.log("error");
-                            console.log(data);
                         }
                     });
                 }
@@ -451,34 +433,27 @@
                 $("#interview-form #EditTime").attr("name", "EditTime");
                 // Serialize form
                 var interview = $("#interview-form").serialize();
-                console.log(interview);
                 // Test
                 $.ajax({
                     url: baseURL + "/api/Interview/Test?" + interview,
                     type: "Post",
                     success: function (data) {
-                        console.log(data);
                         // Submit (Put) interview
                         $.ajax({
                             url: baseURL + "/api/Interview/Put/" + id + "?" + interview,
                             type: "Put",
                             success: function (data) {
-                                console.log("success");
-                                console.log(data);
                                 // Set submitted flag
                                 submitted = true;
                                 // Redirect to Calendar/Index
                                 window.location.href = "@Url.Action("Index", "Calendar")";
                             },
                             error: function (data) {
-                                console.log("error");
-                                console.log(data);
                             }
                         });
                     },
                     error: function (data) {
                         // Show errors
-                        console.log(data);
                         var errors = "";
                         var response = $.parseJSON(data.responseText).ModelState;
                         $.each(response, function (key, value) {
@@ -506,7 +481,6 @@
                         url: baseURL + "/api/Admiral/GetBy?" + $.param(obj),
                         type: "Get",
                         success: function (data) {
-                            console.log(data);
                             if (data.length == 0) {
                                 // No admiral record
                                 $("#AdmiralID").removeAttr("name");
@@ -524,7 +498,6 @@
                             }
                         },
                         error: function (data) {
-                            console.log("error");
                         }
                     });
                 }
@@ -535,7 +508,6 @@
                 $("#admiral-form #Date").val(new Date().toISOString());
                 // Collect form data
                 var formData = $("#admiral-form").serialize();
-                console.log(formData);
                 // Hide error div
                 $("#admiral-errors").addClass("hide");
                 // Test
@@ -543,7 +515,6 @@
                     url: baseURL + "/api/Admiral/Test?" + formData,
                     type: "Post",
                     success: function (data) {
-                        console.log("success");
                         // Determine if Post or Put
                         var type = "Post";
                         var append = "";
@@ -551,15 +522,11 @@
                             type = "Put";
                             append = "/" + $("#AdmiralID").val();
                         }
-                        console.log(type);
-                        console.log(append);
                         // Submit
                         $.ajax({
                             url: baseURL + "/api/Admiral/" + type + append + "?" + formData,
                             type: type,
                             success: function (data) {
-                                console.log("success");
-                                console.log(data);
                                 // Need to submit interview as final
                                 $.ajax({
                                     url: baseURL + "/api/Interview/Put/" + id + "?" + finalInterview,
@@ -571,20 +538,15 @@
                                         setTimeout(function () { $("#admiral-success").empty(); }, 5000);
                                     },
                                     error: function (data) {
-                                        console.log("error");
-                                        console.log(data);
                                     }
                                 });
                             },
                             error: function (data) {
-                                console.log("error");
-                                console.log(data);
                             }
                         });
                     },
                     error: function (data) {
                         // Show errors
-                        console.log(data);
                         var errors = "";
                         var response = $.parseJSON(data.responseText).ModelState;
                         $.each(response, function (key, value) {

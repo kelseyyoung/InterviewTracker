@@ -1574,7 +1574,6 @@
             };
             if (allPass == true) {
                 // No errors, start submittal chain
-                console.log("passed testing");
                 submit();
             } else {
                 //Close dialog at end
@@ -1619,13 +1618,9 @@
             });
 
             $(document).on("click", ".course-catalog-trigger", function () {
-                console.log("open");
                 catalogForm = $(this).parent().parent();
-                console.log(catalogForm);
                 catalogTable = $(catalogForm).find(".classes-table");
-                console.log(catalogTable);
                 catalogSchool = $(catalogForm).find("#school-name").val();
-                console.log(catalogSchool);
                 $("#school-name-catalog").text(catalogSchool);
                 var obj = { "School": catalogSchool };
                 // Get courses
@@ -1633,8 +1628,6 @@
                     url: baseURL + "/api/ClassesAttended/GetCourseCatalog?" + $.param(obj),
                     type: "Get",
                     success: function (data) {
-                        console.log("success");
-                        console.log(data);
                         // Clear out table
                         $("#course-catalog-table tbody").empty();
                         if (data.length == 0) {
@@ -1661,8 +1654,6 @@
                         $("#course-catalog-modal").dialog("open");
                     },
                     error: function (data) {
-                        console.log("error");
-                        console.log(data);
                     }
                 });
 
@@ -1675,8 +1666,6 @@
                     url: baseURL + "/api/Classes/Get/" + classID,
                     type: "Get",
                     success: function (data) {
-                        console.log("success");
-                        console.log(data);
                         // Populate correct classes table
                         $(catalogForm).find("#Subject").val(data.Subject);
                         $(catalogForm).find("#Code").val(data.Code);
@@ -1684,15 +1673,12 @@
                         $(catalogForm).find("#Technical").val("" + data.Technical);
                     },
                     error: function (data) {
-                        console.log("error");
-                        console.log(data);
                     }
                 })
             });
 
             // Create Candidate button click
             $("#create-candidate-button").click(function () {
-                console.log("starting test");
                 // Show dialog to prevent any further clicking
                 $("#submitting-dialog").dialog("open");
                 // Start testing chain
@@ -1742,7 +1728,6 @@
                         Ok: function () {
                             // Set new school name
                             var newName = $("#change-school-name-modal #new-school-name").val().toUpperCase();
-                            console.log(newName);
                             // Set school-name
                             $(btn).parent().find("#school-name").val(newName);
                             // Set school tab name
@@ -1750,13 +1735,10 @@
                             // Set class tab info if there is one
                             if ($("#class-tabs ul li:contains('" + schoolName + "')").length > 0) {
                                 // Set school-name in each class-form
-                                console.log($("#class-tabs ul li:contains('" + schoolName + "') a"));
                                 var href = $("#class-tabs ul li:contains('" + schoolName + "') a").attr("href");
                                 // Set class tab name
                                 $("#class-tabs ul li:contains('" + schoolName + "') a").text(newName);
-                                console.log(href);
                                 var classForms = $(href).find(".class-form");
-                                console.log(classForms);
                                 for (var i = 0; i < classForms.length; i++) {
                                     $(classForms[i]).find("#school-name").val(newName);
                                 }
@@ -1779,10 +1761,8 @@
 
             // Set Major Select2's
             var initSchoolForms = $(".schools-form");
-            console.log(initSchoolForms);
             for (var i = 0; i < initSchoolForms.length; i++) {
                 var f = initSchoolForms[i];
-                console.log(f);
                 $(f).find("#MajorValue").select2({
                     placeholder: "Select Major",
                     dropdownCssClass: "expand"
@@ -1791,7 +1771,6 @@
                .on('click', '.createLink', function (e) {
                    e.preventDefault();
                    var name = $(this).parent().find(".select2-search input").val().toUpperCase();
-                   console.log(name);
                    $(f).find("#MajorValue").append(
                        "<option value='" + name + "'>" + name + "</option>"
                    );
