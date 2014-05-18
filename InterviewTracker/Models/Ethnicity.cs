@@ -10,6 +10,6 @@ namespace InterviewTracker.Models
     {
         public int EthnicityID { get; set; } // PK for Ethnicity table
         [Required(ErrorMessage="The Ethnicity field is required")]
-        public String EthnicityValue { get; set; } // Ethnicity
+        public string EthnicityValue { get; set; } // Ethnicity
     }
 }
